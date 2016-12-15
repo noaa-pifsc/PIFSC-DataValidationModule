@@ -1,0 +1,8 @@
+Should each re-run of the validation module result in a new association with the SPT_APP_XML_EXEC?
+    Probably not, there can be a different many-to-many relationship to track each time a parent record is evaluated for QC validation criteria		
+			
+Update the data model to associate errors directly with the parent data table instead of the SPT_APP_XML_FILES table, this will allow any data stream to have the data validation module implemented for it
+
+consolidate the SPT_PTA_ERRORS and SPT_PTA_ERROR_TYPES tables and re-link the error records to the new consolidated table (SPT_PTA_ERRORS)
+    processing script must be updated to use a single error type record	- In progress
+How to implement a PTA system using date ranges instead of repetitive intersection records for each parent table			

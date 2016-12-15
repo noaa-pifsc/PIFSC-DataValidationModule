@@ -1,0 +1,1325 @@
+set define off;
+
+--DVM stands for data validation module:
+
+
+--rename SPT_PTA_ERRORS table:
+ALTER TABLE SPT_PTA_ERRORS 
+RENAME TO DVM_PTA_ERRORS;
+
+ALTER INDEX SPT_PTA_ERRORS_PK 
+RENAME TO DVM_PTA_ERRORS_PK;
+
+ALTER TABLE DVM_PTA_ERRORS 
+RENAME CONSTRAINT SPT_PTA_ERRORS_PK TO DVM_PTA_ERRORS_PK;
+
+COMMENT ON TABLE DVM_PTA_ERRORS IS 'Error Types/Errors (PTA)
+
+This table represents a generalized intersection table that allows multiple Error and Error Type Association records to reference this consolidated table that allows multiple Errors and Error Types to be associated with the given parent table record (e.g. SPT_VESSEL_TRIPS, SPT_UL_TRANSACTIONS, SPT_CANN_TRANSACTIONS, etc.).';
+
+
+--rename SPT_QC_OBJECTS table:
+ALTER TABLE SPT_QC_OBJECTS 
+RENAME TO DVM_QC_OBJECTS;
+
+ALTER INDEX SPT_QC_OBJECTS_PK 
+RENAME TO DVM_QC_OBJECTS_PK;
+
+ALTER TABLE DVM_QC_OBJECTS 
+RENAME CONSTRAINT SPT_QC_OBJECTS_PK TO DVM_QC_OBJECTS_PK;
+
+
+--rename SPT_ERROR_TYPES table:
+ALTER TABLE SPT_ERROR_TYPES 
+RENAME TO DVM_ERROR_TYPES;
+
+
+
+
+--rename SPT_ERRORS table:
+ALTER TABLE SPT_ERRORS 
+RENAME TO DVM_ERRORS;
+
+
+
+--rename SPT_ERR_SEVERITY table:
+ALTER TABLE SPT_ERR_SEVERITY 
+RENAME TO DVM_ERR_SEVERITY;
+
+--ERR_SEVERITY updates:
+ALTER INDEX SPT_ERR_SEVERITY_PK 
+RENAME TO DVM_ERR_SEVERITY_PK;
+
+ALTER INDEX SPT_ERR_SEVERITY_U1 
+RENAME TO DVM_ERR_SEVERITY_U1;
+
+ALTER INDEX SPT_ERR_SEVERITY_U2 
+RENAME TO DVM_ERR_SEVERITY_U2;
+
+ALTER TABLE DVM_ERR_SEVERITY 
+RENAME CONSTRAINT SPT_ERR_SEVERITY_PK TO DVM_ERR_SEVERITY_PK;
+
+ALTER TABLE DVM_ERR_SEVERITY 
+RENAME CONSTRAINT SPT_ERR_SEVERITY_U1 TO DVM_ERR_SEVERITY_U1;
+
+ALTER TABLE DVM_ERR_SEVERITY 
+RENAME CONSTRAINT SPT_ERR_SEVERITY_U2 TO DVM_ERR_SEVERITY_U2;
+
+
+--rename SPT_ERR_RES_TYPES table:
+ALTER TABLE SPT_ERR_RES_TYPES 
+RENAME TO DVM_ERR_RES_TYPES;
+
+--ERR_RES_TYPES updates:
+ALTER INDEX SPT_ERR_RES_TYPES_PK 
+RENAME TO DVM_ERR_RES_TYPES_PK;
+
+ALTER INDEX SPT_ERR_RES_TYPES_U1 
+RENAME TO DVM_ERR_RES_TYPES_U1;
+
+ALTER INDEX SPT_ERR_RES_TYPES_U2 
+RENAME TO DVM_ERR_RES_TYPES_U2;
+
+ALTER TABLE DVM_ERR_RES_TYPES 
+RENAME CONSTRAINT SPT_ERR_RES_TYPES_PK TO DVM_ERR_RES_TYPES_PK;
+
+ALTER TABLE DVM_ERR_RES_TYPES 
+RENAME CONSTRAINT SPT_ERR_RES_TYPES_U1 TO DVM_ERR_RES_TYPES_U1;
+
+ALTER TABLE DVM_ERR_RES_TYPES 
+RENAME CONSTRAINT SPT_ERR_RES_TYPES_U2 TO DVM_ERR_RES_TYPES_U2;
+
+
+
+--rename SPT_PTA_ERR_TYP_ASSOC table:
+ALTER TABLE SPT_PTA_ERR_TYP_ASSOC 
+RENAME TO DVM_PTA_ERR_TYP_ASSOC;
+
+
+--PTA_ERR_TYP_ASSOC updates:
+ALTER INDEX SPT_PTA_ERR_TYP_ASSOC_I1 
+RENAME TO DVM_PTA_ERR_TYP_ASSOC_I1;
+
+ALTER INDEX SPT_PTA_ERR_TYP_ASSOC_I2 
+RENAME TO DVM_PTA_ERR_TYP_ASSOC_I2;
+
+ALTER INDEX SPT_PTA_ERR_TYP_ASSOC_PK 
+RENAME TO DVM_PTA_ERR_TYP_ASSOC_PK;
+
+ALTER INDEX SPT_PTA_ERR_TYP_ASSOC_U1 
+RENAME TO DVM_PTA_ERR_TYP_ASSOC_U1;
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC 
+RENAME CONSTRAINT SPT_PTA_ERR_TYP_ASSOC_PK TO DVM_PTA_ERR_TYP_ASSOC_PK;
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC 
+RENAME CONSTRAINT SPT_PTA_ERR_TYP_ASSOC_U1 TO DVM_PTA_ERR_TYP_ASSOC_U1;
+
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC RENAME COLUMN PTA_ERROR_TYPE_ID TO PTA_ERROR_ID;
+
+COMMENT ON COLUMN DVM_PTA_ERR_TYP_ASSOC.PTA_ERROR_ID IS 'Foreign key reference to the Error Types/Errors (PTA) table.  This indicates a given Data Error Type rule was active at the time a given data table record was added to the database (e.g. SPT_VESSEL_TRIPS, SPT_UL_TRANSACTIONS, SPT_CANN_TRANSACTIONS, etc.)';
+
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC DROP CONSTRAINT SPT_PTA_ERR_TYP_ASSOC_FK1;
+
+ALTER TABLE "DVM_PTA_ERR_TYP_ASSOC" ADD CONSTRAINT "DVM_PTA_ERR_TYP_ASSOC_FK1" FOREIGN KEY ("PTA_ERROR_ID")
+    REFERENCES "DVM_PTA_ERRORS" ("PTA_ERROR_ID") ENABLE;
+
+
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC DROP CONSTRAINT SPT_PTA_ERR_TYP_ASSOC_FK2;
+
+ALTER TABLE "DVM_PTA_ERR_TYP_ASSOC" ADD CONSTRAINT "DVM_PTA_ERR_TYP_ASSOC_FK2" FOREIGN KEY ("ERROR_TYPE_ID")
+    REFERENCES "DVM_ERROR_TYPES" ("ERROR_TYPE_ID") ENABLE;
+
+
+
+
+--rename SPT_PTA_ERROR_TYPES table:
+ALTER TABLE SPT_PTA_ERROR_TYPES 
+RENAME TO DVM_PTA_ERROR_TYPES;
+
+drop sequence SPT_PTA_ERROR_TYPES_SEQ;
+
+drop trigger SPT_PTA_ERROR_TYPES_AUTO_BRI;
+
+drop table "SPTT_DATA_VALIDATOR"."DVM_PTA_ERROR_TYPES" cascade constraints PURGE;
+
+
+drop synonym DAT_STRM;
+drop synonym ERRS;
+drop synonym ERR_TYP;
+drop synonym ERR_RES;
+drop synonym QC_OBJ;
+drop synonym PTA_ER_TYP;
+drop synonym PTA_ERR;
+drop synonym PTA_ER_ASC;
+drop synonym ERR_SEV;
+
+
+CREATE SYNONYM QC_OBJ FOR DVM_QC_OBJECTS;
+CREATE SYNONYM ERR_RES FOR DVM_ERR_RES_TYPES;
+CREATE SYNONYM PTA_ER_TYP FOR DVM_PTA_ERROR_TYPES;
+CREATE SYNONYM PTA_ERR FOR DVM_PTA_ERRORS;
+CREATE SYNONYM ERR_TYP FOR DVM_ERROR_TYPES;
+CREATE SYNONYM ERRS FOR DVM_ERRORS;
+CREATE SYNONYM DAT_STRM FOR DVM_DATA_STREAMS;
+CREATE SYNONYM PTA_ER_ASC FOR DVM_PTA_ERR_TYP_ASSOC;
+CREATE SYNONYM ERR_SEV FOR DVM_ERR_SEVERITY;
+
+
+
+
+
+
+
+
+
+
+--rename SPT_PTA_ERRORS table:
+ALTER TABLE SPT_DATA_STREAMS 
+RENAME TO DVM_DATA_STREAMS;
+
+
+ALTER INDEX SPT_DATA_STREAMS_PK 
+RENAME TO DVM_DATA_STREAMS_PK;
+
+ALTER INDEX SPT_DATA_STREAMS_U1 
+RENAME TO DVM_DATA_STREAMS_U1;
+
+ALTER INDEX SPT_DATA_STREAMS_U2 
+RENAME TO DVM_DATA_STREAMS_U2;
+
+ALTER TABLE DVM_DATA_STREAMS 
+RENAME CONSTRAINT SPT_DATA_STREAMS_PK TO DVM_DATA_STREAMS_PK;
+
+ALTER TABLE DVM_DATA_STREAMS 
+RENAME CONSTRAINT SPT_DATA_STREAMS_U1 TO DVM_DATA_STREAMS_U1;
+
+ALTER TABLE DVM_DATA_STREAMS 
+RENAME CONSTRAINT SPT_DATA_STREAMS_U2 TO DVM_DATA_STREAMS_U2;
+
+
+
+--ERROR_TYPES updates:
+ALTER TABLE DVM_ERROR_TYPES DROP CONSTRAINT SPT_ERROR_TYPES_FK1;
+
+ALTER TABLE "DVM_ERROR_TYPES" ADD CONSTRAINT "DVM_ERROR_TYPES_FK1" FOREIGN KEY ("QC_OBJECT_ID")
+    REFERENCES "DVM_QC_OBJECTS" ("QC_OBJECT_ID") ENABLE;
+
+
+
+ALTER TABLE DVM_ERROR_TYPES DROP CONSTRAINT SPT_ERROR_TYPES_FK2;
+
+ALTER TABLE "DVM_ERROR_TYPES" ADD CONSTRAINT "DVM_ERROR_TYPES_FK2" FOREIGN KEY ("ERR_SEVERITY_ID")
+    REFERENCES "DVM_ERR_SEVERITY" ("ERR_SEVERITY_ID") ENABLE;
+
+
+ALTER TABLE DVM_ERROR_TYPES DROP CONSTRAINT SPT_ERROR_TYPES_FK3;
+
+ALTER TABLE "DVM_ERROR_TYPES" ADD CONSTRAINT "DVM_ERROR_TYPES_FK3" FOREIGN KEY ("DATA_STREAM_ID")
+    REFERENCES "DVM_DATA_STREAMS" ("DATA_STREAM_ID") ENABLE;
+
+
+
+ALTER INDEX SPT_ERROR_TYPES_I1 
+RENAME TO DVM_ERROR_TYPES_I1;
+
+ALTER INDEX SPT_ERROR_TYPES_I2 
+RENAME TO DVM_ERROR_TYPES_I2;
+
+ALTER INDEX SPT_ERROR_TYPES_I3 
+RENAME TO DVM_ERROR_TYPES_I3;
+
+ALTER INDEX SPT_ERROR_TYPES_PK 
+RENAME TO DVM_ERROR_TYPES_PK;
+
+ALTER INDEX SPT_ERROR_TYPES_U1 
+RENAME TO DVM_ERROR_TYPES_U1;
+
+ALTER TABLE DVM_ERROR_TYPES 
+RENAME CONSTRAINT SPT_ERROR_TYPES_PK TO DVM_ERROR_TYPES_PK;
+
+ALTER TABLE DVM_ERROR_TYPES 
+RENAME CONSTRAINT SPT_ERROR_TYPES_U1 TO DVM_ERROR_TYPES_U1;
+
+
+
+--ERRORS updates:
+ALTER INDEX SPT_ERRORS_I1 
+RENAME TO DVM_ERRORS_I1;
+
+ALTER INDEX SPT_ERRORS_I2 
+RENAME TO DVM_ERRORS_I2;
+
+ALTER INDEX SPT_ERRORS_I3 
+RENAME TO DVM_ERRORS_I3;
+
+ALTER INDEX SPT_ERRORS_PK 
+RENAME TO DVM_ERRORS_PK;
+
+ALTER TABLE DVM_ERRORS 
+RENAME CONSTRAINT SPT_ERRORS_PK TO DVM_ERRORS_PK;
+
+
+
+ALTER TABLE DVM_ERRORS DROP CONSTRAINT SPT_ERRORS_FK1;
+
+ALTER TABLE "DVM_ERRORS" ADD CONSTRAINT "DVM_ERRORS_FK1" FOREIGN KEY ("PTA_ERROR_ID")
+    REFERENCES "DVM_PTA_ERRORS" ("PTA_ERROR_ID") ENABLE;
+
+
+
+ALTER TABLE DVM_ERRORS DROP CONSTRAINT SPT_ERRORS_FK2;
+
+ALTER TABLE "DVM_ERRORS" ADD CONSTRAINT "DVM_ERRORS_FK2" FOREIGN KEY ("ERROR_TYPE_ID")
+    REFERENCES "DVM_ERROR_TYPES" ("ERROR_TYPE_ID") ENABLE;
+
+
+ALTER TABLE DVM_ERRORS DROP CONSTRAINT SPT_ERRORS_FK3;
+
+ALTER TABLE "DVM_ERRORS" ADD CONSTRAINT "DVM_ERRORS_FK3" FOREIGN KEY ("ERR_RES_TYPE_ID")
+    REFERENCES "DVM_ERR_RES_TYPES" ("ERR_RES_TYPE_ID") ENABLE;
+    
+
+
+
+DROP TRIGGER SPT_DATA_STREAMS_AUTO_BRI;
+DROP TRIGGER SPT_ERRORS_AUTO_BRI;
+DROP TRIGGER SPT_ERROR_TYPES_AUTO_BRI;
+DROP TRIGGER SPT_ERR_RES_TYPES_AUTO_BRI;
+DROP TRIGGER SPT_ERR_SEVERITY_AUTO_BRI;
+DROP TRIGGER SPT_PTA_ERRORS_AUTO_BRI;
+DROP TRIGGER SPT_PTA_ERR_TYP_ASSOC_AUTO_BRI;
+DROP TRIGGER SPT_QC_OBJECTS_AUTO_BRI;
+
+
+DROP SEQUENCE SPT_DATA_STREAMS_SEQ;
+DROP SEQUENCE SPT_ERRORS_SEQ;
+DROP SEQUENCE SPT_ERROR_TYPES_SEQ;
+DROP SEQUENCE SPT_ERR_RES_TYPES_SEQ;
+DROP SEQUENCE SPT_ERR_SEVERITY_SEQ;
+DROP SEQUENCE SPT_PTA_ERRORS_SEQ;
+DROP SEQUENCE SPT_PTA_ERR_TYP_ASSOC_SEQ;
+DROP SEQUENCE SPT_QC_OBJECTS_SEQ;
+
+
+
+--create the new sequences:
+--these scripts were generated using the reset_sequence_vals.sql scripting file:
+
+CREATE SEQUENCE DVM_DATA_STREAMS_SEQ INCREMENT BY 1 START WITH 7;
+CREATE SEQUENCE DVM_ERRORS_SEQ INCREMENT BY 1 START WITH 266063;
+CREATE SEQUENCE DVM_ERROR_TYPES_SEQ INCREMENT BY 1 START WITH 643;
+CREATE SEQUENCE DVM_ERR_RES_TYPES_SEQ INCREMENT BY 1 START WITH 4;
+CREATE SEQUENCE DVM_ERR_SEVERITY_SEQ INCREMENT BY 1 START WITH 5;
+CREATE SEQUENCE DVM_PTA_ERRORS_SEQ INCREMENT BY 1 START WITH 34005;
+CREATE SEQUENCE DVM_PTA_ERR_TYP_ASSOC_SEQ INCREMENT BY 1 START WITH 4986597;
+CREATE SEQUENCE DVM_QC_OBJECTS_SEQ INCREMENT BY 1 START WITH 146;
+
+
+
+
+--create replacement triggers with new naming convention prefix (DVM)
+--these scripts were generated using the define_naming_convention_simple_triggers.sql scripting file:
+CREATE OR REPLACE TRIGGER DVM_DATA_STREAMS_AUTO_BRI
+before insert on DVM_DATA_STREAMS
+for each row
+begin
+select DVM_DATA_STREAMS_SEQ.nextval into :new.DATA_STREAM_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_QC_OBJECTS_AUTO_BRI
+before insert on DVM_QC_OBJECTS
+for each row
+begin
+select DVM_QC_OBJECTS_SEQ.nextval into :new.QC_OBJECT_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_PTA_ERR_TYP_ASSOC_AUTO_BRI
+before insert on DVM_PTA_ERR_TYP_ASSOC
+for each row
+begin
+select DVM_PTA_ERR_TYP_ASSOC_SEQ.nextval into :new.PTA_ERR_TYP_ASSOC_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_PTA_ERRORS_AUTO_BRI
+before insert on DVM_PTA_ERRORS
+for each row
+begin
+select DVM_PTA_ERRORS_SEQ.nextval into :new.PTA_ERROR_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_ERR_SEVERITY_AUTO_BRI
+before insert on DVM_ERR_SEVERITY
+for each row
+begin
+select DVM_ERR_SEVERITY_SEQ.nextval into :new.ERR_SEVERITY_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_ERR_RES_TYPES_AUTO_BRI
+before insert on DVM_ERR_RES_TYPES
+for each row
+begin
+select DVM_ERR_RES_TYPES_SEQ.nextval into :new.ERR_RES_TYPE_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_ERROR_TYPES_AUTO_BRI
+before insert on DVM_ERROR_TYPES
+for each row
+begin
+select DVM_ERROR_TYPES_SEQ.nextval into :new.ERROR_TYPE_ID from dual;
+end;
+/
+CREATE OR REPLACE TRIGGER DVM_ERRORS_AUTO_BRI
+before insert on DVM_ERRORS
+for each row
+begin
+select DVM_ERRORS_SEQ.nextval into :new.ERROR_ID from dual;
+end;
+/
+
+--recompile all invalid triggers:
+begin FOR cur IN (SELECT OBJECT_NAME, OBJECT_TYPE, owner FROM all_objects WHERE object_type in ('TRIGGER') and owner = sys_context( 'userenv', 'current_schema' ) AND status = 'INVALID' ) LOOP 
+BEGIN
+    EXECUTE IMMEDIATE 'alter ' || cur.OBJECT_TYPE || ' "' ||  cur.owner || '"."' || cur.OBJECT_NAME || '" compile'; 
+EXCEPTION
+  WHEN OTHERS THEN NULL; 
+END;
+end loop;
+end;
+/
+
+CREATE SYNONYM NS_STG FOR SPT_NET_SHR_STG_DATA;
+
+
+
+
+
+
+
+
+--Associate SPT_VESSEL_TRIPS table with the DVM_PTA_ERRORS table:
+
+ALTER TABLE SPT_VESSEL_TRIPS 
+ADD (PTA_ERROR_ID NUMBER );
+
+CREATE INDEX SPT_VESSEL_TRIPS_I11 ON SPT_VESSEL_TRIPS (PTA_ERROR_ID);
+
+ALTER TABLE SPT_VESSEL_TRIPS
+ADD CONSTRAINT SPT_VESSEL_TRIPS_FK12 FOREIGN KEY
+(
+  PTA_ERROR_ID 
+)
+REFERENCES DVM_PTA_ERRORS
+(
+  PTA_ERROR_ID 
+)
+ENABLE;
+
+COMMENT ON COLUMN SPT_VESSEL_TRIPS.PTA_ERROR_ID IS 'Foreign key reference to the Errors (PTA) intersection table';
+
+
+
+ALTER TABLE SPT_VESSEL_TRIPS
+ADD CONSTRAINT SPT_VESSEL_TRIPS_U3 UNIQUE 
+(
+  PTA_ERROR_ID 
+)
+USING INDEX SPT_VESSEL_TRIPS_I11
+ENABLE;
+
+
+
+--PTA system for error type associations:
+
+
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC 
+ADD (EFFECTIVE_DATE DATE );
+
+ALTER TABLE DVM_PTA_ERR_TYP_ASSOC 
+ADD (END_DATE DATE );
+
+COMMENT ON COLUMN DVM_PTA_ERR_TYP_ASSOC.EFFECTIVE_DATE IS 'The effective date for the given set of enabled Error Type Definitions';
+
+COMMENT ON COLUMN DVM_PTA_ERR_TYP_ASSOC.END_DATE IS 'The end date for the given set of enabled Error Type Definitions';
+
+
+--transfer PTA_ERROR_ID values from SPT_APP_XML_FILES to SPT_VESSEL_TRIPS
+MERGE INTO 
+    SPT_VESSEL_TRIPS VT
+    USING 
+    (SELECT
+      XML_FILE_ID,
+      PTA_ERROR_ID
+    FROM
+      SPT_APP_XML_FILES
+      ) XML_INFO
+    ON (XML_INFO.XML_FILE_ID = VT.XML_FILE_ID)
+    
+    WHEN MATCHED
+    THEN
+    
+    UPDATE
+    SET VT.PTA_ERROR_ID = XML_INFO.PTA_ERROR_ID;
+
+
+--verify that the PTA_ERROR_ID values are equivalent after the field is moved to the SPT_VESSEL_TRIPS table (should return all of the VT records if they all match)
+SELECT
+  SPT_VESSEL_TRIPS.VESS_TRIP_ID,
+  SPT_VESSEL_TRIPS.PTA_ERROR_ID,
+  SPT_APP_XML_FILES.PTA_ERROR_ID AS PTA_ERROR_ID1,
+  SPT_APP_XML_FILES.PTA_ERROR_TYPE_ID
+FROM
+  SPT_VESSEL_TRIPS
+INNER JOIN SPT_APP_XML_FILES
+ON
+  SPT_APP_XML_FILES.XML_FILE_ID = SPT_VESSEL_TRIPS.XML_FILE_ID
+  
+  WHERE SPT_VESSEL_TRIPS.PTA_ERROR_ID = SPT_APP_XML_FILES.PTA_ERROR_ID 
+  AND SPT_VESSEL_TRIPS.PTA_ERROR_ID = SPT_APP_XML_FILES.PTA_ERROR_TYPE_ID
+
+
+--update Views:
+
+CREATE OR REPLACE VIEW DVM_QC_CRITERIA_V AS
+
+  SELECT
+  DVM_QC_OBJECTS.QC_OBJECT_ID,
+  DVM_QC_OBJECTS.OBJECT_NAME,
+  DVM_QC_OBJECTS.QC_OBJ_ACTIVE_YN,
+  DVM_QC_OBJECTS.QC_SORT_ORDER,
+  DVM_ERROR_TYPES.ERROR_TYPE_ID,
+  DVM_ERROR_TYPES.ERR_TYPE_NAME,
+  DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_ERROR_TYPES.ERR_TYPE_DESC,
+  DVM_ERROR_TYPES.IND_FIELD_NAME,
+  DVM_ERROR_TYPES.ERR_SEVERITY_ID,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_CODE,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_NAME,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_DESC,
+  DVM_ERROR_TYPES.DATA_STREAM_ID,
+  DVM_DATA_STREAMS.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS.DATA_STREAM_DESC,
+  DVM_ERROR_TYPES.ERR_TYPE_ACTIVE_YN
+FROM
+  DVM_ERROR_TYPES
+INNER JOIN DVM_ERR_SEVERITY
+ON
+  DVM_ERR_SEVERITY.ERR_SEVERITY_ID = DVM_ERROR_TYPES.ERR_SEVERITY_ID
+INNER JOIN DVM_DATA_STREAMS
+ON
+  DVM_DATA_STREAMS.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
+INNER JOIN DVM_QC_OBJECTS
+ON
+  DVM_QC_OBJECTS.QC_OBJECT_ID = DVM_ERROR_TYPES.QC_OBJECT_ID
+ORDER BY
+
+DVM_QC_OBJECTS.QC_SORT_ORDER;
+
+
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_ID IS 'Primary Key for the DVM_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+
+COMMENT ON TABLE DVM_QC_CRITERIA_V IS 'QC Criteria (View)
+
+This View returns all QC Criteria (Error Types) defined in the database and their associated QC Object, Error Severity, and Error Category.  This query is used to define all PTA Error Types when a data stream is first entered into the database';
+
+
+
+
+CREATE OR REPLACE VIEW DVM_PTA_ERRORS_V
+AS
+SELECT
+  DVM_PTA_ERRORS.PTA_ERROR_ID,
+  DVM_PTA_ERRORS.CREATE_DATE,
+  TO_CHAR(DVM_PTA_ERRORS.CREATE_DATE, 'MM/DD/YYYY HH24:MI') FORMATTED_CREATE_DATE,
+  DVM_PTA_ERRORS.LAST_EVAL_DATE,
+  TO_CHAR(DVM_PTA_ERRORS.LAST_EVAL_DATE, 'MM/DD/YYYY HH24:MI') FORMATTED_LAST_EVAL_DATE,
+  DVM_ERRORS.ERROR_ID,
+  DVM_ERRORS.ERROR_DESCRIPTION,
+  DVM_ERRORS.ERROR_NOTES,
+  DVM_ERRORS.ERROR_TYPE_ID,
+  DVM_ERROR_TYPES.ERR_TYPE_NAME,
+  DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_ERROR_TYPES.QC_OBJECT_ID,
+  DVM_QC_OBJECTS.OBJECT_NAME,
+  DVM_QC_OBJECTS.QC_OBJ_ACTIVE_YN,
+  DVM_QC_OBJECTS.QC_SORT_ORDER,
+  DVM_ERROR_TYPES.ERR_TYPE_DESC,
+  DVM_ERROR_TYPES.IND_FIELD_NAME,
+  DVM_ERROR_TYPES.ERR_SEVERITY_ID,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_CODE,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_NAME,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_DESC,
+  DVM_ERROR_TYPES.DATA_STREAM_ID,
+  DVM_DATA_STREAMS.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS.DATA_STREAM_DESC,
+  DVM_ERROR_TYPES.ERR_TYPE_ACTIVE_YN,
+  DVM_ERRORS.ERR_RES_TYPE_ID,
+  DVM_ERR_RES_TYPES.ERR_RES_TYPE_CODE,
+  DVM_ERR_RES_TYPES.ERR_RES_TYPE_NAME,
+  DVM_ERR_RES_TYPES.ERR_RES_TYPE_DESC
+
+FROM
+  DVM_ERRORS
+INNER JOIN DVM_PTA_ERRORS
+ON
+  DVM_PTA_ERRORS.PTA_ERROR_ID = DVM_ERRORS.PTA_ERROR_ID
+INNER JOIN DVM_ERROR_TYPES
+ON
+  DVM_ERROR_TYPES.ERROR_TYPE_ID = DVM_ERRORS.ERROR_TYPE_ID
+INNER JOIN DVM_DATA_STREAMS
+ON
+  DVM_DATA_STREAMS.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
+INNER JOIN DVM_ERR_SEVERITY
+ON
+  DVM_ERR_SEVERITY.ERR_SEVERITY_ID = DVM_ERROR_TYPES.ERR_SEVERITY_ID
+INNER JOIN DVM_QC_OBJECTS
+ON
+  DVM_QC_OBJECTS.QC_OBJECT_ID = DVM_ERROR_TYPES.QC_OBJECT_ID
+LEFT JOIN DVM_ERR_RES_TYPES
+ON
+  DVM_ERR_RES_TYPES.ERR_RES_TYPE_ID = DVM_ERRORS.ERR_RES_TYPE_ID
+
+  ORDER BY DVM_PTA_ERRORS.PTA_ERROR_ID, DVM_QC_OBJECTS.QC_SORT_ORDER, DVM_QC_OBJECTS.OBJECT_NAME  
+  ;
+
+COMMENT ON TABLE DVM_PTA_ERRORS_V IS 'PTA Errors (View)
+
+This View returns all unresolved Errors associated with a given PTA Error record that were identified during the last evaluation of the associated PTA Error Types.  A PTA Error record can be referenced by any data table that represents the parent record for a given data stream (e.g. SPT_VESSEL_TRIPS for RPL data).  The query returns detailed information about the specifics of each error identified as well as general information about the given Error''s Error Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.';
+
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.CREATE_DATE IS 'The date on which this record was created in the database';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERROR_DESCRIPTION IS 'The description of the given XML Data File error';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERROR_NOTES IS 'Manually entered notes for the corresponding data error';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERROR_ID IS 'Primary Key for the SPT_ERRORS table';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.FORMATTED_CREATE_DATE IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.FORMATTED_LAST_EVAL_DATE IS 'The formatted date/time on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.LAST_EVAL_DATE IS 'The date on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.PTA_ERROR_ID IS 'Foreign key reference to the Errors (PTA) intersection table';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_ID IS 'Primary Key for the SPT_ERR_RES_TYPES table';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_CODE IS 'The Error Resolution Type code';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_NAME IS 'The Error Resolution Type name';
+COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_DESC IS 'The Error Resolution Type description';
+
+
+--query for all PTA error types associated with a given PTA Error Type record (corresponds to the parent table for a given data stream)
+CREATE OR REPLACE VIEW DVM_PTA_ERROR_TYPES_V
+AS
+SELECT
+  DVM_PTA_ERRORS.PTA_ERROR_ID,
+  DVM_PTA_ERRORS.CREATE_DATE,
+  TO_CHAR(DVM_PTA_ERRORS.CREATE_DATE, 'MM/DD/YYYY HH24:MI') FORMATTED_CREATE_DATE,
+  DVM_PTA_ERR_TYP_ASSOC.PTA_ERR_TYP_ASSOC_ID,
+  DVM_PTA_ERR_TYP_ASSOC.ERROR_TYPE_ID,
+  DVM_ERROR_TYPES.ERR_TYPE_NAME,
+  DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_QC_OBJECTS.QC_OBJECT_ID,
+  DVM_QC_OBJECTS.OBJECT_NAME,
+  DVM_QC_OBJECTS.QC_OBJ_ACTIVE_YN,
+  DVM_QC_OBJECTS.QC_SORT_ORDER,
+  DVM_ERROR_TYPES.ERR_TYPE_DESC,
+  DVM_ERROR_TYPES.IND_FIELD_NAME,
+  DVM_ERROR_TYPES.ERR_SEVERITY_ID,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_CODE,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_NAME,
+  DVM_ERR_SEVERITY.ERR_SEVERITY_DESC,
+  DVM_ERROR_TYPES.DATA_STREAM_ID,
+  DVM_DATA_STREAMS.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS.DATA_STREAM_DESC,
+  DVM_ERROR_TYPES.ERR_TYPE_ACTIVE_YN
+FROM
+  DVM_PTA_ERRORS
+INNER JOIN DVM_PTA_ERR_TYP_ASSOC
+ON
+  DVM_PTA_ERRORS.PTA_ERROR_ID =
+  DVM_PTA_ERR_TYP_ASSOC.PTA_ERROR_ID
+INNER JOIN DVM_ERROR_TYPES
+ON
+  DVM_ERROR_TYPES.ERROR_TYPE_ID = DVM_PTA_ERR_TYP_ASSOC.ERROR_TYPE_ID
+INNER JOIN DVM_QC_OBJECTS
+ON
+  DVM_QC_OBJECTS.QC_OBJECT_ID = DVM_ERROR_TYPES.QC_OBJECT_ID
+INNER JOIN DVM_ERR_SEVERITY
+ON
+  DVM_ERR_SEVERITY.ERR_SEVERITY_ID = DVM_ERROR_TYPES.ERR_SEVERITY_ID
+INNER JOIN DVM_DATA_STREAMS
+ON
+  DVM_DATA_STREAMS.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
+ORDER BY DVM_PTA_ERRORS.PTA_ERROR_ID, DVM_QC_OBJECTS.QC_SORT_ORDER, DVM_QC_OBJECTS.OBJECT_NAME
+;
+
+
+COMMENT ON TABLE DVM_PTA_ERROR_TYPES_V IS 'PTA Error Types (View)
+
+This View returns all Error Types associated with a given PTA Error Type record.  The PTA Error Type record is defined the first time the given data stream is first entered into the database, all active Error Types at this point in time are saved and associated with a new PTA Error Type record and this is referenced by a given parent record of a given data stream (e.g. SPT_VESSEL_TRIPS for RPL data).  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.  This relationship is used to determine the Error Types that were associated with the a data stream when the given parent record is first entered into the database.  ';
+
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.CREATE_DATE IS 'The date on which this record was created in the database';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.FORMATTED_CREATE_DATE IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.PTA_ERROR_ID IS 'Primary Key for the SPT_PTA_ERRORS table';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.PTA_ERR_TYP_ASSOC_ID IS 'Primary Key for the SPT_PTA_ERR_TYP_ASSOC table';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN DVM_PTA_ERROR_TYPES_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+
+
+
+CREATE OR REPLACE VIEW SPT_XML_POST_PROC_V
+
+AS
+SELECT
+  SPT_APP_XML_POST_PROC.POST_PROC_ID,
+  SPT_APP_XML_POST_PROC.PROC_NAME,
+  SPT_APP_XML_POST_PROC.PROC_DESC,
+  SPT_APP_XML_POST_PROC.PROC_ACTIVE_YN,
+  SPT_APP_XML_POST_PROC.PROC_SORT_ORDER,
+  SPT_APP_XML_POST_PROC.DATA_STREAM_ID,
+  DVM_DATA_STREAMS.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS.DATA_STREAM_DESC
+FROM
+  SPT_APP_XML_POST_PROC
+INNER JOIN DVM_DATA_STREAMS
+ON
+  DVM_DATA_STREAMS.DATA_STREAM_ID = SPT_APP_XML_POST_PROC.DATA_STREAM_ID
+  ORDER BY 
+  DVM_DATA_STREAMS.DATA_STREAM_NAME,
+  SPT_APP_XML_POST_PROC.PROC_SORT_ORDER,
+  SPT_APP_XML_POST_PROC.PROC_NAME;
+  
+  
+COMMENT ON TABLE SPT_XML_POST_PROC_V IS 'XML Data Import Post Processing (View)
+
+This View returns all XML post processing records and their associated data stream record values.  The purpose of this query is to provide a base-level query for retrieving all XML post-processing procedures that are executed after data is imported but before QC validation is evaluated.';
+  
+  
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.POST_PROC_ID IS 'Primary Key for the SPT_APP_XML_POST_PROC table';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.PROC_NAME IS 'The Oracle procedure object name that is used to execute the given procedure';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.PROC_DESC IS 'The description of the given stored procedure';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.PROC_ACTIVE_YN IS 'Flag to indicate if the given Oracle procedure is enabled and run after each XML data import module execution';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.PROC_SORT_ORDER IS 'The relative sort order the procedures are executed in';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN SPT_XML_POST_PROC_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+
+
+
+  CREATE OR REPLACE VIEW SPT_XML_PTA_ERRORS_V
+  AS
+  SELECT
+  SPT_EXEC_XML_FILES_V.XML_EXEC_ID,
+  SPT_EXEC_XML_FILES_V.EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.SCRIPT_EXECUTION_PATH,
+  SPT_EXEC_XML_FILES_V.XML_FILE_ID,
+  SPT_EXEC_XML_FILES_V.FILE_NAME,
+  SPT_EXEC_XML_FILES_V.FILE_CHECKSUM,
+  SPT_EXEC_XML_FILES_V.FILE_PATH,
+  SPT_EXEC_XML_FILES_V.FILE_ACTIVE_YN,
+  SPT_EXEC_XML_FILES_V.SCAN_DATE,
+  SPT_EXEC_XML_FILES_V.FORMATTED_SCAN_DATE,
+  SPT_EXEC_XML_FILES_V.PTA_ERROR_ID,
+  SPT_EXEC_XML_FILES_V.PTA_ERROR_TYPE_ID,
+  DVM_PTA_ERRORS_V.CREATE_DATE,
+  DVM_PTA_ERRORS_V.FORMATTED_CREATE_DATE,
+  DVM_PTA_ERRORS_V.LAST_EVAL_DATE,
+  DVM_PTA_ERRORS_V.FORMATTED_LAST_EVAL_DATE,
+  DVM_PTA_ERRORS_V.ERROR_ID,
+  DVM_PTA_ERRORS_V.ERROR_DESCRIPTION,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_ID,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_CODE,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_NAME,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_DESC,
+  DVM_PTA_ERRORS_V.ERROR_NOTES,
+  DVM_PTA_ERRORS_V.ERROR_TYPE_ID,
+  DVM_PTA_ERRORS_V.ERR_TYPE_NAME,
+  DVM_PTA_ERRORS_V.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_PTA_ERRORS_V.QC_OBJECT_ID,
+  DVM_PTA_ERRORS_V.OBJECT_NAME,
+  DVM_PTA_ERRORS_V.QC_OBJ_ACTIVE_YN,
+  DVM_PTA_ERRORS_V.QC_SORT_ORDER,
+  DVM_PTA_ERRORS_V.ERR_TYPE_DESC,
+  DVM_PTA_ERRORS_V.IND_FIELD_NAME,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_ID,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_CODE,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_NAME,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_DESC,
+  DVM_PTA_ERRORS_V.DATA_STREAM_ID,
+  DVM_PTA_ERRORS_V.DATA_STREAM_CODE,
+  DVM_PTA_ERRORS_V.DATA_STREAM_NAME,
+  DVM_PTA_ERRORS_V.DATA_STREAM_DESC,
+  DVM_PTA_ERRORS_V.ERR_TYPE_ACTIVE_YN
+FROM
+  SPT_EXEC_XML_FILES_V
+LEFT OUTER JOIN DVM_PTA_ERRORS_V
+ON
+  SPT_EXEC_XML_FILES_V.PTA_ERROR_ID = DVM_PTA_ERRORS_V.PTA_ERROR_ID
+ORDER BY 
+EXEC_START_DTM,
+XML_EXEC_ID,
+SCAN_DATE,
+XML_FILE_ID,
+QC_SORT_ORDER,
+OBJECT_NAME,
+ERR_SEVERITY_CODE,
+ERR_TYPE_NAME,
+DVM_PTA_ERRORS_V.ERROR_ID
+;
+
+COMMENT ON TABLE SPT_XML_PTA_ERRORS_V IS 'XML File PTA Errors (View)
+
+This View returns all outstanding PTA Errors associated with each XML file that has been processed to date based on the last time the QC validation was evaluated (defined by LAST_EVAL_DATE).  All dates are returned as native data types as well as standard formatted date strings and all reference table values are included in the result set.';
+
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.CREATE_DATE IS 'The date on which this record was created in the database';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_DESCRIPTION IS 'The description of the given XML Data File error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_NOTES IS 'Manually entered notes for the corresponding data error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_ID IS 'Primary Key for the SPT_ERRORS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.EXEC_END_DTM IS 'The date/time the XML data import script finished executing';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.EXEC_START_DTM IS 'The date/time the XML data import script was executed';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_ACTIVE_YN IS 'Flag to indicate if the given data file is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_CHECKSUM IS 'The MD5 file checksum for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_PATH IS 'This is the full file path for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_CREATE_DATE IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_EXEC_END_DTM IS 'The formatted date/time the XML data import script finished executing (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_EXEC_START_DTM IS 'The formatted date/time the XML data import script was executed (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_LAST_EVAL_DATE IS 'The formatted date/time on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_SCAN_DATE IS 'The formatted date/time the XML file was scanned (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.LAST_EVAL_DATE IS 'The date on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.PTA_ERROR_ID IS 'Foreign key reference to the Errors (PTA) intersection table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.PTA_ERROR_TYPE_ID IS 'Foreign key reference to the Error Types (PTA) intersection table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.SCAN_DATE IS 'Date/time the XML file was scanned';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.SCRIPT_EXECUTION_PATH IS 'The base file path for the given XML data import script execution';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.XML_EXEC_ID IS 'Primary Key for the SPT_APP_XML_EXEC table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.XML_FILE_ID IS 'Primary Key for the SPT_XML_DATA_FILES table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_ID IS 'Primary Key for the SPT_ERR_RES_TYPES table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_CODE IS 'The Error Resolution Type code';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_NAME IS 'The Error Resolution Type name';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_DESC IS 'The Error Resolution Type description';
+
+
+
+
+CREATE OR REPLACE VIEW
+SPT_RPT_ACT_FATAL_ERR_V
+AS
+select ERROR_ID, REPLACE(FILE_NAME, '_data.xml', '.pdf') PDF_FILE_NAME, FILE_NAME XML_FILE_NAME, ERROR_DESCRIPTION, ERR_TYPE_NAME, REMOVE_ERR_MESSAGE_PK_REFS(ERROR_DESCRIPTION, 'RPL', 'N') ERROR_DESCRIPTION_NO_PKS, '' NOTES from spt_xml_pta_errors_v where err_severity_code = 'FATAL' AND ERR_RES_TYPE_ID IS NULL AND ERROR_ID IS NOT NULL order by file_name, ERROR_ID;
+
+COMMENT ON TABLE SPT_RPT_ACT_FATAL_ERR_V IS 'Active Fatal Error Report (View)
+
+This View returns all active fatal errors (ERR_SEVERITY_CODE = ''FATAL'') without a corresponding error resolution code so that it can be reviewed and resolved by data management staff.';
+
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_ID IS 'Primary Key for the SPT_ERRORS table';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.PDF_FILE_NAME IS 'This is the file name for the given PDF data file (generated based on XML data file name and naming convention)';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.XML_FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_DESCRIPTION IS 'The description of the given XML Data File error';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_DESCRIPTION_NO_PKS IS 'The description of the given XML Data File error with all record PK references removed (e.g. VESS_TRIP_ID)';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.NOTES IS 'Blank field returned in template to allow manual notes to be added to the data validation report';
+
+
+
+
+
+
+
+
+DROP VIEW SPT_PTA_ERRORS_V;
+DROP VIEW SPT_QC_CRITERIA_V;
+drop view SPT_PTA_ERROR_TYPES_V;
+
+
+
+
+ALTER TABLE SPT_APP_XML_FILES 
+DROP CONSTRAINT SPT_APP_XML_FILES_FK2;
+
+DROP INDEX SPT_APP_XML_FILES_I2;
+
+DROP INDEX SPT_APP_XML_FILES_I3;
+
+ALTER TABLE SPT_APP_XML_FILES 
+DROP COLUMN PTA_ERROR_ID;
+
+ALTER TABLE SPT_APP_XML_FILES 
+DROP COLUMN PTA_ERROR_TYPE_ID;
+
+
+
+
+--base view for all XML file script executions:
+CREATE OR REPLACE VIEW SPT_EXEC_XML_FILES_V
+AS
+SELECT
+  SPT_APP_XML_EXEC.XML_EXEC_ID,
+  SPT_APP_XML_EXEC.EXEC_START_DTM,
+  TO_CHAR(SPT_APP_XML_EXEC.EXEC_START_DTM, 'MM/DD/YYYY HH24:MI') FORMATTED_EXEC_START_DTM,
+  SPT_APP_XML_EXEC.EXEC_END_DTM,
+  TO_CHAR(SPT_APP_XML_EXEC.EXEC_END_DTM, 'MM/DD/YYYY HH24:MI') FORMATTED_EXEC_END_DTM,
+  SPT_APP_XML_EXEC.SCRIPT_EXECUTION_PATH,
+  SPT_APP_XML_FILES.XML_FILE_ID,
+  SPT_APP_XML_FILES.FILE_NAME,
+  SPT_APP_XML_FILES.FILE_CHECKSUM,
+  SPT_APP_XML_FILES.FILE_PATH,
+  SPT_APP_XML_FILES.FILE_ACTIVE_YN,
+  SPT_APP_XML_FILES.SCAN_DATE,
+  TO_CHAR(SPT_APP_XML_FILES.SCAN_DATE, 'MM/DD/YYYY HH24:MI') FORMATTED_SCAN_DATE
+FROM
+  SPT_APP_XML_FILES
+INNER JOIN SPT_APP_XML_EXEC
+ON
+  SPT_APP_XML_EXEC.XML_EXEC_ID = SPT_APP_XML_FILES.XML_EXEC_ID
+  ORDER BY 
+  SPT_APP_XML_EXEC.EXEC_START_DTM,
+  SPT_APP_XML_EXEC.XML_EXEC_ID,
+  SPT_APP_XML_FILES.SCAN_DATE,
+  SPT_APP_XML_FILES.XML_FILE_ID  
+  ;
+  
+COMMENT ON TABLE SPT_EXEC_XML_FILES_V IS 'XML Import Module Execution Files (View)
+
+This View returns all XML files that were processed by the XML import module.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.';
+  
+
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.EXEC_END_DTM IS 'The date/time the XML data import script finished executing';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.EXEC_START_DTM IS 'The date/time the XML data import script was executed';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FILE_ACTIVE_YN IS 'Flag to indicate if the given data file is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FILE_CHECKSUM IS 'The MD5 file checksum for the given XML data file';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FILE_PATH IS 'This is the full file path for the given XML data file';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_END_DTM IS 'The formatted date/time the XML data import script finished executing (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_START_DTM IS 'The formatted date/time the XML data import script was executed (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.FORMATTED_SCAN_DATE IS 'The formatted date/time the XML file was scanned (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.SCAN_DATE IS 'Date/time the XML file was scanned';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.SCRIPT_EXECUTION_PATH IS 'The base file path for the given XML data import script execution';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.XML_EXEC_ID IS 'Primary Key for the SPT_APP_XML_EXEC table';
+COMMENT ON COLUMN SPT_EXEC_XML_FILES_V.XML_FILE_ID IS 'Primary Key for the SPT_XML_DATA_FILES table';
+
+
+  CREATE OR REPLACE VIEW SPT_XML_PTA_ERRORS_V
+  AS
+  SELECT
+  SPT_EXEC_XML_FILES_V.XML_EXEC_ID,
+  SPT_EXEC_XML_FILES_V.EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.SCRIPT_EXECUTION_PATH,
+  SPT_EXEC_XML_FILES_V.XML_FILE_ID,
+  SPT_EXEC_XML_FILES_V.FILE_NAME,
+  SPT_EXEC_XML_FILES_V.FILE_CHECKSUM,
+  SPT_EXEC_XML_FILES_V.FILE_PATH,
+  SPT_EXEC_XML_FILES_V.FILE_ACTIVE_YN,
+  SPT_EXEC_XML_FILES_V.SCAN_DATE,
+  SPT_EXEC_XML_FILES_V.FORMATTED_SCAN_DATE,
+  SPT_VESSEL_TRIPS.PTA_ERROR_ID,
+--  SPT_EXEC_XML_FILES_V.PTA_ERROR_TYPE_ID,
+  SPT_VESSEL_TRIPS.VESS_TRIP_ID,
+  DVM_PTA_ERRORS_V.CREATE_DATE,
+  DVM_PTA_ERRORS_V.FORMATTED_CREATE_DATE,
+  DVM_PTA_ERRORS_V.LAST_EVAL_DATE,
+  DVM_PTA_ERRORS_V.FORMATTED_LAST_EVAL_DATE,
+  DVM_PTA_ERRORS_V.ERROR_ID,
+  DVM_PTA_ERRORS_V.ERROR_DESCRIPTION,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_ID,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_CODE,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_NAME,
+  DVM_PTA_ERRORS_V.ERR_RES_TYPE_DESC,
+  DVM_PTA_ERRORS_V.ERROR_NOTES,
+  DVM_PTA_ERRORS_V.ERROR_TYPE_ID,
+  DVM_PTA_ERRORS_V.ERR_TYPE_NAME,
+  DVM_PTA_ERRORS_V.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_PTA_ERRORS_V.QC_OBJECT_ID,
+  DVM_PTA_ERRORS_V.OBJECT_NAME,
+  DVM_PTA_ERRORS_V.QC_OBJ_ACTIVE_YN,
+  DVM_PTA_ERRORS_V.QC_SORT_ORDER,
+  DVM_PTA_ERRORS_V.ERR_TYPE_DESC,
+  DVM_PTA_ERRORS_V.IND_FIELD_NAME,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_ID,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_CODE,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_NAME,
+  DVM_PTA_ERRORS_V.ERR_SEVERITY_DESC,
+  DVM_PTA_ERRORS_V.DATA_STREAM_ID,
+  DVM_PTA_ERRORS_V.DATA_STREAM_CODE,
+  DVM_PTA_ERRORS_V.DATA_STREAM_NAME,
+  DVM_PTA_ERRORS_V.DATA_STREAM_DESC,
+  DVM_PTA_ERRORS_V.ERR_TYPE_ACTIVE_YN
+FROM
+  SPT_EXEC_XML_FILES_V
+LEFT OUTER JOIN SPT_VESSEL_TRIPS
+ON
+  SPT_VESSEL_TRIPS.XML_FILE_ID = SPT_EXEC_XML_FILES_V.XML_FILE_ID
+
+LEFT OUTER JOIN DVM_PTA_ERRORS_V
+ON
+  SPT_VESSEL_TRIPS.PTA_ERROR_ID = DVM_PTA_ERRORS_V.PTA_ERROR_ID
+ORDER BY 
+EXEC_START_DTM,
+XML_EXEC_ID,
+SCAN_DATE,
+XML_FILE_ID,
+QC_SORT_ORDER,
+OBJECT_NAME,
+ERR_SEVERITY_CODE,
+ERR_TYPE_NAME,
+DVM_PTA_ERRORS_V.ERROR_ID
+;
+
+COMMENT ON TABLE SPT_XML_PTA_ERRORS_V IS 'XML File PTA Errors (View)
+
+This View returns all outstanding PTA Errors associated with each XML file that has been processed to date based on the last time the QC validation was evaluated (defined by LAST_EVAL_DATE).  All dates are returned as native data types as well as standard formatted date strings and all reference table values are included in the result set.';
+
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.CREATE_DATE IS 'The date on which this record was created in the database';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_DESCRIPTION IS 'The description of the given XML Data File error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_NOTES IS 'Manually entered notes for the corresponding data error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_ID IS 'Primary Key for the SPT_ERRORS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.EXEC_END_DTM IS 'The date/time the XML data import script finished executing';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.EXEC_START_DTM IS 'The date/time the XML data import script was executed';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_ACTIVE_YN IS 'Flag to indicate if the given data file is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_CHECKSUM IS 'The MD5 file checksum for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FILE_PATH IS 'This is the full file path for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_CREATE_DATE IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_EXEC_END_DTM IS 'The formatted date/time the XML data import script finished executing (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_EXEC_START_DTM IS 'The formatted date/time the XML data import script was executed (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_LAST_EVAL_DATE IS 'The formatted date/time on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.FORMATTED_SCAN_DATE IS 'The formatted date/time the XML file was scanned (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.LAST_EVAL_DATE IS 'The date on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.PTA_ERROR_ID IS 'Foreign key reference to the Errors (PTA) intersection table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.VESS_TRIP_ID IS 'Primary Key for the SPT_VESSEL_TRIPS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.SCAN_DATE IS 'Date/time the XML file was scanned';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.SCRIPT_EXECUTION_PATH IS 'The base file path for the given XML data import script execution';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.XML_EXEC_ID IS 'Primary Key for the SPT_APP_XML_EXEC table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.XML_FILE_ID IS 'Primary Key for the SPT_XML_DATA_FILES table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_ID IS 'Primary Key for the SPT_ERR_RES_TYPES table';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_CODE IS 'The Error Resolution Type code';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_NAME IS 'The Error Resolution Type name';
+COMMENT ON COLUMN SPT_XML_PTA_ERRORS_V.ERR_RES_TYPE_DESC IS 'The Error Resolution Type description';
+
+--retrieve all of the PTA error types for each XML file that were active when the XML file was first validated:
+CREATE OR REPLACE VIEW SPT_XML_PTA_ERROR_TYPE_V
+
+AS
+SELECT
+  SPT_EXEC_XML_FILES_V.XML_EXEC_ID,
+  SPT_EXEC_XML_FILES_V.EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_START_DTM,
+  SPT_EXEC_XML_FILES_V.EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.FORMATTED_EXEC_END_DTM,
+  SPT_EXEC_XML_FILES_V.SCRIPT_EXECUTION_PATH,
+  SPT_EXEC_XML_FILES_V.XML_FILE_ID,
+  SPT_EXEC_XML_FILES_V.FILE_NAME,
+  SPT_EXEC_XML_FILES_V.FILE_CHECKSUM,
+  SPT_EXEC_XML_FILES_V.FILE_PATH,
+  SPT_EXEC_XML_FILES_V.FILE_ACTIVE_YN,
+  SPT_EXEC_XML_FILES_V.SCAN_DATE,
+  SPT_EXEC_XML_FILES_V.FORMATTED_SCAN_DATE,
+  SPT_VESSEL_TRIPS.PTA_ERROR_ID,
+  SPT_VESSEL_TRIPS.VESS_TRIP_ID,
+  DVM_PTA_ERROR_TYPES_V.CREATE_DATE,
+  DVM_PTA_ERROR_TYPES_V.FORMATTED_CREATE_DATE,
+  DVM_PTA_ERROR_TYPES_V.PTA_ERR_TYP_ASSOC_ID,
+  DVM_PTA_ERROR_TYPES_V.ERROR_TYPE_ID,
+  DVM_PTA_ERROR_TYPES_V.ERR_TYPE_NAME,
+  DVM_PTA_ERROR_TYPES_V.ERR_TYPE_COMMENT_TEMPLATE,
+  DVM_PTA_ERROR_TYPES_V.QC_OBJECT_ID,
+  DVM_PTA_ERROR_TYPES_V.OBJECT_NAME,
+  DVM_PTA_ERROR_TYPES_V.QC_OBJ_ACTIVE_YN,
+  DVM_PTA_ERROR_TYPES_V.QC_SORT_ORDER,
+  DVM_PTA_ERROR_TYPES_V.ERR_TYPE_DESC,
+  DVM_PTA_ERROR_TYPES_V.IND_FIELD_NAME,
+  DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_ID,
+  DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_CODE,
+  DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_NAME,
+  DVM_PTA_ERROR_TYPES_V.ERR_SEVERITY_DESC,
+  DVM_PTA_ERROR_TYPES_V.DATA_STREAM_ID,
+  DVM_PTA_ERROR_TYPES_V.DATA_STREAM_CODE,
+  DVM_PTA_ERROR_TYPES_V.DATA_STREAM_NAME,
+  DVM_PTA_ERROR_TYPES_V.DATA_STREAM_DESC,
+  DVM_PTA_ERROR_TYPES_V.ERR_TYPE_ACTIVE_YN
+FROM
+  SPT_EXEC_XML_FILES_V
+INNER JOIN SPT_VESSEL_TRIPS
+ON
+  SPT_VESSEL_TRIPS.XML_FILE_ID = SPT_EXEC_XML_FILES_V.XML_FILE_ID
+
+INNER JOIN DVM_PTA_ERROR_TYPES_V
+ON
+  SPT_VESSEL_TRIPS.PTA_ERROR_ID =
+  DVM_PTA_ERROR_TYPES_V.PTA_ERROR_ID
+ORDER BY
+EXEC_START_DTM,
+XML_EXEC_ID,
+SCAN_DATE,
+XML_FILE_ID,
+QC_SORT_ORDER,
+OBJECT_NAME,
+ERR_SEVERITY_CODE,
+ERR_TYPE_NAME
+;
+
+COMMENT ON TABLE SPT_XML_PTA_ERROR_TYPE_V IS 'XML File PTA Error Types (View)
+
+This View returns all PTA Error Types associated with each XML file that has been processed to date based on the date the given data stream was first entered into the database (defined by CREATE_DATE).  The purpose of this table is to save all active QC Error Type criteria and associate it with a given data stream when it is first entered so that the same validation criteria can be re-evaluated instead of just the QC criteria that is currently active.  ';
+
+
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.CREATE_DATE IS 'The date on which this record was created in the database';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_SEVERITY_NAME IS 'The name for the given error severity';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_TYPE_ACTIVE_YN IS 'Flag to indicate if the given error type criteria is active';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_TYPE_COMMENT_TEMPLATE IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_TYPE_DESC IS 'The description for the given QC validation error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.EXEC_END_DTM IS 'The date/time the XML data import script finished executing';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.EXEC_START_DTM IS 'The date/time the XML data import script was executed';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FILE_ACTIVE_YN IS 'Flag to indicate if the given data file is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FILE_CHECKSUM IS 'The MD5 file checksum for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FILE_PATH IS 'This is the full file path for the given XML data file';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FORMATTED_CREATE_DATE IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FORMATTED_EXEC_END_DTM IS 'The formatted date/time the XML data import script finished executing (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FORMATTED_EXEC_START_DTM IS 'The formatted date/time the XML data import script was executed (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.FORMATTED_SCAN_DATE IS 'The formatted date/time the XML file was scanned (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.IND_FIELD_NAME IS 'The field in the result set that indicates if the current error type has been identified.  A ''Y'' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.OBJECT_NAME IS 'The name of the object that is used in the given QC validation criteria';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.PTA_ERROR_ID IS 'Foreign key reference to the Errors (PTA) intersection table';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.VESS_TRIP_ID IS 'Primary Key for the SPT_VESSEL_TRIPS table';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.PTA_ERR_TYP_ASSOC_ID IS 'Primary Key for the SPT_PTA_ERR_TYP_ASSOC table';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.QC_OBJECT_ID IS 'The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.QC_OBJ_ACTIVE_YN IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.QC_SORT_ORDER IS 'Relative sort order for the QC object to be executed in';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.SCAN_DATE IS 'Date/time the XML file was scanned';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.SCRIPT_EXECUTION_PATH IS 'The base file path for the given XML data import script execution';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.XML_EXEC_ID IS 'Primary Key for the SPT_APP_XML_EXEC table';
+COMMENT ON COLUMN SPT_XML_PTA_ERROR_TYPE_V.XML_FILE_ID IS 'Primary Key for the SPT_XML_DATA_FILES table';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE VIEW
+SPT_RPT_ACT_FATAL_ERR_V
+AS
+select ERROR_ID, REPLACE(FILE_NAME, '_data.xml', '.pdf') PDF_FILE_NAME, FILE_NAME XML_FILE_NAME, ERROR_DESCRIPTION, ERR_TYPE_NAME, REMOVE_ERR_MESSAGE_PK_REFS(ERROR_DESCRIPTION, 'RPL', 'N') ERROR_DESCRIPTION_NO_PKS, '' NOTES from spt_xml_pta_errors_v where err_severity_code = 'FATAL' AND ERR_RES_TYPE_ID IS NULL AND ERROR_ID IS NOT NULL order by file_name, ERROR_ID;
+
+COMMENT ON TABLE SPT_RPT_ACT_FATAL_ERR_V IS 'Active Fatal Error Report (View)
+
+This View returns all active fatal errors (ERR_SEVERITY_CODE = ''FATAL'') without a corresponding error resolution code so that it can be reviewed and resolved by data management staff.';
+
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_ID IS 'Primary Key for the SPT_ERRORS table';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.PDF_FILE_NAME IS 'This is the file name for the given PDF data file (generated based on XML data file name and naming convention)';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.XML_FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_DESCRIPTION IS 'The description of the given XML Data File error';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERR_TYPE_NAME IS 'The name of the given QC validation criteria';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.ERROR_DESCRIPTION_NO_PKS IS 'The description of the given XML Data File error with all record PK references removed (e.g. VESS_TRIP_ID)';
+COMMENT ON COLUMN SPT_RPT_ACT_FATAL_ERR_V.NOTES IS 'Blank field returned in template to allow manual notes to be added to the data validation report';
+
+
+
+CREATE OR REPLACE VIEW
+SPT_RPT_RPL_ERR_TALLIES_V
+
+AS 
+SELECT
+SPT_XML_PTA_ERRORS_V.XML_FILE_ID,
+SPT_XML_PTA_ERRORS_V.FILE_NAME,
+REPLACE(SPT_XML_PTA_ERRORS_V.FILE_NAME, '_data.xml', '.pdf') PDF_FILE_NAME,
+SPT_RPL_PTA_HEADER_V.RPL_ORIG_VESS_NAME,
+SPT_RPL_PTA_HEADER_V.RPL_ORIG_REG_NUM,
+SPT_RPL_PTA_HEADER_V.PTA_VESS_NAME,
+SPT_RPL_PTA_HEADER_V.VESS_REG_NUM,
+SPT_RPL_PTA_HEADER_V.VESS_TRIP_ID,
+SPT_RPL_PTA_HEADER_V.FORMATTED_DEPART_DTM,
+SPT_RPL_PTA_HEADER_V.FORMATTED_ARRIVAL_DTM,
+SPT_RPL_PTA_HEADER_V.VESS_TRIP_DEPART_DTM,
+SUM(CASE WHEN ERR_SEVERITY_CODE = 'FATAL' AND ERR_RES_TYPE_ID IS NULL THEN 1 ELSE 0 END) TOTAL_ACTIVE_ERRORS, 
+SUM(CASE WHEN ERR_SEVERITY_CODE = 'FATAL' AND ERR_RES_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END) TOTAL_INACTIVE_ERRORS, 
+SUM(CASE WHEN ERR_SEVERITY_CODE = 'WARN' AND ERR_RES_TYPE_ID IS NULL THEN 1 ELSE 0 END) TOTAL_ACTIVE_WARNINGS, 
+SUM(CASE WHEN ERR_SEVERITY_CODE = 'WARN' AND ERR_RES_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END) TOTAL_INACTIVE_WARNINGS 
+from 
+SPT_XML_PTA_ERRORS_V
+LEFT JOIN 
+SPT_RPL_PTA_HEADER_V
+ON SPT_XML_PTA_ERRORS_V.XML_FILE_ID = SPT_RPL_PTA_HEADER_V.XML_FILE_ID
+WHERE SPT_XML_PTA_ERRORS_V.FILE_ACTIVE_YN = 'Y'
+group by 
+FILE_NAME,
+REPLACE(FILE_NAME, '_data.xml', '.pdf'),
+SPT_RPL_PTA_HEADER_V.RPL_ORIG_VESS_NAME,
+SPT_RPL_PTA_HEADER_V.RPL_ORIG_REG_NUM,
+SPT_RPL_PTA_HEADER_V.PTA_VESS_NAME,
+SPT_RPL_PTA_HEADER_V.VESS_REG_NUM,
+SPT_RPL_PTA_HEADER_V.VESS_TRIP_ID,
+SPT_RPL_PTA_HEADER_V.FORMATTED_DEPART_DTM,
+SPT_RPL_PTA_HEADER_V.FORMATTED_ARRIVAL_DTM,
+SPT_RPL_PTA_HEADER_V.VESS_TRIP_DEPART_DTM,
+SPT_XML_PTA_ERRORS_V.XML_FILE_ID
+ORDER BY UPPER(SPT_RPL_PTA_HEADER_V.PTA_VESS_NAME),
+SPT_RPL_PTA_HEADER_V.VESS_TRIP_DEPART_DTM;
+
+COMMENT ON TABLE SPT_RPT_RPL_ERR_TALLIES_V IS 'RPL Data Validation Issue Tallies Report (View)
+
+This View returns all simple data validation tallies for each type of data issue (e.g. warning, fatal error, etc.) and error status (active vs. inactive) for each XML data file.  This can be used to view a high-level status report of all XML data files to see how many issues remain to be resolved at a given point in time.';
+
+
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.XML_FILE_ID IS 'The XML data file the vessel trip was loaded from (for RPL data imported using the XML import module)';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.FILE_NAME IS 'This is the file name for the given XML data file';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.PDF_FILE_NAME IS 'This is the file name for the given eTunaLog smartPDF file';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.RPL_ORIG_VESS_NAME IS 'Vessel Name value reported in the RPL';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.RPL_ORIG_REG_NUM IS 'The Registration No value reported in the RPL form';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.PTA_VESS_NAME IS 'The name of the given fishing Vessel during the DEPARTURE_DATE_UTC (PTA)';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.VESS_REG_NUM IS 'The registration number for the given fishing Vessel';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.VESS_TRIP_ID IS 'The foreign key reference to the vessel trip the documents/processes belong to';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.FORMATTED_DEPART_DTM IS 'The formatted date/time (in UTC) of departure for the given fishing trip (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.FORMATTED_ARRIVAL_DTM IS 'The formatted date/time (in UTC) of arrival for the given fishing trip (MM/DD/YYYY HH24:MI)';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.VESS_TRIP_DEPART_DTM IS 'The date/time (in UTC) of departure for the given fishing trip';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_ACTIVE_ERRORS IS 'The total number of data issues that are active and fatal errors';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_INACTIVE_ERRORS IS 'The total number of data issues that are inactive and fatal errors';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_ACTIVE_WARNINGS IS 'The total number of data issues that are active and warnings';
+COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_INACTIVE_WARNINGS IS 'The total number of data issues that are inactive and warnings';
+
+
+
+
+--develop script to grab all of the active error types and QC objects and set as PTA error types for a given point in time:
+
+
+--re-define comments on the PTA error type table:
+
+
+--how to maintain old validation if a given QC query was updated (QC object was replaced so it cannot be re-run as-is)
+
+
+
+
+
+--migrate validation data to the new structure:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
