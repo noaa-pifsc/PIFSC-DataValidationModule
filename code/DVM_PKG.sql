@@ -59,6 +59,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     BEGIN
 
+        DBMS_OUTPUT.PUT_LINE('Running VALIDATE_PARENT_RECORD('||p_data_stream_code||', '||p_PK_ID||')');
+
 
         --initialize the v_continue variable:
         v_continue := true;
@@ -97,38 +99,32 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             --insert the new parent error record:
             DEFINE_PARENT_ERROR_REC (v_proc_return_code);
 
-            IF (v_proc_return_code = 0) THEN
-
-                --the parent error record was not loaded successfully:
-                DBMS_OUTPUT.PUT_LINE('The parent error record could not be loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-
-                --do not continue processing the record:
-                v_continue := false;
-            
-            ELSE
-            
+            IF (v_proc_return_code = 1) THEN
                 --the parent error record was loaded successfully, proceed with the validation process:
             
+
+                DBMS_OUTPUT.PUT_LINE('The parent error record was loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+
+
                 ASSOC_PARENT_ERROR_REC (v_proc_return_code);
                 
-                IF (v_proc_return_code = 0) THEN
-    
-                    --the parent error record was not updated successfully:
-                    DBMS_OUTPUT.PUT_LINE('The new parent error record could not be associated successfully with the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-    
-                    --do not continue processing the record:
-                    v_continue := false;
-
-                ELSE
+                IF (v_proc_return_code = 1) THEN
                 
                     --the parent error record was updated successfully:
+                    DBMS_OUTPUT.PUT_LINE('The new parent error record was associated successfully with the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
 
 
 
                     --insert the error type association records:
                     DEFINE_ALL_ERROR_TYPE_ASSOC (v_proc_return_code);
                     
-                    IF (v_proc_return_code = 0) THEN
+                    IF (v_proc_return_code = 1) THEN
+                        --the association records were loaded successfully:
+                        DBMS_OUTPUT.PUT_LINE('The error type association records were loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+                        
+                    
+                    
+                    ELSE
         
                         --the association records were not loaded successfully:
                         DBMS_OUTPUT.PUT_LINE('The error type association records could not be loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
@@ -136,9 +132,27 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                         --do not continue processing the record:
                         v_continue := false;
                     
+                    
                     END IF;
+                    
+                ELSE
+                    --the parent error record was not updated successfully:
+                    DBMS_OUTPUT.PUT_LINE('The new parent error record could not be associated successfully with the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+    
+                    --do not continue processing the record:
+                    v_continue := false;
+
+                
                 
                 END IF;
+
+            ELSE
+                --the parent error record was not loaded successfully:
+                DBMS_OUTPUT.PUT_LINE('The parent error record could not be loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+
+                --do not continue processing the record:
+                v_continue := false;
+            
 
             
             END IF;
@@ -212,7 +226,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                 DBMS_OUTPUT.PUT_LINE('The data stream code "'||p_data_stream_code||'" was not found in the database');
                 
             WHEN OTHERS THEN
-             DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SUBSTR(SQLERRM, 1 , 64));
+             DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
     
     END VALIDATE_PARENT_RECORD;
 
@@ -220,9 +234,10 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     PROCEDURE RETRIEVE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
   
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     BEGIN
+
+        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_PARENT_ERROR_REC()');
     
     
     --query the parent table to check if the PTA_ERROR_ID already exists, if so then re-use that PTA_ERROR_ID otherwise query for all of the active data validation criteria:
@@ -234,11 +249,21 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         p_proc_return_code := 1;
         
     EXCEPTION
+    
+        WHEN NO_DATA_FOUND THEN
+            --no DVM_PTA_ERRORS record exists for the given parent record:
+            DBMS_OUTPUT.PUT_LINE('The parent error record for the data stream code "'||v_data_stream.DATA_STREAM_CODE||'" and PK: "'||v_PK_ID||'" was not found in the database');
+
+            --set the return code to indicate the parent table record was not found:
+            p_proc_return_code := 0;
+    
         WHEN OTHERS THEN
-         DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SUBSTR(SQLERRM, 1 , 64));
-        
-        --set the return code to indicate there was an unexpected exception during runtime:
-        p_proc_return_code := -1;
+            
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+            
+            --set the return code to indicate there was an unexpected exception during runtime:
+            p_proc_return_code := -1;
     
     END RETRIEVE_PARENT_ERROR_REC;
 
@@ -247,9 +272,11 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT NUMBER) IS
   
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     BEGIN
+
+        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_QC_CRITERIA()');
+    
     
         --check if this is the first time this parent record has been validated:
         IF p_first_validation THEN
@@ -284,17 +311,18 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
     EXCEPTION
         WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SUBSTR(SQLERRM, 1 , 64));
+
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
            
-           --set the return code to indicate there was an unexpected exception during runtime:
-           p_proc_return_code := -1;
+            --set the return code to indicate there was an unexpected exception during runtime:
+            p_proc_return_code := -1;
     END RETRIEVE_QC_CRITERIA;
 
 
     --define all of the error type association records to associate the parent record with all error types that are currently active:
     PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT NUMBER) IS
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     BEGIN
     
@@ -313,9 +341,12 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
     EXCEPTION
         WHEN OTHERS THEN
+
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
             --association records were not loaded successfully:
             p_proc_return_code := -1;
-            
     
     END DEFINE_ALL_ERROR_TYPE_ASSOC;
     
@@ -323,11 +354,10 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     --define all of the error type association records to associate the parent record with all error types that are currently active:
     PROCEDURE DEFINE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     BEGIN
     
-        INSERT INTO DVM_PTA_ERRORS (CREATE_DATE) VALUES (SYSDATE) RETURNING PTA_ERROR_ID, CREATE_DATE INTO v_PTA_ERROR.PTA_ERROR_ID, v_PTA_ERROR.CREATE_DATE;
+        INSERT INTO DVM_PTA_ERRORS (CREATE_DATE, LAST_EVAL_DATE) VALUES (SYSDATE, SYSDATE) RETURNING PTA_ERROR_ID, CREATE_DATE INTO v_PTA_ERROR.PTA_ERROR_ID, v_PTA_ERROR.CREATE_DATE;
 
         --parent error record was loaded successfully:
         p_proc_return_code := 1;
@@ -335,9 +365,12 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
     EXCEPTION
         WHEN OTHERS THEN
+
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
             --parent error record was not loaded successfully:
             p_proc_return_code := -1;
-            
     
     END DEFINE_PARENT_ERROR_REC;
     
@@ -345,15 +378,19 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     --associate the new parent error record with the parent record:
     PROCEDURE ASSOC_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     
     BEGIN
     
+        DBMS_OUTPUT.PUT_LINE('running ASSOC_PARENT_ERROR_REC ()');
+    
         --update the parent record to associate it with the new parent error record:
         temp_SQL := 'UPDATE '||v_data_stream.DATA_STREAM_PAR_TABLE||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
         
-        EXECUTE IMMEDIATE temp_SQL INTO v_PTA_ERROR USING v_PTA_ERROR.PTA_ERROR_ID, v_PK_ID;
+        DBMS_OUTPUT.PUT_LINE('temp_SQL is: '||temp_SQL);
+        
+        
+        EXECUTE IMMEDIATE temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_PK_ID;
         
         --set the return code to indicate the parent table record was found:
         p_proc_return_code := 1;
@@ -362,6 +399,10 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     EXCEPTION
         WHEN OTHERS THEN
+
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
             --The parent record was not associated with the parent error record successfully:
             p_proc_return_code := -1;
         
@@ -373,10 +414,11 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     PROCEDURE EVAL_QC_CRITERIA (p_proc_return_code OUT NUMBER) IS 
         
         temp_SQL CLOB;
-        v_proc_return_code NUMBER;
     
     BEGIN
     
+        DBMS_OUTPUT.PUT_LINE('running EVAL_QC_CRITERIA ()');
+
         --loop through the ALL_CRITERIA variable and evaluate each of the criteria for the parent error record:
         
         temp_SQL := '';
