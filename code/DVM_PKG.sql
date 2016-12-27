@@ -12,22 +12,25 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN DVM_DATA_STREAMS.DATA_STREAM_CODE%TYPE, p_PK_ID IN NUMBER);
     
     --package procedure that retrieves a parent error record and returns p_proc_return_code with a code that indicates the result of the operation
-    PROCEDURE RETRIEVE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER);
+    PROCEDURE RETRIEVE_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER);
     
     --package procedure to retrieve all of the QC criteria based on whether or not the parent record has been validated before:
-    PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT NUMBER);
+    PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT PLS_INTEGER);
 
     --define all of the error type association records to associate the parent record with all error types that are currently active:
-    PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT NUMBER);
+    PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT PLS_INTEGER);
     
     --define all of the error type association records to associate the parent record with all error types that are currently active:
-    PROCEDURE DEFINE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER);
+    PROCEDURE DEFINE_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER);
 
     --associate the new parent error record with the parent record:
-    PROCEDURE ASSOC_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER);
+    PROCEDURE ASSOC_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER);
 
     --evaluate the QC criteria stored in ALL_CRITERIA for the given parent record:
-    PROCEDURE EVAL_QC_CRITERIA (p_proc_return_code OUT NUMBER);
+    PROCEDURE EVAL_QC_CRITERIA (p_proc_return_code OUT PLS_INTEGER);
+
+    --validate a specific QC criteria in ALL_CRITERIA in the elements from p_begin_pos to p_end_pos
+    PROCEDURE PROCESS_QC_CRITERIA (p_begin_pos IN PLS_INTEGER, p_end_pos IN PLS_INTEGER, p_proc_return_code OUT PLS_INTEGER)
 
 
 END DVM_PKG;
@@ -39,9 +42,9 @@ END DVM_PKG;
 CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN DVM_DATA_STREAMS.DATA_STREAM_CODE%TYPE, p_PK_ID IN NUMBER) IS
     
-        temp_SQL CLOB;
+        v_temp_SQL CLOB;
         
-        v_proc_return_code NUMBER;
+        v_proc_return_code PLS_INTEGER;
         
         v_continue BOOLEAN;
         
@@ -231,9 +234,9 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     END VALIDATE_PARENT_RECORD;
 
 
-    PROCEDURE RETRIEVE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
+    PROCEDURE RETRIEVE_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER) IS
   
-        temp_SQL CLOB;
+        v_temp_SQL CLOB;
     
     BEGIN
 
@@ -241,9 +244,9 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     
     --query the parent table to check if the PTA_ERROR_ID already exists, if so then re-use that PTA_ERROR_ID otherwise query for all of the active data validation criteria:
-        temp_SQL := 'SELECT DVM_PTA_ERRORS.* FROM '||v_data_stream.DATA_STREAM_PAR_TABLE||' INNER JOIN DVM_PTA_ERRORS ON ('||v_data_stream.DATA_STREAM_PAR_TABLE||'.PTA_ERROR_ID = DVM_PTA_ERRORS.PTA_ERROR_ID) WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
+        v_temp_SQL := 'SELECT DVM_PTA_ERRORS.* FROM '||v_data_stream.DATA_STREAM_PAR_TABLE||' INNER JOIN DVM_PTA_ERRORS ON ('||v_data_stream.DATA_STREAM_PAR_TABLE||'.PTA_ERROR_ID = DVM_PTA_ERRORS.PTA_ERROR_ID) WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
         
-        EXECUTE IMMEDIATE temp_SQL INTO v_PTA_ERROR USING v_PK_ID;
+        EXECUTE IMMEDIATE v_temp_SQL INTO v_PTA_ERROR USING v_PK_ID;
         
         --set the return code to indicate the parent table record was found:
         p_proc_return_code := 1;
@@ -269,9 +272,9 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
 
 
     --procedure to retrieve all parent error records
-    PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT NUMBER) IS
+    PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT PLS_INTEGER) IS
   
-        temp_SQL CLOB;
+        v_temp_SQL CLOB;
     
     BEGIN
 
@@ -280,7 +283,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
         --check if this is the first time this parent record has been validated:
         IF p_first_validation THEN
-            temp_SQL := 'SELECT
+            v_temp_SQL := 'SELECT
                    DVM_QC_CRITERIA_V.*
                   FROM DVM_QC_CRITERIA_V
                   WHERE ERR_TYPE_ACTIVE_YN = ''Y''
@@ -288,12 +291,12 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                   AND DATA_STREAM_CODE = :DATA_STREAM_CODE
                   ORDER BY QC_SORT_ORDER, ERROR_TYPE_ID';
                   
-            EXECUTE IMMEDIATE temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_data_stream.data_stream_code;
+            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_data_stream.data_stream_code;
         ELSE
         
     
             --return the whole result set so it can be used to process the QC criteria:
-            temp_SQL := 'SELECT DVM_QC_CRITERIA_V.*
+            v_temp_SQL := 'SELECT DVM_QC_CRITERIA_V.*
                     FROM DVM_QC_CRITERIA_V
                    INNER JOIN DVM_PTA_ERR_TYP_ASSOC
                    ON DVM_QC_CRITERIA_V.ERROR_TYPE_ID = DVM_PTA_ERR_TYP_ASSOC.ERROR_TYPE_ID
@@ -302,7 +305,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                    AND DATA_STREAM_CODE = :DATA_STREAM_CODE
                    ORDER BY QC_SORT_ORDER, DVM_QC_CRITERIA_V.ERROR_TYPE_ID';            
                 
-            EXECUTE IMMEDIATE temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
+            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
         END IF;        
         
         --the query was successful:
@@ -321,19 +324,19 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
 
 
     --define all of the error type association records to associate the parent record with all error types that are currently active:
-    PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT NUMBER) IS
-        temp_SQL CLOB;
+    PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT PLS_INTEGER) IS
+        v_temp_SQL CLOB;
     
     BEGIN
     
-        temp_SQL := 'INSERT INTO DVM_PTA_ERR_TYP_ASSOC (PTA_ERROR_ID, ERROR_TYPE_ID, CREATE_DATE) SELECT
+        v_temp_SQL := 'INSERT INTO DVM_PTA_ERR_TYP_ASSOC (PTA_ERROR_ID, ERROR_TYPE_ID, CREATE_DATE) SELECT
                :PTA_ERROR_ID, DVM_QC_CRITERIA_V.ERROR_TYPE_ID, SYSDATE
               FROM DVM_QC_CRITERIA_V
               WHERE ERR_TYPE_ACTIVE_YN = ''Y''
               AND QC_OBJ_ACTIVE_YN = ''Y''
               AND DATA_STREAM_CODE = :DATA_STREAM_CODE';
               
-        EXECUTE IMMEDIATE temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
+        EXECUTE IMMEDIATE v_temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
         
         --association records were loaded successfully:
         p_proc_return_code := 1;
@@ -352,8 +355,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     
     --define all of the error type association records to associate the parent record with all error types that are currently active:
-    PROCEDURE DEFINE_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
-        temp_SQL CLOB;
+    PROCEDURE DEFINE_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER) IS
+        v_temp_SQL CLOB;
     
     BEGIN
     
@@ -376,8 +379,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     
     --associate the new parent error record with the parent record:
-    PROCEDURE ASSOC_PARENT_ERROR_REC (p_proc_return_code OUT NUMBER) IS
-        temp_SQL CLOB;
+    PROCEDURE ASSOC_PARENT_ERROR_REC (p_proc_return_code OUT PLS_INTEGER) IS
+        v_temp_SQL CLOB;
     
     
     BEGIN
@@ -385,12 +388,12 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         DBMS_OUTPUT.PUT_LINE('running ASSOC_PARENT_ERROR_REC ()');
     
         --update the parent record to associate it with the new parent error record:
-        temp_SQL := 'UPDATE '||v_data_stream.DATA_STREAM_PAR_TABLE||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
+        v_temp_SQL := 'UPDATE '||v_data_stream.DATA_STREAM_PAR_TABLE||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
         
-        DBMS_OUTPUT.PUT_LINE('temp_SQL is: '||temp_SQL);
+        DBMS_OUTPUT.PUT_LINE('v_temp_SQL is: '||v_temp_SQL);
         
         
-        EXECUTE IMMEDIATE temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_PK_ID;
+        EXECUTE IMMEDIATE v_temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_PK_ID;
         
         --set the return code to indicate the parent table record was found:
         p_proc_return_code := 1;
@@ -411,30 +414,148 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
 
     --evaluate the QC criteria stored in ALL_CRITERIA for the given parent record:
-    PROCEDURE EVAL_QC_CRITERIA (p_proc_return_code OUT NUMBER) IS 
+    PROCEDURE EVAL_QC_CRITERIA (p_proc_return_code OUT PLS_INTEGER) IS 
         
-        temp_SQL CLOB;
+        v_curr_QC_begin_pos PLS_INTEGER;
+        
+        v_continue BOOLEAN;
+        
+        v_current_QC_OBJ_ID NUMBER;
+        
     
     BEGIN
+       
     
         DBMS_OUTPUT.PUT_LINE('running EVAL_QC_CRITERIA ()');
 
-        --loop through the ALL_CRITERIA variable and evaluate each of the criteria for the parent error record:
-        
-        temp_SQL := '';
-        
+        --initialize the tracking variable for the processing loop:
+        v_current_QC_OBJ_ID := NULL;
 
+        --initialize the v_continue variable:
+        v_continue := true;
+
+
+        --loop through the QC criteria to execute each query and process each QC object separately:
+        FOR indx IN 1 .. ALL_CRITERIA.COUNT
+        LOOP
+            IF (v_current_QC_OBJ_ID IS NULL) THEN
+                --the QC object ID is NULL, this is the first record in the loop:
+
+                --set the QC object's begin position to 1 since this is the first value to be processed:
+                v_curr_QC_begin_pos := 1;
+                
+                --initialize the v_current_QC_OBJ_ID variable:
+                v_current_QC_OBJ_ID := ALL_CRITERIA(indx).QC_OBJ_ID;
+            
+            ELSIF (v_current_QC_OBJ_ID <> ALL_CRITERIA(indx).QC_OBJ_ID) THEN
+                --this is not the same QC object as the previous error type:
+                
+                
+                --process the previous object:
+                PROCESS_QC_CRITERIA (v_curr_QC_begin_pos, (indx - 1), v_proc_return_code);
+                
+                IF (v_proc_return_code = -1) THEN
+                
+                    --there was an error processing the current QC criteria:
+                    
+                    DBMS_OUTPUT.PUT_LINE('There was an error when processing the current QC criteria object: '||ALL_CRITERIA.OBJECT_NAME);
+                    
+                    --set the continue variable to false:
+                    v_continue = false;
+                    
+                    --exit the loop, no additional processing is necessary since there was an error processing the validation criteria:
+                    EXIT;
+                END IF;
+                
+                
+                
+                --initialize the current object:
+                
+                v_curr_QC_begin_pos := indx;
+                
+                
+                --set the QC_OBJ_ID variable value to the current row's corresponding value:
+                v_current_QC_OBJ_ID := ALL_CRITERIA(indx).QC_OBJ_ID;
+                
+                
+            
+            END IF;
+            
+
+
+
+
+        END LOOP;
+        
+        
+        --process the last QC criteria:
+        IF (v_continue) THEN
+            
+            PROCESS_QC_CRITERIA (v_curr_QC_begin_pos, ALL_CRITERIA.COUNT, v_proc_return_code);
+            
+            IF (v_proc_return_code = -1) THEN
+            
+                --there was an error processing the current QC criteria:
+                DBMS_OUTPUT.PUT_LINE('There was an error when processing the current QC criteria object: '||ALL_CRITERIA.OBJECT_NAME);
+                
+                --set the continue variable to false:
+                v_continue = false;
+                
+                --exit the loop, no additional processing is necessary since there was an error processing the validation criteria:
+                EXIT;
+            END IF;
+
+
+        
+        END IF;
     
 
 
     
     EXCEPTION
         WHEN OTHERS THEN
-            --The parent record was not associated with the parent error record successfully:
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
+            --QC criteria was not processed successfully:
             p_proc_return_code := -1;
+
         
     
     END EVAL_QC_CRITERIA;
+
+
+    --validate a specific QC criteria in ALL_CRITERIA in the elements from p_begin_pos to p_end_pos
+    PROCEDURE PROCESS_QC_CRITERIA (p_begin_pos IN PLS_INTEGER, p_end_pos IN PLS_INTEGER, p_proc_return_code OUT PLS_INTEGER) IS
+    
+        v_temp_SQL CLOB;
+    
+    BEGIN
+    
+        --construct the QC query to be executed:
+        v_temp_SQL := 'SELECT * FROM '||ALL_CRITERIA(p_begin_pos).OBJECT_NAME||' WHERE '||ALL_CRITERIA(p_begin_pos).DATA_STREAM_PK_FIELD||' = :pkid';
+
+        EXECUTE IMMEDIATE v_temp_SQL INTO
+        
+        USING v_PK_ID;
+        
+        
+
+    
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+        
+            --output database error code and message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
+            --QC criteria was not processed successfully:
+            p_proc_return_code := -1;
+    
+    
+    END PROCESS_QC_CRITERIA;
+
+    
 
 
 
