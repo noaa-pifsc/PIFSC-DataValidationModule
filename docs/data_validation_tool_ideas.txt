@@ -1,0 +1,23 @@
+deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+
+implement transactions
+
+change ERROR_DESCRIPTION to a CLOB:
+
+need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+
+
+
+
+cases for script:
+
+X - Give parent record does not exist
+
+X - No DVM_PTA_ERRORS record for the given parent record
+
+X - A DVM_PTA_ERRORS record exists for the give parent record
+
+A DVM_PTA_ERRORS record and error records exist for the give parent record
+
+
+
