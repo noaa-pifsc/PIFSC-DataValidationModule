@@ -94,8 +94,51 @@ COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_NAME IS 'The Error Resolution Ty
 COMMENT ON COLUMN DVM_PTA_ERRORS_V.ERR_RES_TYPE_DESC IS 'The Error Resolution Type description';
 
 
+CREATE OR REPLACE VIEW
+
+DVM_DATA_STREAMS_V AS
+
+SELECT 
+DVM_DATA_STREAMS.DATA_STREAM_ID,
+DVM_DATA_STREAMS.DATA_STREAM_CODE,
+DVM_DATA_STREAMS.DATA_STREAM_NAME,
+DVM_DATA_STREAMS.DATA_STREAM_DESC,
+DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE,
+PK_INFO.COLUMN_NAME DATA_STREAM_PK_FIELD
+from 
+dvm_data_streams left join
+(
+  SELECT A.TABLE_NAME, A.COLUMN_NAME
+  
+  FROM 
+
+user_cons_columns A
+
+INNER JOIN user_CONSTRAINTS C
+ON
+A.TABLE_NAME       = C.TABLE_NAME
+AND A.CONSTRAINT_NAME  = C.CONSTRAINT_NAME
+--retrieve only primary key constraints
+AND C.CONSTRAINT_TYPE IN ('P')) PK_INFO
+ON PK_INFO.TABLE_NAME = DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE;
+
+
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
+
+
+COMMENT ON TABLE DVM_DATA_STREAMS_V IS 'Data Streams (View)
+
+This query returns all data streams that are implemented in the data validation module.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter error records based on the given context of the processing/validation.  This view also returns the PK field name for each of the data streams based on the value of DATA_STREAM_PAR_TABLE using the current schema''s data dictionary';
+
+
 --view to retrieve all validation rules
 --this query retrieves all validation rules for QC objects sorted by the QC_SORT_ORDER:
+
 CREATE OR REPLACE VIEW DVM_QC_CRITERIA_V AS
 
   SELECT
@@ -113,18 +156,19 @@ CREATE OR REPLACE VIEW DVM_QC_CRITERIA_V AS
   DVM_ERR_SEVERITY.ERR_SEVERITY_NAME,
   DVM_ERR_SEVERITY.ERR_SEVERITY_DESC,
   DVM_ERROR_TYPES.DATA_STREAM_ID,
-  DVM_DATA_STREAMS.DATA_STREAM_CODE,
-  DVM_DATA_STREAMS.DATA_STREAM_NAME,
-  DVM_DATA_STREAMS.DATA_STREAM_DESC,
+  DVM_DATA_STREAMS_V.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS_V.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS_V.DATA_STREAM_DESC,
+  DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD,
   DVM_ERROR_TYPES.ERR_TYPE_ACTIVE_YN
 FROM
   DVM_ERROR_TYPES
 INNER JOIN DVM_ERR_SEVERITY
 ON
   DVM_ERR_SEVERITY.ERR_SEVERITY_ID = DVM_ERROR_TYPES.ERR_SEVERITY_ID
-INNER JOIN DVM_DATA_STREAMS
+INNER JOIN DVM_DATA_STREAMS_V
 ON
-  DVM_DATA_STREAMS.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
+  DVM_DATA_STREAMS_V.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
 INNER JOIN DVM_QC_OBJECTS
 ON
   DVM_QC_OBJECTS.QC_OBJECT_ID = DVM_ERROR_TYPES.QC_OBJECT_ID
@@ -132,15 +176,18 @@ ORDER BY
 
 DVM_QC_OBJECTS.QC_SORT_ORDER;
 
+
 COMMENT ON TABLE DVM_QC_CRITERIA_V IS 'QC Criteria (View)
 
 This View returns all QC Criteria (Error Types) defined in the database and their associated QC Object, Error Severity, and Error Category.  This query is used to define all PTA Error Types when a data stream is first entered into the database';
+
 
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_CODE IS 'The code for the given data stream';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_DESC IS 'The description for the given data stream';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';

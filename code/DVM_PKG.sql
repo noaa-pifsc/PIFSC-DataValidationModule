@@ -5,23 +5,31 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     v_PK_ID NUMBER;
 
     v_PTA_ERROR DVM_PTA_ERRORS%ROWTYPE;
-    v_data_stream DVM_DATA_STREAMS%ROWTYPE;
+    
+    v_data_stream_par_table VARCHAR(30);
+    v_data_stream_pk_field VARCHAR(30);
+    
     
     TYPE NUM_ASSOC_VARCHAR IS TABLE OF PLS_INTEGER INDEX BY VARCHAR2(30);
     assoc_field_list NUM_ASSOC_VARCHAR;
   
     TYPE VARCHAR_ARRAY_NUM IS TABLE OF VARCHAR2(30) INDEX BY PLS_INTEGER;
     num_field_list VARCHAR_ARRAY_NUM;
+
+    v_data_stream_code VARCHAR_ARRAY_NUM;
+
     
     desctab  DBMS_SQL.DESC_TAB;
 
     TYPE DVM_ERRORS_TABLE IS TABLE OF DVM_ERRORS%ROWTYPE INDEX BY PLS_INTEGER;
     v_error_rec_table DVM_ERRORS_TABLE;
 
+
+    v_data_stream_code_string CLOB;
     
     
     --Main package procedure that validates a given data stream (p_data_stream_code) record (uniquely identified by p_PK_ID)
-    PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN DVM_DATA_STREAMS.DATA_STREAM_CODE%TYPE, p_PK_ID IN NUMBER);
+    PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN VARCHAR_ARRAY_NUM, p_PK_ID IN NUMBER);
     
     --procedure to retrieve a parent record based off of the data stream and PK ID supplied:
     PROCEDURE RETRIEVE_PARENT_REC (p_proc_return_code OUT PLS_INTEGER);
@@ -50,6 +58,8 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     --procedure to populate an error record with the information from the corresponding result set row:
     PROCEDURE POPULATE_ERROR_REC (curid IN NUMBER, QC_criteria_pos IN NUMBER, error_rec OUT DVM_ERRORS%ROWTYPE, p_proc_return_code OUT PLS_INTEGER);
 
+    --procedure to retrieve the data stream information for the supplied data stream code(s)
+    PROCEDURE RETRIEVE_DATA_STREAM_INFO (p_proc_return_code OUT PLS_INTEGER);
 
 END DVM_PKG;
 /
@@ -58,7 +68,7 @@ END DVM_PKG;
 
 --Main package procedure that validates the parent record and all child records based on the validation rules defined in the database:
 CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
-    PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN DVM_DATA_STREAMS.DATA_STREAM_CODE%TYPE, p_PK_ID IN NUMBER) IS
+    PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN VARCHAR_ARRAY_NUM, p_PK_ID IN NUMBER) IS
     
         v_temp_SQL CLOB;
         
@@ -68,20 +78,15 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
         v_first_validation BOOLEAN;
 
---        TYPE QC_criteria  IS REF CURSOR;
---        v_qc_cursor    QC_criteria;
-
---        v_PTA_ERROR_ID DVM_PTA_ERRORS.PTA_ERROR_ID%TYPE;
---        v_PTA_ERROR_CREATE_DATE DVM_PTA_ERRORS.CREATE_DATE%TYPE;
-
---        ALL_CRITERIA DATA_STREAM_TYP;
-
-
-    
     BEGIN
 
-        DBMS_OUTPUT.PUT_LINE('Running VALIDATE_PARENT_RECORD('||p_data_stream_code||', '||p_PK_ID||')');
 
+
+
+        DBMS_OUTPUT.PUT_LINE('Running VALIDATE_PARENT_RECORD('||p_data_stream_code(1)||', '||p_PK_ID||')');
+
+        --set the member variable for usage later:
+        v_data_stream_code := p_data_stream_code;
 
         --initialize the v_continue variable:
         v_continue := true;
@@ -89,105 +94,128 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         --set the package variables to the parameter values:
         v_PK_ID := p_PK_ID;
 
-        --retrieve the data stream information from the database:
-        SELECT * INTO v_data_stream FROM DVM_DATA_STREAMS WHERE DATA_STREAM_CODE = p_data_stream_code;
-        
-        DBMS_OUTPUT.PUT_LINE('The data stream code "'||p_data_stream_code||'" was found in the database');
+
+        RETRIEVE_DATA_STREAM_INFO(v_proc_return_code);
+        IF (v_proc_return_code = 1) THEN
+
+            --the data stream code(s) have been returned a single parent table, continue processing:
 
         
         
-        --check if the parent record exists using the information from the corresponding data stream:
-        RETRIEVE_PARENT_REC (v_proc_return_code);
-        IF (v_proc_return_code = 1) THEN
-        
-            --the parent record exists, continue processing:
-        
-        
-            --check if the parent record and PTA error record exist:
-            RETRIEVE_PARENT_ERROR_REC (v_proc_return_code);
-    
-    
-            --check the return code from RETRIEVE_PARENT_ERROR_REC():
+            --check if the parent record exists using the information from the corresponding data stream:
+            RETRIEVE_PARENT_REC (v_proc_return_code);
             IF (v_proc_return_code = 1) THEN
-                --the parent record's PTA error record exists:
-                DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'" was found in the database');
-                
-                --the parent error record already exists, use the data validation criteria was active when the record was first validated:
-                v_first_validation := false;
-                
-            ELSIF (v_proc_return_code = 0) THEN
-                --the parent record's PTA error record does not exist:
-                DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'" was NOT found in the database');
-                
-                --the parent error record does not already exist, use the data validation criteria that is currently active:
-                v_first_validation := true;
-                 
-                --insert the new parent error record:
-                DEFINE_PARENT_ERROR_REC (v_proc_return_code);
-    
+            
+                --the parent record exists, continue processing:
+            
+            
+                --check if the parent record and PTA error record exist:
+                RETRIEVE_PARENT_ERROR_REC (v_proc_return_code);
+        
+        
+                --check the return code from RETRIEVE_PARENT_ERROR_REC():
                 IF (v_proc_return_code = 1) THEN
-                    --the parent error record was loaded successfully, proceed with the validation process:
-                
-    
-                    DBMS_OUTPUT.PUT_LINE('The parent error record was loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-    
-    
-                    ASSOC_PARENT_ERROR_REC (v_proc_return_code);
+                    --the parent record's PTA error record exists:
+                    DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'" was found in the database');
                     
+                    --the parent error record already exists, use the data validation criteria was active when the record was first validated:
+                    v_first_validation := false;
+                    
+                ELSIF (v_proc_return_code = 0) THEN
+                    --the parent record's PTA error record does not exist:
+                    DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'" was NOT found in the database');
+                    
+                    --the parent error record does not already exist, use the data validation criteria that is currently active:
+                    v_first_validation := true;
+                     
+                    --insert the new parent error record:
+                    DEFINE_PARENT_ERROR_REC (v_proc_return_code);
+        
                     IF (v_proc_return_code = 1) THEN
+                        --the parent error record was loaded successfully, proceed with the validation process:
                     
-                        --the parent error record was updated successfully:
-                        DBMS_OUTPUT.PUT_LINE('The new parent error record was associated successfully with the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-    
-    
-    
-                        --insert the error type association records:
-                        DEFINE_ALL_ERROR_TYPE_ASSOC (v_proc_return_code);
+        
+                        DBMS_OUTPUT.PUT_LINE('The parent error record was loaded successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+        
+        
+                        ASSOC_PARENT_ERROR_REC (v_proc_return_code);
                         
                         IF (v_proc_return_code = 1) THEN
-                            --the association records were loaded successfully:
-                            DBMS_OUTPUT.PUT_LINE('The error type association records were loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+                        
+                            --the parent error record was updated successfully:
+                            DBMS_OUTPUT.PUT_LINE('The new parent error record was associated successfully with the parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+        
+        
+        
+                            --insert the error type association records:
+                            DEFINE_ALL_ERROR_TYPE_ASSOC (v_proc_return_code);
                             
-                        
-                        
+                            IF (v_proc_return_code = 1) THEN
+                                --the association records were loaded successfully:
+                                DBMS_OUTPUT.PUT_LINE('The error type association records were loaded successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+                                
+                            
+                            
+                            ELSE
+                
+                                --the association records were not loaded successfully:
+                                DBMS_OUTPUT.PUT_LINE('The error type association records could not be loaded successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+                
+                                --do not continue processing the record:
+                                v_continue := false;
+                            
+                            
+                            END IF;
+                            
                         ELSE
-            
-                            --the association records were not loaded successfully:
-                            DBMS_OUTPUT.PUT_LINE('The error type association records could not be loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+                            --the parent error record was not updated successfully:
+                            DBMS_OUTPUT.PUT_LINE('The new parent error record could not be associated successfully with the parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
             
                             --do not continue processing the record:
                             v_continue := false;
+        
                         
                         
                         END IF;
-                        
+        
                     ELSE
-                        --the parent error record was not updated successfully:
-                        DBMS_OUTPUT.PUT_LINE('The new parent error record could not be associated successfully with the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
+                        --the parent error record was not loaded successfully:
+                        DBMS_OUTPUT.PUT_LINE('The parent error record could not be loaded successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
         
                         --do not continue processing the record:
                         v_continue := false;
-    
                     
+        
                     
                     END IF;
-    
+        
                 ELSE
-                    --the parent error record was not loaded successfully:
-                    DBMS_OUTPUT.PUT_LINE('The parent error record could not be loaded successfully for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-    
-                    --do not continue processing the record:
-                    v_continue := false;
                 
-    
+                
+                    --there was an error:
+                    DBMS_OUTPUT.PUT_LINE('There was a database error when querying for the data stream code(s) "'||v_data_stream_code_string||'"');
+        
+        
+                    --there was a database error, do not continue processing:
+                    v_continue := false;
+        
                 
                 END IF;
+            
+            ELSIF (v_proc_return_code = 0) THEN
     
+                --the parent record does not exist:
+                DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'" does not exist');
+    
+    
+                --there is no parent record, do not continue processing:
+                v_continue := false;
+            
             ELSE
             
             
                 --there was an error:
-                DBMS_OUTPUT.PUT_LINE('There was a database error when querying for the data stream code "'||p_data_stream_code||'"');
+                DBMS_OUTPUT.PUT_LINE('There was a database error when querying for the parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
     
     
                 --there was a database error, do not continue processing:
@@ -196,28 +224,15 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             
             END IF;
         
-        ELSIF (v_proc_return_code = 0) THEN
-
-            --the parent record does not exist:
-            DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'" does not exist');
-
-
-            --there is no parent record, do not continue processing:
-            v_continue := false;
-        
         ELSE
+            --the data stream code(s) did not resolve to a single parent table, stop processing the data validation module:
         
-        
-            --there was an error:
-            DBMS_OUTPUT.PUT_LINE('There was a database error when querying for the parent record for the data stream code "'||p_data_stream_code||'" and PK: "'||v_PK_ID||'"');
-
-
-            --there was a database error, do not continue processing:
             v_continue := false;
 
-        
+
         END IF;
-        
+
+
         --check if the processing should continue:
         IF v_continue THEN
         
@@ -268,14 +283,138 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
     
         EXCEPTION
-            WHEN NO_DATA_FOUND THEN
-                --no DVM_PTA_ERRORS record exists for the given parent record:
-                DBMS_OUTPUT.PUT_LINE('The data stream code "'||p_data_stream_code||'" was not found in the database');
-                
             WHEN OTHERS THEN
              DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
     
     END VALIDATE_PARENT_RECORD;
+
+
+   --procedure to retrieve the data stream information for the supplied data stream code(s)
+    PROCEDURE RETRIEVE_DATA_STREAM_INFO (p_proc_return_code OUT PLS_INTEGER) IS
+    
+        curid    NUMBER;
+
+        ignore   NUMBER;
+
+        v_temp_SQL CLOB;
+        
+        v_row_counter PLS_INTEGER;
+    
+    BEGIN
+    
+        DBMS_OUTPUT.PUT_LINE('running RETRIEVE_DATA_STREAM_INFO()');
+    
+            --retrieve the data stream information from the database:
+        v_temp_SQL := 'SELECT DISTINCT DATA_STREAM_PAR_TABLE, DATA_STREAM_PK_FIELD FROM DVM_DATA_STREAMS_V WHERE DATA_STREAM_CODE IN (';
+        
+        
+        
+        
+        --construct the bind variables:
+        
+        
+         -- Bind variables:
+        FOR i IN 1 .. v_data_stream_code.COUNT LOOP
+            --loop through the data stream codes:
+            
+            IF (i > 1) THEN
+                --add the comma since this is not the first variable:
+               v_data_stream_code_string := v_data_stream_code_string||', ';
+                v_temp_SQL := v_temp_SQL||', ';
+            END IF;
+
+            --add the bind placeholder:            
+            v_temp_SQL := v_temp_SQL||':'||TO_CHAR(i);
+
+            v_data_stream_code_string := v_data_stream_code_string||v_data_stream_code(i);
+
+
+        END LOOP;
+
+        --end the SQL statement:
+        v_temp_SQL := v_temp_SQL||')';
+      
+
+        -- Open SQL cursor number:
+          curid := DBMS_SQL.OPEN_CURSOR;
+        
+          -- Parse SQL cursor number:
+          DBMS_SQL.PARSE(curid, v_temp_SQL, DBMS_SQL.NATIVE);
+
+        --define the fields that will be returned by the query:        
+        DBMS_SQL.DEFINE_COLUMN(curid, 1, v_data_stream_par_table, 30); 
+        DBMS_SQL.DEFINE_COLUMN(curid, 2, v_data_stream_pk_field, 30); 
+
+
+
+         -- Bind variables:
+        FOR i IN 1 .. v_data_stream_code.COUNT LOOP
+            --loop through the data stream codes:
+
+            --bind the variable value:
+            DBMS_SQL.BIND_VARIABLE(curid, ':'||TO_CHAR(i), v_data_stream_code(i));
+
+        END LOOP;
+        
+        --execute the query
+        ignore := DBMS_SQL.EXECUTE(curid);        
+        
+        --initialize the result row counter:
+        v_row_counter := 0;
+        
+        
+        LOOP 
+            IF DBMS_SQL.FETCH_ROWS(curid)>0 THEN 
+              -- get column values of the row 
+              DBMS_SQL.COLUMN_VALUE(curid, 1, v_data_stream_par_table); 
+              DBMS_SQL.COLUMN_VALUE(curid, 2, v_data_stream_pk_field); 
+      
+              --increment the row counter variable:
+              v_row_counter := v_row_counter + 1;
+
+           ELSE 
+      
+       -- No more rows to process: 
+             EXIT; 
+           END IF; 
+        END LOOP;         
+        
+        
+        IF (v_row_counter = 1) THEN
+            --there was one row returned by the query:
+            p_proc_return_code := 1;
+            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were found in the database');
+
+        ELSIF (v_row_counter = 0) THEN
+            --no rows were returned by the query
+
+            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were not found in the database');
+            p_proc_return_code := 0;
+        
+        ELSE
+
+            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" identified more than one parent table, only one parent table can be validated at a time');
+            p_proc_return_code := -1;
+
+        
+        END IF;
+        
+        
+    
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            --no DVM_DATA_STREAMS records exists for the given data stream code(s):
+            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were not found in the database');
+            p_proc_return_code := 0;
+            
+        WHEN OTHERS THEN
+         DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+         p_proc_return_code := -1;
+    
+    
+    END RETRIEVE_DATA_STREAM_INFO;
+
 
 
     --procedure to retrieve a parent record based off of the data stream and PK ID supplied:
@@ -291,7 +430,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     
     --query the parent table to see if the record exists:
-        v_temp_SQL := 'SELECT '||v_data_stream.DATA_STREAM_PAR_TABLE||'.'||v_data_stream.DATA_STREAM_PK_FIELD||' FROM '||v_data_stream.DATA_STREAM_PAR_TABLE||' WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
+        v_temp_SQL := 'SELECT '||v_data_stream_par_table||'.'||v_data_stream_pk_field||' FROM '||v_data_stream_par_table||' WHERE '||v_data_stream_pk_field||' = :pkid';
         
         EXECUTE IMMEDIATE v_temp_SQL INTO v_return_ID USING v_PK_ID;
         
@@ -303,7 +442,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
         WHEN NO_DATA_FOUND THEN
             --the parent record does not exist:
-            DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code "'||v_data_stream.DATA_STREAM_CODE||'" and PK: "'||v_PK_ID||'" was not found in the database');
+            DBMS_OUTPUT.PUT_LINE('The parent record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'" was not found in the database');
 
             --set the return code to indicate the parent record was not found:
             p_proc_return_code := 0;
@@ -329,7 +468,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
     
     --query the parent table to check if the PTA_ERROR_ID already exists, if so then re-use that PTA_ERROR_ID otherwise query for all of the active data validation criteria:
-        v_temp_SQL := 'SELECT DVM_PTA_ERRORS.* FROM '||v_data_stream.DATA_STREAM_PAR_TABLE||' INNER JOIN DVM_PTA_ERRORS ON ('||v_data_stream.DATA_STREAM_PAR_TABLE||'.PTA_ERROR_ID = DVM_PTA_ERRORS.PTA_ERROR_ID) WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
+        v_temp_SQL := 'SELECT DVM_PTA_ERRORS.* FROM '||v_data_stream_par_table||' INNER JOIN DVM_PTA_ERRORS ON ('||v_data_stream_par_table||'.PTA_ERROR_ID = DVM_PTA_ERRORS.PTA_ERROR_ID) WHERE '||v_data_stream_pk_field||' = :pkid';
         
         EXECUTE IMMEDIATE v_temp_SQL INTO v_PTA_ERROR USING v_PK_ID;
         
@@ -341,7 +480,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
         WHEN NO_DATA_FOUND THEN
             --no DVM_PTA_ERRORS record exists for the given parent record:
-            DBMS_OUTPUT.PUT_LINE('The parent error record for the data stream code "'||v_data_stream.DATA_STREAM_CODE||'" and PK: "'||v_PK_ID||'" was not found in the database');
+            DBMS_OUTPUT.PUT_LINE('The parent error record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'" was not found in the database');
 
             --set the return code to indicate the parent error record was not found:
             p_proc_return_code := 0;
@@ -474,7 +613,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         DBMS_OUTPUT.PUT_LINE('running ASSOC_PARENT_ERROR_REC ()');
     
         --update the parent record to associate it with the new parent error record:
-        v_temp_SQL := 'UPDATE '||v_data_stream.DATA_STREAM_PAR_TABLE||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream.DATA_STREAM_PK_FIELD||' = :pkid';
+        v_temp_SQL := 'UPDATE '||v_data_stream_par_table||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream_pk_field||' = :pkid';
         
         DBMS_OUTPUT.PUT_LINE('v_temp_SQL is: '||v_temp_SQL);
         

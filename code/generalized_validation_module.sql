@@ -501,18 +501,19 @@ CREATE OR REPLACE VIEW DVM_QC_CRITERIA_V AS
   DVM_ERR_SEVERITY.ERR_SEVERITY_NAME,
   DVM_ERR_SEVERITY.ERR_SEVERITY_DESC,
   DVM_ERROR_TYPES.DATA_STREAM_ID,
-  DVM_DATA_STREAMS.DATA_STREAM_CODE,
-  DVM_DATA_STREAMS.DATA_STREAM_NAME,
-  DVM_DATA_STREAMS.DATA_STREAM_DESC,
+  DVM_DATA_STREAMS_V.DATA_STREAM_CODE,
+  DVM_DATA_STREAMS_V.DATA_STREAM_NAME,
+  DVM_DATA_STREAMS_V.DATA_STREAM_DESC,
+  DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD,
   DVM_ERROR_TYPES.ERR_TYPE_ACTIVE_YN
 FROM
   DVM_ERROR_TYPES
 INNER JOIN DVM_ERR_SEVERITY
 ON
   DVM_ERR_SEVERITY.ERR_SEVERITY_ID = DVM_ERROR_TYPES.ERR_SEVERITY_ID
-INNER JOIN DVM_DATA_STREAMS
+INNER JOIN DVM_DATA_STREAMS_V
 ON
-  DVM_DATA_STREAMS.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
+  DVM_DATA_STREAMS_V.DATA_STREAM_ID = DVM_ERROR_TYPES.DATA_STREAM_ID
 INNER JOIN DVM_QC_OBJECTS
 ON
   DVM_QC_OBJECTS.QC_OBJECT_ID = DVM_ERROR_TYPES.QC_OBJECT_ID
@@ -524,8 +525,9 @@ DVM_QC_OBJECTS.QC_SORT_ORDER;
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERROR_TYPE_ID IS 'The Error Type for the given error';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_CODE IS 'The code for the given data stream';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_DESC IS 'The description for the given data stream';
-COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_ID IS 'Primary Key for the DVM_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_QC_CRITERIA_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_CODE IS 'The code for the given error severity';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_DESC IS 'The description for the given error severity';
 COMMENT ON COLUMN DVM_QC_CRITERIA_V.ERR_SEVERITY_ID IS 'The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)';
@@ -1292,6 +1294,32 @@ COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_INACTIVE_WARNINGS IS 'The tota
 
 
 
+
+
+
+
+--adding parent table information:
+ALTER TABLE DVM_DATA_STREAMS 
+ADD (DATA_STREAM_PAR_TABLE VARCHAR2(30) );
+
+COMMENT ON COLUMN DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
+
+
+
+UPDATE DVM_DATA_STREAMS SET DATA_STREAM_PAR_TABLE = 'SPT_VESSEL_TRIPS' WHERE DATA_STREAM_CODE IN ('XML', 'RPL');
+UPDATE DVM_DATA_STREAMS SET DATA_STREAM_PAR_TABLE = 'SPT_TRIP_TRACKING' WHERE DATA_STREAM_CODE IN ('TRACK');
+UPDATE DVM_DATA_STREAMS SET DATA_STREAM_PAR_TABLE = 'SPT_UL_TRANSACTIONS' WHERE DATA_STREAM_CODE IN ('UL');
+UPDATE DVM_DATA_STREAMS SET DATA_STREAM_PAR_TABLE = 'SPT_CANN_TRANSACTIONS' WHERE DATA_STREAM_CODE IN ('FOT');
+UPDATE DVM_DATA_STREAMS SET DATA_STREAM_PAR_TABLE = 'TBD' WHERE DATA_STREAM_CODE IN ('LFSC');
+
+
+
+--increase length of the error description:
+ALTER TABLE DVM_ERRORS  
+MODIFY (ERROR_DESCRIPTION VARCHAR2(2000 BYTE) );
+
+
+
 --develop script to grab all of the active error types and QC objects and set as PTA error types for a given point in time:
 
 
@@ -1313,12 +1341,52 @@ COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_INACTIVE_WARNINGS IS 'The tota
 
 
 
+CREATE OR REPLACE VIEW
+
+DVM_DATA_STREAMS_V AS
+
+SELECT 
+DVM_DATA_STREAMS.DATA_STREAM_ID,
+DVM_DATA_STREAMS.DATA_STREAM_CODE,
+DVM_DATA_STREAMS.DATA_STREAM_NAME,
+DVM_DATA_STREAMS.DATA_STREAM_DESC,
+DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE,
+PK_INFO.COLUMN_NAME DATA_STREAM_PK_FIELD
+from 
+dvm_data_streams left join
+(
+  SELECT A.TABLE_NAME, A.COLUMN_NAME
+  
+  FROM 
+
+user_cons_columns A
+
+INNER JOIN user_CONSTRAINTS C
+ON
+A.TABLE_NAME       = C.TABLE_NAME
+AND A.CONSTRAINT_NAME  = C.CONSTRAINT_NAME
+--retrieve only primary key constraints
+AND C.CONSTRAINT_TYPE IN ('P')) PK_INFO
+ON PK_INFO.TABLE_NAME = DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE;
+
+
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
+
+
+COMMENT ON TABLE DVM_DATA_STREAMS_V IS 'Data Streams (View)
+
+This query returns all data streams that are implemented in the data validation module.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter error records based on the given context of the processing/validation.  This view also returns the PK field name for each of the data streams based on the value of DATA_STREAM_PAR_TABLE using the current schema''s data dictionary';
 
 
 
+COMMENT ON TABLE DVM_DATA_STREAMS IS 'Data Streams
 
-
-
+This is a reference table that defines all data streams that are implemented in the data validation module.  This reference table is referenced by the DVM_ERROR_TYPES to define the data stream that the given error type is associated with.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter these records based on the given context of the processing/validation';
 
 
 
