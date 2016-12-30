@@ -1391,3 +1391,11 @@ This is a reference table that defines all data streams that are implemented in 
 
 
 
+--fix the error message template:
+
+UPDATE DVM_ERROR_TYPES SET ERR_TYPE_COMMENT_TEMPLATE = 'For the vessel (History: [PTA_VESS_NAME_1], Reg Num: [VESS_REG_NUM_1]) there were two overlapping trip dates stored in the database, Trip 1 (VESS_TRIP_ID: [VESS_TRIP_ID]) departed on [FORMATTED_ARRIVAL_DTM_1] and Trip 2 (VESS_TRIP_ID: [VESS_TRIP_ID_2]) departed on [FORMATTED_DEPART_DTM_2] and arrived on [FORMATTED_ARRIVAL_DTM_2]' where IND_FIELD_NAME = 'INV_DB_VESS_1_DEP_OVERLAP';
+
+
+UPDATE DVM_ERROR_TYPES SET ERR_TYPE_COMMENT_TEMPLATE = 'For the vessel (History: [PTA_VESS_NAME_1], Reg Num: [VESS_REG_NUM_1]) there were two overlapping trip dates stored in the database, Trip 1 (VESS_TRIP_ID: [VESS_TRIP_ID]) departed on [FORMATTED_DEPART_DTM_1] and Trip 2 (VESS_TRIP_ID: [VESS_TRIP_ID_2]) departed on [FORMATTED_DEPART_DTM_2] and arrived on [FORMATTED_ARRIVAL_DTM_2]' WHERE IND_FIELD_NAME = 'INV_DB_VESS_1_ARR_OVERLAP';
+
+

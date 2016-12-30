@@ -1,7 +1,22 @@
 CREATE OR REPLACE PACKAGE DVM_PKG IS
 
-    TYPE DATA_STREAM_TYP IS TABLE OF DVM_QC_CRITERIA_V%ROWTYPE INDEX BY PLS_INTEGER;
-    ALL_CRITERIA DATA_STREAM_TYP;
+
+    TYPE QC_CRITERIA_INFO IS RECORD (
+    OBJECT_NAME DVM_QC_CRITERIA_V.OBJECT_NAME%TYPE,
+    DATA_STREAM_PK_FIELD DVM_QC_CRITERIA_V.DATA_STREAM_PK_FIELD%TYPE,
+    IND_FIELD_NAME DVM_QC_CRITERIA_V.IND_FIELD_NAME%TYPE,
+    ERR_TYPE_COMMENT_TEMPLATE DVM_QC_CRITERIA_V.ERR_TYPE_COMMENT_TEMPLATE%TYPE,
+    ERROR_TYPE_ID DVM_QC_CRITERIA_V.ERROR_TYPE_ID%TYPE,
+    QC_OBJECT_ID DVM_QC_CRITERIA_V.QC_OBJECT_ID%TYPE
+    );
+
+
+    TYPE QC_CRITERIA_TABLE IS TABLE OF QC_CRITERIA_INFO INDEX BY PLS_INTEGER;
+
+    ALL_CRITERIA QC_CRITERIA_TABLE;
+
+
+
     v_PK_ID NUMBER;
 
     v_PTA_ERROR DVM_PTA_ERRORS%ROWTYPE;
@@ -27,6 +42,12 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
 
     v_data_stream_code_string CLOB;
     
+    v_data_str_placeholder_string CLOB;
+
+    v_data_str_placeholder_array VARCHAR_ARRAY_NUM;
+
+    
+
     
     --Main package procedure that validates a given data stream (p_data_stream_code) record (uniquely identified by p_PK_ID)
     PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_code IN VARCHAR_ARRAY_NUM, p_PK_ID IN NUMBER);
@@ -60,6 +81,10 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
 
     --procedure to retrieve the data stream information for the supplied data stream code(s)
     PROCEDURE RETRIEVE_DATA_STREAM_INFO (p_proc_return_code OUT PLS_INTEGER);
+    
+    --procedure to generate a placeholder string based on the p_input_string_array elements that are supplied.  p_placeholder_string will contain a comma delimited string with generated placholder values, p_placeholder_array will contain the generated placeholder values, and p_delimited_string will contain a comma delimited string of the p_input_string_array elements:
+    PROCEDURE GENERATE_PLACEHOLDERS (p_input_string_array IN VARCHAR_ARRAY_NUM, p_placeholder_string OUT CLOB, p_placeholder_array OUT VARCHAR_ARRAY_NUM, p_delimited_string OUT CLOB);
+    
 
 END DVM_PKG;
 /
@@ -289,6 +314,54 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     END VALIDATE_PARENT_RECORD;
 
 
+    --procedure to generate a placeholder string based on the p_input_string_array elements that are supplied.  p_placeholder_string will contain a comma delimited string with generated placholder values, p_placeholder_array will contain the generated placeholder values, and p_delimited_string will contain a comma delimited string of the p_input_string_array elements:
+    PROCEDURE GENERATE_PLACEHOLDERS (p_input_string_array IN VARCHAR_ARRAY_NUM, p_placeholder_string OUT CLOB, p_placeholder_array OUT VARCHAR_ARRAY_NUM, p_delimited_string OUT CLOB) IS
+
+    BEGIN
+
+        --initialize variables:
+        
+        p_placeholder_string := '';
+        p_delimited_string := '';
+        p_placeholder_array.delete;
+        
+        
+
+        FOR i IN 1 .. p_input_string_array.COUNT LOOP
+            --loop through the data stream codes:
+            
+            IF (i > 1) THEN
+                --add the comma since this is not the first variable:
+                p_delimited_string := p_delimited_string||', ';
+                p_placeholder_string := p_placeholder_string||', ';
+            END IF;
+
+            --add the bind placeholder:            
+            p_placeholder_string := p_placeholder_string||':'||TO_CHAR(i);
+
+            --add the bind placeholder value into the array:
+            p_placeholder_array(i) := ':'||TO_CHAR(i);
+
+            --add the array element to the delimited string:
+            p_delimited_string := p_delimited_string||v_data_stream_code(i);
+
+        END LOOP;
+
+
+
+
+
+
+        EXCEPTION
+            WHEN OTHERS THEN
+             DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+    
+    END GENERATE_PLACEHOLDERS;
+    
+
+
+
+
    --procedure to retrieve the data stream information for the supplied data stream code(s)
     PROCEDURE RETRIEVE_DATA_STREAM_INFO (p_proc_return_code OUT PLS_INTEGER) IS
     
@@ -299,42 +372,21 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         v_temp_SQL CLOB;
         
         v_row_counter PLS_INTEGER;
+        
+        
     
     BEGIN
     
         DBMS_OUTPUT.PUT_LINE('running RETRIEVE_DATA_STREAM_INFO()');
     
-            --retrieve the data stream information from the database:
-        v_temp_SQL := 'SELECT DISTINCT DATA_STREAM_PAR_TABLE, DATA_STREAM_PK_FIELD FROM DVM_DATA_STREAMS_V WHERE DATA_STREAM_CODE IN (';
-        
-        
-        
-        
         --construct the bind variables:
+        GENERATE_PLACEHOLDERS (v_data_stream_code, v_data_str_placeholder_string, v_data_str_placeholder_array, v_data_stream_code_string);
+
+
+        --retrieve the data stream information from the database:
+        v_temp_SQL := 'SELECT DISTINCT DATA_STREAM_PAR_TABLE, DATA_STREAM_PK_FIELD FROM DVM_DATA_STREAMS_V WHERE DATA_STREAM_CODE IN ('||v_data_str_placeholder_string||')';
         
-        
-         -- Bind variables:
-        FOR i IN 1 .. v_data_stream_code.COUNT LOOP
-            --loop through the data stream codes:
-            
-            IF (i > 1) THEN
-                --add the comma since this is not the first variable:
-               v_data_stream_code_string := v_data_stream_code_string||', ';
-                v_temp_SQL := v_temp_SQL||', ';
-            END IF;
-
-            --add the bind placeholder:            
-            v_temp_SQL := v_temp_SQL||':'||TO_CHAR(i);
-
-            v_data_stream_code_string := v_data_stream_code_string||v_data_stream_code(i);
-
-
-        END LOOP;
-
-        --end the SQL statement:
-        v_temp_SQL := v_temp_SQL||')';
-      
-
+ 
         -- Open SQL cursor number:
           curid := DBMS_SQL.OPEN_CURSOR;
         
@@ -352,7 +404,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             --loop through the data stream codes:
 
             --bind the variable value:
-            DBMS_SQL.BIND_VARIABLE(curid, ':'||TO_CHAR(i), v_data_stream_code(i));
+            DBMS_SQL.BIND_VARIABLE(curid, v_data_str_placeholder_array(i), v_data_stream_code(i));
 
         END LOOP;
         
@@ -378,6 +430,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
              EXIT; 
            END IF; 
         END LOOP;         
+
+        DBMS_SQL.CLOSE_CURSOR(curid);
         
         
         IF (v_row_counter = 1) THEN
@@ -499,7 +553,22 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     --procedure to retrieve all parent error records
     PROCEDURE RETRIEVE_QC_CRITERIA (p_first_validation IN BOOLEAN, p_proc_return_code OUT PLS_INTEGER) IS
   
+
+        ignore   NUMBER;
+
         v_temp_SQL CLOB;
+        
+        
+        
+        TYPE curtype IS REF CURSOR;
+        src_cur  curtype;
+        curid    NUMBER;
+        colcnt   NUMBER;
+        namevar  VARCHAR2(2000);
+        numvar   NUMBER;
+        
+        v_all_criteria_pos NUMBER := 1;
+        
     
     BEGIN
 
@@ -508,29 +577,154 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     
         --check if this is the first time this parent record has been validated:
         IF p_first_validation THEN
+            
+            
             v_temp_SQL := 'SELECT
-                   DVM_QC_CRITERIA_V.*
+                    DVM_QC_CRITERIA_V.OBJECT_NAME,
+                    DVM_QC_CRITERIA_V.DATA_STREAM_PK_FIELD,
+                    DVM_QC_CRITERIA_V.IND_FIELD_NAME,
+                    DVM_QC_CRITERIA_V.ERR_TYPE_COMMENT_TEMPLATE,
+                    DVM_QC_CRITERIA_V.ERROR_TYPE_ID,
+                    DVM_QC_CRITERIA_V.QC_OBJECT_ID            
                   FROM DVM_QC_CRITERIA_V
                   WHERE ERR_TYPE_ACTIVE_YN = ''Y''
                   AND QC_OBJ_ACTIVE_YN = ''Y''
-                  AND DATA_STREAM_CODE = :DATA_STREAM_CODE
+                  AND DATA_STREAM_CODE IN ('||v_data_str_placeholder_string||')
                   ORDER BY QC_SORT_ORDER, ERROR_TYPE_ID';
                   
-            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_data_stream.data_stream_code;
+                  
+            
+            -- Open SQL cursor number:
+              curid := DBMS_SQL.OPEN_CURSOR;
+
+
+                
+            
+            
+              -- Parse SQL cursor number:
+              DBMS_SQL.PARSE(curid, v_temp_SQL, DBMS_SQL.NATIVE);
+    
+            DBMS_SQL.DESCRIBE_COLUMNS(curid, colcnt, desctab);
+    
+
+        -- Define columns:
+                FOR i IN 1 .. colcnt LOOP
+        --          DBMS_OUTPUT.PUT_LINE ('current column name is: '||desctab(i).col_name);
+                  
+                  --save the column position in the array element defined by the column name:
+                  assoc_field_list (desctab(i).col_name) := i;
+                  
+                  --save the column name in the array element defined by the column position:
+                  num_field_list (i) := desctab(i).col_name;
+              
+                  
+                  --retrieve column metadata from query results:
+                  IF desctab(i).col_type = 2 THEN
+                    DBMS_SQL.DEFINE_COLUMN(curid, i, numvar);
+        --            DBMS_OUTPUT.PUT_LINE ('current numvar is: '||numvar);
+
+                  ELSIF desctab(i).col_type IN (1, 96) THEN
+                    DBMS_SQL.DEFINE_COLUMN(curid, i, namevar, 2000);
+        --            DBMS_OUTPUT.PUT_LINE ('current namevar is: '||namevar);
+              
+                  END IF;
+              
+                END LOOP;
+            
+    
+    
+    
+             -- Bind variables:
+            FOR i IN 1 .. v_data_stream_code.COUNT LOOP
+                --loop through the data stream codes:
+    
+                --bind the variable value:
+                DBMS_SQL.BIND_VARIABLE(curid, v_data_str_placeholder_array(i), v_data_stream_code(i));
+    
+            END LOOP;
+            
+            --execute the query
+            ignore := DBMS_SQL.EXECUTE(curid);        
+            
+            --initialize the result row counter:
+            v_all_criteria_pos := 1;
+            
+            
+            LOOP 
+                IF DBMS_SQL.FETCH_ROWS(curid)>0 THEN 
+                  
+--                  ALL_CRITERIA.extend();
+                  
+                  FOR i IN 1 .. colcnt LOOP
+                      --loop through each column and set the 
+                    
+
+                        --retrieve column metadata from query results:
+                        IF desctab(i).col_type = 2 THEN
+                          DBMS_SQL.COLUMN_VALUE(curid, i, numvar);
+                          
+                          IF desctab(i).col_name = 'ERROR_TYPE_ID' THEN
+                            ALL_CRITERIA(v_all_criteria_pos).ERROR_TYPE_ID := numvar;
+                          
+                          ELSIF desctab(i).col_name = 'QC_OBJECT_ID' THEN
+                            ALL_CRITERIA(v_all_criteria_pos).QC_OBJECT_ID := numvar;
+                         
+                          END IF;
+                    
+                          -- statements
+                        ELSIF desctab(i).col_type IN (1, 96) THEN
+                           DBMS_SQL.COLUMN_VALUE(curid, i, namevar);
+
+
+                          IF desctab(i).col_name = 'OBJECT_NAME' THEN
+                            ALL_CRITERIA(v_all_criteria_pos).OBJECT_NAME := namevar;
+                          
+                          ELSIF desctab(i).col_name = 'DATA_STREAM_PK_FIELD' THEN
+                            ALL_CRITERIA(v_all_criteria_pos).DATA_STREAM_PK_FIELD := namevar;
+
+                          ELSIF desctab(i).col_name = 'IND_FIELD_NAME' THEN
+
+                            ALL_CRITERIA(v_all_criteria_pos).IND_FIELD_NAME := namevar;
+
+                          ELSIF desctab(i).col_name = 'ERR_TYPE_COMMENT_TEMPLATE' THEN
+                            ALL_CRITERIA(v_all_criteria_pos).ERR_TYPE_COMMENT_TEMPLATE := namevar;
+
+                         
+                          END IF;
+                        END IF;
+                  
+                  END LOOP;
+                  
+                  --increment the row counter variable:
+                  v_all_criteria_pos := v_all_criteria_pos + 1;
+    
+               ELSE 
+          
+           -- No more rows to process: 
+                 EXIT; 
+               END IF; 
+            END LOOP;                 
+            
+                  
         ELSE
         
     
             --return the whole result set so it can be used to process the QC criteria:
-            v_temp_SQL := 'SELECT DVM_QC_CRITERIA_V.*
+            v_temp_SQL := 'SELECT DVM_QC_CRITERIA_V.OBJECT_NAME,
+                    DVM_QC_CRITERIA_V.DATA_STREAM_PK_FIELD,
+                    DVM_QC_CRITERIA_V.IND_FIELD_NAME,
+                    DVM_QC_CRITERIA_V.ERR_TYPE_COMMENT_TEMPLATE,
+                    DVM_QC_CRITERIA_V.ERROR_TYPE_ID,
+                    DVM_QC_CRITERIA_V.QC_OBJECT_ID
+
                     FROM DVM_QC_CRITERIA_V
                    INNER JOIN DVM_PTA_ERR_TYP_ASSOC
                    ON DVM_QC_CRITERIA_V.ERROR_TYPE_ID = DVM_PTA_ERR_TYP_ASSOC.ERROR_TYPE_ID
                    WHERE
                    DVM_PTA_ERR_TYP_ASSOC.PTA_ERROR_ID = :ptaeid               
-                   AND DATA_STREAM_CODE = :DATA_STREAM_CODE
                    ORDER BY QC_SORT_ORDER, DVM_QC_CRITERIA_V.ERROR_TYPE_ID';            
                 
-            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
+            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO ALL_CRITERIA USING v_PTA_ERROR.PTA_ERROR_ID;
         END IF;        
         
         --the query was successful:
@@ -552,6 +746,10 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     PROCEDURE DEFINE_ALL_ERROR_TYPE_ASSOC (p_proc_return_code OUT PLS_INTEGER) IS
         v_temp_SQL CLOB;
     
+        curid    NUMBER;
+
+        ignore   NUMBER;
+
     BEGIN
     
         v_temp_SQL := 'INSERT INTO DVM_PTA_ERR_TYP_ASSOC (PTA_ERROR_ID, ERROR_TYPE_ID, CREATE_DATE) SELECT
@@ -559,9 +757,32 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
               FROM DVM_QC_CRITERIA_V
               WHERE ERR_TYPE_ACTIVE_YN = ''Y''
               AND QC_OBJ_ACTIVE_YN = ''Y''
-              AND DATA_STREAM_CODE = :DATA_STREAM_CODE';
+              AND DATA_STREAM_CODE IN ('||v_data_str_placeholder_string||')';
               
-        EXECUTE IMMEDIATE v_temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
+              
+        -- Open SQL cursor number:
+          curid := DBMS_SQL.OPEN_CURSOR;
+        
+        -- Parse SQL cursor number:
+        DBMS_SQL.PARSE(curid, v_temp_SQL, DBMS_SQL.NATIVE);
+              
+        DBMS_SQL.BIND_VARIABLE(curid, ':PTA_ERROR_ID', v_PTA_ERROR.PTA_ERROR_ID);
+              
+         -- Bind variables:
+        FOR i IN 1 .. v_data_stream_code.COUNT LOOP
+            --loop through the data stream codes:
+
+            --bind the variable value:
+            DBMS_SQL.BIND_VARIABLE(curid, v_data_str_placeholder_array(i), v_data_stream_code(i));
+
+        END LOOP;
+              
+
+        --execute the query
+        ignore := DBMS_SQL.EXECUTE(curid);
+              
+              
+ --       EXECUTE IMMEDIATE v_temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_data_stream.data_stream_code;
         
         --association records were loaded successfully:
         p_proc_return_code := 1;
@@ -990,7 +1211,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             END IF;
             
             temp_field_name := assoc_field_list.NEXT(temp_field_name);  -- Get next element of array
-        END LOOP;    
+        END LOOP;
+        
     
         DBMS_OUTPUT.PUT_LINE('The value of the replaced temp_error_message is: '||temp_error_message);
     
