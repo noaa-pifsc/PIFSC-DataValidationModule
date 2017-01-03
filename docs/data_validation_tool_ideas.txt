@@ -23,7 +23,7 @@ A DVM_PTA_ERRORS record and error records exist for the give parent record
 
 application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query
 
-
+update the LAST_EVAL_DATE on the PTA_ERRORS record
 
 
 X - how do we query for the validation criteria using DBMS_SQL so that we can use multiple data stream codes?
