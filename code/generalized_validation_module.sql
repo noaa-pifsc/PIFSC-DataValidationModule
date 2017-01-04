@@ -1399,3 +1399,50 @@ UPDATE DVM_ERROR_TYPES SET ERR_TYPE_COMMENT_TEMPLATE = 'For the vessel (History:
 UPDATE DVM_ERROR_TYPES SET ERR_TYPE_COMMENT_TEMPLATE = 'For the vessel (History: [PTA_VESS_NAME_1], Reg Num: [VESS_REG_NUM_1]) there were two overlapping trip dates stored in the database, Trip 1 (VESS_TRIP_ID: [VESS_TRIP_ID]) departed on [FORMATTED_DEPART_DTM_1] and Trip 2 (VESS_TRIP_ID: [VESS_TRIP_ID_2]) departed on [FORMATTED_DEPART_DTM_2] and arrived on [FORMATTED_ARRIVAL_DTM_2]' WHERE IND_FIELD_NAME = 'INV_DB_VESS_1_ARR_OVERLAP';
 
 
+
+--modify the DVM_ERRORS table to change ERROR_DESCRIPTION field data type:
+ALTER TABLE DVM_ERRORS 
+ADD (ERROR_DESCRIPTION_TEMP CLOB );
+
+COMMENT ON COLUMN DVM_ERRORS.ERROR_DESCRIPTION_TEMP IS 'The description of the given XML Data File error';
+
+--transfer the information to the temporary data field:
+UPDATE DVM_ERRORS SET ERROR_DESCRIPTION_TEMP = ERROR_DESCRIPTION;
+
+--verification query for the DVM_ERRORS table:
+select * FROM DVM_ERRORS WHERE ERROR_DESCRIPTION <> to_char(ERROR_DESCRIPTION_TEMP);
+
+--replace the ERROR_DESCRIPTION field:
+ALTER TABLE DVM_ERRORS 
+DROP COLUMN ERROR_DESCRIPTION;
+
+ALTER TABLE DVM_ERRORS  
+MODIFY (ERROR_DESCRIPTION_TEMP NOT NULL);
+
+ALTER TABLE DVM_ERRORS RENAME COLUMN ERROR_DESCRIPTION_TEMP TO ERROR_DESCRIPTION;
+
+
+
+
+
+--modify the DVM_ERROR_TYPES table to change ERR_TYPE_COMMENT_TEMPLATE field data type:
+ALTER TABLE DVM_ERROR_TYPES 
+ADD (ERR_TYPE_COMMENT_TEMP CLOB );
+
+COMMENT ON COLUMN DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMP IS 'The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
+
+--transfer the information to the temporary data field:
+UPDATE DVM_ERROR_TYPES SET ERR_TYPE_COMMENT_TEMP = ERR_TYPE_COMMENT_TEMPLATE;
+
+--verification query for the DVM_ERROR_TYPES table:
+select * FROM DVM_ERROR_TYPES WHERE ERR_TYPE_COMMENT_TEMPLATE <> to_char(ERR_TYPE_COMMENT_TEMP);
+
+--replace the ERR_TYPE_COMMENT_TEMPLATE field:
+ALTER TABLE DVM_ERROR_TYPES 
+DROP COLUMN ERR_TYPE_COMMENT_TEMPLATE;
+
+ALTER TABLE DVM_ERROR_TYPES RENAME COLUMN ERR_TYPE_COMMENT_TEMP TO ERR_TYPE_COMMENT_TEMPLATE;
+
+
+
+

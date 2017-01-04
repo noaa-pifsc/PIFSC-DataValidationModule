@@ -2,9 +2,10 @@ deprecated flag in the error_types table to indicate that even if an error was a
 
 implement transactions
 
-change ERROR_DESCRIPTION to a CLOB:
+X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
 
 need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+    - match up on generated ERROR_DESCRIPTION and error_type_ID and remove/disable the existing errors that don't match up 
 
 
 
