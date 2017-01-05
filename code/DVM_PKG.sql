@@ -67,7 +67,9 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     --procedure to populate an error record with the information from the corresponding result set row:
     PROCEDURE POPULATE_ERROR_REC (curid IN NUMBER, QC_criteria_pos IN NUMBER, error_rec OUT DVM_ERRORS%ROWTYPE, p_proc_return_code OUT PLS_INTEGER);
 
-    
+    --update the parent error record to indicate that the parent record was re-evaluated:
+    PROCEDURE UPDATE_PTA_ERROR_LAST_EVAL (p_proc_return_code OUT PLS_INTEGER);
+
     
 
 END DVM_PKG;
@@ -612,6 +614,9 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
 
         --procedure variable to store generated SQL statements that are executed in the procedure:
         v_temp_SQL CLOB;
+
+        --procedure variable to store the return codes from each procedure call to determine the results of the procedure execution
+        v_proc_return_code PLS_INTEGER;
     
     BEGIN
 
@@ -625,9 +630,26 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         --execute the query using the PK value supplied in the VALIDATE_PARENT_RECORD() procedure call:
         EXECUTE IMMEDIATE v_temp_SQL INTO v_PTA_ERROR USING v_PK_ID;
         
+        --update the DVM_PTA_ERRORS.LAST_EVAL_DATE value to indicate the data validation module was evaluated again:
+        UPDATE_PTA_ERROR_LAST_EVAL (v_proc_return_code);
+        
+        --check if the parent error record was updated successfully:
+        IF (v_proc_return_code = 1) THEN
+        
+            --the parent error record was updated successfully:
 
-        --define the return code that indicates that the parent error record was found in the database
-        p_proc_return_code := 1;
+            --define the return code that indicates that the parent error record was found in the database
+            p_proc_return_code := 1;
+
+        
+        ELSE
+
+            --The return code from the UPDATE_PTA_ERROR_LAST_EVAL() procedure indicates a database query error
+            DBMS_OUTPUT.PUT_LINE('There was a database error when updating the parent record''s parent error record for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+        
+        END IF;
+        
+
         
         
     EXCEPTION
@@ -1136,6 +1158,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             --loop through each element in the v_error_rec_table package variable:
             FOR i IN 1 .. v_error_rec_table.COUNT LOOP
                 
+                DBMS_OUTPUT.PUT_LINE('insert the error with error description: "'||v_error_rec_table(i).ERROR_DESCRIPTION);
+                
                 --execute the QC criteria error record insert query using the current v_error_rec_table package variable:
                 EXECUTE IMMEDIATE v_temp_SQL USING v_error_rec_table(i).PTA_ERROR_ID, v_error_rec_table(i).ERROR_DESCRIPTION, sys_context( 'userenv', 'current_schema' ), v_error_rec_table(i).ERROR_TYPE_ID;
 
@@ -1439,6 +1463,32 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             p_proc_return_code := -1;
     
     END POPULATE_ERROR_REC;
+
+    --update the parent error record to indicate that the parent record was re-evaluated:
+    PROCEDURE UPDATE_PTA_ERROR_LAST_EVAL (p_proc_return_code OUT PLS_INTEGER) IS
+
+
+    BEGIN
+        
+        --update the DVM_PTA_ERRORS.LAST_EVAL_DATE    
+        UPDATE DVM_PTA_ERRORS SET LAST_EVAL_DATE = SYSDATE WHERE PTA_ERROR_ID = v_PTA_ERROR.PTA_ERROR_ID;
+
+        --define the return code that indicates that the parent error record was updated successfully
+        p_proc_return_code := 1;
+                
+
+    EXCEPTION
+    --catch all PL/SQL database exceptions:
+    WHEN OTHERS THEN
+        --catch all other errors:
+    
+        --print out error message:
+        DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
+        --define the return code that indicates that there was an error when updating the parent error record:
+        p_proc_return_code := -1;
+
+    END UPDATE_PTA_ERROR_LAST_EVAL;
 
 
 END DVM_PKG;
