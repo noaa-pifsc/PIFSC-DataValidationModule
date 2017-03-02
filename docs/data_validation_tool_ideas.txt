@@ -4,8 +4,16 @@ X - implement transactions
 
 X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
 
-_ - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
-    _ - match up on generated ERROR_DESCRIPTION and error_type_ID and remove/disable the existing errors that don't match up 
+X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.  
+    - What if the error description template changes, then it will never match up - how is this handled?
+        
+_ - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
+    What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
+    
+    
+    
+_ - instructions and scripts for how to configure the given parent table for DVM
 
 
 
@@ -18,7 +26,7 @@ X - No DVM_PTA_ERRORS record for the given parent record
 
 X - A DVM_PTA_ERRORS record exists for the give parent record
 
-_ - A DVM_PTA_ERRORS record and error records exist for the give parent record
+X - A DVM_PTA_ERRORS record and error records exist for the give parent record
 
 
 
@@ -29,3 +37,4 @@ X - update the LAST_EVAL_DATE on the PTA_ERRORS record
 
 X - how do we query for the validation criteria using DBMS_SQL so that we can use multiple data stream codes?
 
+_ - QC query to identify any orphan parent error records

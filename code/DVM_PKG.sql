@@ -13,6 +13,7 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     --Main package procedure that validates a parent record based on the given data stream code(s) defined by p_data_stream_codes, and uniquely identified by p_PK_ID.  This is the main procedure that is called by external programs to validate a given parent record.
     --Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
 /*
+    --sample usage for data validation module:
     DECLARE
         P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
         P_PK_ID NUMBER;
@@ -20,7 +21,7 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
         -- Modify the code to initialize the variable
         P_DATA_STREAM_CODE(1) := 'RPL';
         P_DATA_STREAM_CODE(2) := 'XML';
-        P_PK_ID := 46;
+        P_PK_ID := :vtid;
         
         DVM_PKG.VALIDATE_PARENT_RECORD(
         P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
@@ -146,28 +147,33 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
     v_data_str_placeholder_array VARCHAR_ARRAY_NUM;
 
 
+    --procedure boolean variable whose value is set based off of whether the parent record (e.g. SPT_VESSEL_TRIPS) has an associated parent error record (DVM_PTA_ERRORS) to determine the behavior of the module
+    v_first_validation BOOLEAN;
 
+    --declare the associative array of integers Oracle type 
+    TYPE NUM_ARRAY IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
 
 
 
     --Main package procedure that validates a parent record based on the given data stream code(s) defined by p_data_stream_codes, and uniquely identified by p_PK_ID.  This is the main procedure that is called by external programs to validate a given parent record.
     --Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
 /*
-    DECLARE
-        P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
-        P_PK_ID NUMBER;
-    BEGIN
-        -- Modify the code to initialize the variable
-        P_DATA_STREAM_CODE(1) := 'RPL';
-        P_DATA_STREAM_CODE(2) := 'XML';
-        P_PK_ID := 46;
-        
-        DVM_PKG.VALIDATE_PARENT_RECORD(
-        P_DATA_STREAM_CODE => P_DATA_STREAM_CODE,
-        P_PK_ID => P_PK_ID
-        );
-        --rollback; 
-    END;
+--sample usage for data validation module:
+DECLARE
+    P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_PK_ID NUMBER;
+BEGIN
+    -- Modify the code to initialize the variable
+    P_DATA_STREAM_CODE(1) := 'RPL';
+    P_DATA_STREAM_CODE(2) := 'XML';
+    P_PK_ID := :vtid;
+    
+    DVM_PKG.VALIDATE_PARENT_RECORD(
+    P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
+    P_PK_ID => P_PK_ID
+    );
+    --rollback; 
+END;
 */    
     PROCEDURE VALIDATE_PARENT_RECORD (p_data_stream_codes IN VARCHAR_ARRAY_NUM, p_PK_ID IN NUMBER) IS
     
@@ -179,9 +185,6 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
         --procedure boolean variable that determines if the procedure execution continues based on the results of the various procedure calls:
         v_continue BOOLEAN;
-        
-        --procedure boolean variable whose value is set based off of whether the parent record (e.g. SPT_VESSEL_TRIPS) has an associated parent error record (DVM_PTA_ERRORS) to determine the behavior of the module
-        v_first_validation BOOLEAN;
 
     BEGIN
 
@@ -1085,6 +1088,20 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                 
         --procedure variable to store the return codes from each procedure call to determine the results of the procedure execution
         v_proc_return_code PLS_INTEGER;
+        
+        --procedure variable to store numeric ERROR_ID values for deletion (when existing error records need to be purged if the error condition no longer applies)
+        v_error_ids NUM_ARRAY;
+
+        --procedure variable to store the existing DVM_ERRORS for the given parent error record
+        v_existing_error_rec_table DVM_ERRORS_TABLE;
+        
+        --procedure variable to store the position of the given DVM_ERRORS record while looping through v_existing_error_rec_table:
+        v_existing_error_rec_counter PLS_INTEGER;
+        
+        --procedure variable to store the position of the given DVM_ERRORS record while looping through v_error_rec_table:
+        v_error_rec_counter PLS_INTEGER;
+
+
     
     BEGIN
    
@@ -1180,18 +1197,121 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             
             DBMS_OUTPUT.PUT_LINE('insert all of the DVM errors, there are '||v_error_rec_table.COUNT||' errors to load');
 
+            --check if this is the first time the given record has been validated:
+            IF NOT (v_first_validation) THEN
+                --this is not the first time the given record has been validated, check the pending error records against the existing ones:
+
+                DBMS_OUTPUT.PUT_LINE('This is a revalidation attempt, attempt to purge resolved errors, and add the new errors');
+
+                
+                --determine all of the ERROR_ID values of the existing error records that should be deleted (those are the existing error records that do not match a pending error record's generated error description)
+                
+                --retrieve all existing error records:
+                v_temp_SQL := 'SELECT * FROM DVM_ERRORS WHERE DVM_ERRORS.PTA_ERROR_ID = :pta_error_id';
+                
+                --store the existing error records in v_existing_error_rec_table:
+                EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO v_existing_error_rec_table USING v_PTA_ERROR.PTA_ERROR_ID;
+                
+                DBMS_OUTPUT.PUT_LINE ('There are '||v_existing_error_rec_table.COUNT||' existing error records, compare them to the pending errors to determine which should be deleted, maintained, or added');
+                
+                --loop through and compare all existing error records to the pending error records:
+                v_existing_error_rec_counter := v_existing_error_rec_table.FIRST;
+
+                --begin the loop through the existing error records:
+                WHILE v_existing_error_rec_counter IS NOT NULL LOOP 
+                    
+                    DBMS_OUTPUT.PUT_LINE ('Looping through the existing error record ('||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_ID||') description: '||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_DESCRIPTION);
+                    
+                    
+                    --loop through all pending error records::
+                    v_error_rec_counter := v_error_rec_table.FIRST;
+                    
+                    --start the loop:
+                    WHILE v_error_rec_counter IS NOT NULL LOOP
+                    
+                        DBMS_OUTPUT.PUT_LINE ('Looping through the pending error record: '||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
+
+
+                        --check if the current existing error description and error_type_ID matches the pending error description:
+                        IF (v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION = v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_DESCRIPTION) AND (v_error_rec_table(v_error_rec_counter).ERROR_TYPE_ID = v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_TYPE_ID) THEN
+                            --the current existing error description and error_type_ID matches the pending error description
+                            
+                            DBMS_OUTPUT.PUT_LINE ('The Pending and Existing record description and error_type_ID match, remove both the pending and existing nested table elements');
+                            
+                        
+                            --remove the current pending error record from the nested table variable:
+                            v_error_rec_table.DELETE(v_error_rec_counter);
+                            
+                            --remove the current existing error record from the nested table variable:
+                            v_existing_error_rec_table.DELETE(v_existing_error_rec_counter);
+                        
+                            EXIT;
+                        END IF;
+                    
+                    
+                    
+                        --increment to the next pending error record:
+                        v_error_rec_counter := v_error_rec_table.NEXT(v_error_rec_counter);
+                    
+                    END LOOP;
+                    
+
+
+                    --increment to the next existing error record:
+                    v_existing_error_rec_counter := v_existing_error_rec_table.NEXT(v_existing_error_rec_counter);
+                END LOOP;
+                
+
+
+
+                DBMS_OUTPUT.PUT_LINE('all of the comparisons have been made, delete all of the existing error records that were not matched ('||v_existing_error_rec_table.COUNT||' total)');
+
+                --construct the currnet delete DVM_ERRORS record since it doesn't match any pending error records:
+                v_temp_SQL := 'DELETE FROM DVM_ERRORS WHERE ERROR_ID = :eid';
+
+
+                --loop through all of the existing error records that did not match so they can be deleted:
+                v_existing_error_rec_counter := v_existing_error_rec_table.FIRST;
+
+                --begin the loop through the existing error records:
+                WHILE v_existing_error_rec_counter IS NOT NULL LOOP
+
+                    DBMS_OUTPUT.PUT_LINE('Delete the existing error record: '||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_ID);
+
+                    
+                    --store the results of the query into a collection that can be used to insert the new pending error records:
+                    EXECUTE IMMEDIATE v_temp_SQL USING v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_ID;
+
+                    --increment to the next existing error record:
+                    v_existing_error_rec_counter := v_existing_error_rec_table.NEXT(v_existing_error_rec_counter);
+
+                END LOOP;
+
+            END IF;
+
             --construct the parameterized query to insert all of the QC criteria error records:
             v_temp_SQL := 'INSERT INTO DVM_ERRORS (PTA_ERROR_ID, ERROR_DESCRIPTION, CREATE_DATE, CREATED_BY, ERROR_TYPE_ID) VALUES (:p01, :p02, SYSDATE, :p03, :p04)';
 
+
+            DBMS_OUTPUT.PUT_LINE('insert all of the unmatched pending error records ('||v_error_rec_table.COUNT||' total)');
+
             --loop through each element in the v_error_rec_table package variable:
-            FOR i IN 1 .. v_error_rec_table.COUNT LOOP
+            v_error_rec_counter := v_error_rec_table.FIRST;
+            
+            --start the loop:
+            WHILE v_error_rec_counter IS NOT NULL LOOP
                 
-                DBMS_OUTPUT.PUT_LINE('insert the error with error description: "'||v_error_rec_table(i).ERROR_DESCRIPTION);
+                DBMS_OUTPUT.PUT_LINE('insert the error with error description: "'||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
                 
                 --execute the QC criteria error record insert query using the current v_error_rec_table package variable:
-                EXECUTE IMMEDIATE v_temp_SQL USING v_error_rec_table(i).PTA_ERROR_ID, v_error_rec_table(i).ERROR_DESCRIPTION, sys_context( 'userenv', 'current_schema' ), v_error_rec_table(i).ERROR_TYPE_ID;
+                EXECUTE IMMEDIATE v_temp_SQL USING v_error_rec_table(v_error_rec_counter).PTA_ERROR_ID, v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION, sys_context( 'userenv', 'current_schema' ), v_error_rec_table(v_error_rec_counter).ERROR_TYPE_ID;
+
+                --increment to the next pending error record:
+                v_error_rec_counter := v_error_rec_table.NEXT(v_error_rec_counter);
 
             END LOOP;
+
+
             
             --define the return code that indicates that the QC criteria was processed successfully and the corresponding error records were loaded into the database:
             p_proc_return_code := 1;
