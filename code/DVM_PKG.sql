@@ -23,7 +23,7 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
         P_PK_ID := 46;
         
         DVM_PKG.VALIDATE_PARENT_RECORD(
-        P_DATA_STREAM_CODE => P_DATA_STREAM_CODE,
+        P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
         P_PK_ID => P_PK_ID
         );
         --rollback; 
@@ -70,7 +70,8 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
     --update the parent error record to indicate that the parent record was re-evaluated:
     PROCEDURE UPDATE_PTA_ERROR_LAST_EVAL (p_proc_return_code OUT PLS_INTEGER);
 
-    
+    --function that will return a comma-delimited list of the placeholder fields that are not in the result set of the given View identified by QC_OBJECT_NAME:
+    FUNCTION QC_MISSING_QUERY_FIELDS (ERR_TYPE_COMMENT_TEMPLATE DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE%TYPE, QC_OBJECT_NAME DVM_QC_CRITERIA_V.OBJECT_NAME%TYPE) RETURN CLOB;
 
 END DVM_PKG;
 /
@@ -348,22 +349,28 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                 IF (v_proc_return_code = 1) THEN
                     --The QC Criteria was retrieved and evaluated successfully:
                     DBMS_OUTPUT.PUT_LINE('The parent record was evaluated successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+                    
+                    --the data validation criteria evaluation process was successful, commit the SQL transaction
+                    COMMIT;
                 
                 ELSE
                     --The return code from the EVAL_QC_CRITERIA() procedure indicates an error processing the QC validation criteria:
                     DBMS_OUTPUT.PUT_LINE('The parent record was not evaluated successfully for the data stream code(s) "'||v_data_stream_code_string||'" and PK: "'||v_PK_ID||'"');
+                    
+                    --the data validation criteria evaluation process was not successful, rollback the SQL transaction:
+                    ROLLBACK;
 
                 END IF;
 
             ELSE
                 --The return code from the RETRIEVE_QC_CRITERIA() procedure indicates an error retrieving the QC validation criteria:
+
+                --there was no DML executed, there is no need to rollback the transaction
+
             
                 --the QC criteria records were not loaded successfully:
                 DBMS_OUTPUT.PUT_LINE('The QC validation criteria records were not loaded successfully');
 
-                --do not continue processing the record:
-                v_continue := false;
-            
             END IF;
         
         END IF;
@@ -376,6 +383,9 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         
             --print out error message:
             DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+
+            --there was a PL/SQL error, rollback the SQL transaction:
+            ROLLBACK;
 
     END VALIDATE_PARENT_RECORD;
 
@@ -686,6 +696,8 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         --procedure variable to store generated SQL statements that are executed in the procedure:
         v_temp_SQL CLOB;
         
+        --procedure variable to store the CLOB data type values returned by the dynamic SQL query for the DBMS_SQL query method:
+        clobvar  VARCHAR2(2000);
 
         --procedure variable to store the character string data type values returned by the dynamic SQL query for the DBMS_SQL query method:
         namevar  VARCHAR2(2000);
@@ -741,13 +753,17 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
             --loop through each column's description to define each column's data type:
             FOR i IN 1 .. colcnt LOOP
               
-            --save the column position in the array element defined by the column name:
-            assoc_field_list (desctab(i).col_name) := i;
-            
-            --save the column name in the array element defined by the column position:
-            num_field_list (i) := desctab(i).col_name;
+                --save the column position in the array element defined by the column name:
+                assoc_field_list (desctab(i).col_name) := i;
+                
+                --save the column name in the array element defined by the column position:
+                num_field_list (i) := desctab(i).col_name;
           
                 --retrieve column metadata from query results (the select list is known at compile time so it is already known that only numeric and character data types are used).  Check the data type of the current column
+                
+                
+                DBMS_OUTPUT.PUT_LINE('The current col name is: ' ||desctab(i).col_name || ' col type is: '|| desctab(i).col_type);
+                
                 IF desctab(i).col_type = 2 THEN
                     --this is a numeric value:
                     
@@ -759,6 +775,12 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                     
                     --define the column data type as a long character string
                     DBMS_SQL.DEFINE_COLUMN(curid, i, namevar, 2000);
+
+                ELSIF desctab(i).col_type = 112 THEN
+                    --this is a CLOB data type:
+                    
+                    --define the column data type as a long character string
+                    DBMS_SQL.DEFINE_COLUMN(curid, i, clobvar, 10000);
                 
                 END IF;
               
@@ -823,11 +845,17 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
                             ELSIF desctab(i).col_name = 'IND_FIELD_NAME' THEN
                                 ALL_CRITERIA(v_all_criteria_pos).IND_FIELD_NAME := namevar;
     
-                            ELSIF desctab(i).col_name = 'ERR_TYPE_COMMENT_TEMPLATE' THEN
-                                ALL_CRITERIA(v_all_criteria_pos).ERR_TYPE_COMMENT_TEMPLATE := namevar;
+                            END IF;
+                        ELSIF desctab(i).col_type = 112 THEN
 
-                         
-                          END IF;
+                            --store the column value
+                            DBMS_SQL.COLUMN_VALUE(curid, i, clobvar);
+                            
+                            --check the column name to assign it to the corresponding ALL_CRITERIA element record field values
+                            IF desctab(i).col_name = 'ERR_TYPE_COMMENT_TEMPLATE' THEN
+                                ALL_CRITERIA(v_all_criteria_pos).ERR_TYPE_COMMENT_TEMPLATE := clobvar;
+                            END IF;
+                        
                         END IF;
                   
                   END LOOP;
@@ -1293,17 +1321,20 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         -- Fetch rows with DBMS_SQL package to loop through the result set:
         WHILE DBMS_SQL.FETCH_ROWS(curid) > 0 LOOP
         
-            DBMS_OUTPUT.PUT_LINE('fetching new row from result set');
+--            DBMS_OUTPUT.PUT_LINE('fetching new row from result set');
       
             --loop through the ERROR_TYPES for the given QC View (all of these values are CHAR/VARCHAR2 fields based on documented requirements):
             FOR j IN p_begin_pos .. p_end_pos LOOP
               
               
-              DBMS_OUTPUT.PUT_LINE ('loop #'||j||' for error types');
+--              DBMS_OUTPUT.PUT_LINE ('loop #'||j||' for error types');
               
---              DBMS_OUTPUT.PUT_LINE ('current IND_FIELD_NAME is: '||ALL_CRITERIA(j).IND_FIELD_NAME);
---              DBMS_OUTPUT.PUT_LINE ('current IND_FIELD_NAME position is: '||assoc_field_list(ALL_CRITERIA(j).IND_FIELD_NAME));
-              
+/*              DBMS_OUTPUT.PUT_LINE ('current IND_FIELD_NAME is: '||ALL_CRITERIA(j).IND_FIELD_NAME);
+              DBMS_OUTPUT.PUT_LINE ('current IND_FIELD_NAME position is: '||assoc_field_list(ALL_CRITERIA(j).IND_FIELD_NAME));
+              DBMS_OUTPUT.PUT_LINE ('current TO_CHAR(ERR_TYPE_COMMENT_TEMPLATE) is: '||TO_CHAR(ALL_CRITERIA(j).ERR_TYPE_COMMENT_TEMPLATE));
+              DBMS_OUTPUT.PUT_LINE ('current CAST(ERR_TYPE_COMMENT_TEMPLATE AS VARCHAR2) is: '||CAST(ALL_CRITERIA(j).ERR_TYPE_COMMENT_TEMPLATE AS VARCHAR2));
+              DBMS_OUTPUT.PUT_LINE ('current DBMS_LOB.SUBSTR(ERR_TYPE_COMMENT_TEMPLATE, 2000, 1) is: '||DBMS_LOB.SUBSTR(ALL_CRITERIA(j).ERR_TYPE_COMMENT_TEMPLATE, 2000, 1));
+*/              
       
               --retrieve the field name for the current QC criteria IND_FIELD_NAME and retrieve the result set's corresponding column value 
               DBMS_SQL.COLUMN_VALUE(curid, assoc_field_list(ALL_CRITERIA(j).IND_FIELD_NAME), namevar);
@@ -1489,6 +1520,201 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
         p_proc_return_code := -1;
 
     END UPDATE_PTA_ERROR_LAST_EVAL;
+
+    --function that will return a comma-delimited list of the placeholder fields that are not in the result set of the given View identified by QC_OBJECT_NAME:
+    FUNCTION QC_MISSING_QUERY_FIELDS (ERR_TYPE_COMMENT_TEMPLATE DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE%TYPE, QC_OBJECT_NAME DVM_QC_CRITERIA_V.OBJECT_NAME%TYPE) RETURN CLOB IS
+
+        --procedure variable to store generated SQL statements that are executed in the procedure:
+        v_temp_SQL CLOB;
+
+
+        --variable to hold the constructed comma-delimited string of placeholder fields:
+        v_temp_return CLOB;
+        
+        v_regexp_count PLS_INTEGER;
+        
+        v_assoc_fields NUM_ASSOC_VARCHAR;
+        
+        v_array_fields VARCHAR_ARRAY_NUM;
+
+        --variable to store all of the result set fields so they can be processed:
+        v_result_fields VARCHAR_ARRAY_NUM;
+
+
+        --Oracle data type to store if a given placeholder was found in the result set:
+        TYPE BOOL_ASSOC_VARCHAR IS TABLE OF BOOLEAN INDEX BY PLS_INTEGER;
+
+        --variable to track if the given field name has been seen before:
+        v_array_found_fields BOOL_ASSOC_VARCHAR;
+
+        --maximum length of the placeholder should be 30 characters since it is a View column name, the brackets add two extra characters:
+        v_field_name VARCHAR2(32);
+        
+        v_first_unmatched_field BOOLEAN;
+
+    
+    BEGIN
+    
+    
+        --count the number of occurences of placeholders:
+        v_regexp_count := REGEXP_COUNT(ERR_TYPE_COMMENT_TEMPLATE, '\[[A-Z0-9\_]{1,}\]');
+    
+        IF (v_regexp_count > 0) THEN
+    
+            --loop through each placeholder and store them in an array:
+            FOR i in 1..v_regexp_count LOOP
+                
+                --find the i oocurence of the pattern in the string:
+                v_field_name := regexp_substr(ERR_TYPE_COMMENT_TEMPLATE, '\[[A-Z0-9\_]{1,}\]', 1, i) ;
+                
+                --strip off the enclosing brackets from the field name:
+                v_field_name := SUBSTR(v_field_name, 2, LENGTH(v_field_name) - 2) ;
+                
+                --store the field name in the v_array_fields variable:
+                v_array_fields(i) := v_field_name;
+                
+                --store the field position in the v_assoc_fields variable:
+                v_assoc_fields(v_field_name) := i;
+                
+                --initialize the array that the given placeholder was not found yet:
+                v_array_found_fields(i) := false;
+            
+            END LOOP;
+    
+            
+            
+            --query for all of the fields in the result set and mark off each 
+            
+        
+            v_temp_SQL := 'SELECT 
+              ALL_TAB_COLUMNS.COLUMN_NAME
+              
+            FROM
+            (
+            SELECT ALL_OBJECTS.OWNER, ALL_OBJECTS.OBJECT_NAME, ALL_OBJECTS.OBJECT_TYPE, ALL_TAB_COMMENTS.COMMENTS OBJECT_COMMENTS
+            
+            FROM SYS.ALL_OBJECTS
+            INNER JOIN SYS.ALL_TAB_COMMENTS ON ALL_OBJECTS.OWNER = ALL_TAB_COMMENTS.OWNER AND ALL_OBJECTS.OBJECT_NAME = ALL_TAB_COMMENTS.TABLE_NAME AND 
+            ALL_OBJECTS.OBJECT_TYPE = ALL_TAB_COMMENTS.TABLE_TYPE
+            
+            WHERE ALL_OBJECTS.OBJECT_TYPE IN (''VIEW'', ''TABLE'')
+            AND ALL_OBJECTS.OWNER = sys_context(''userenv'', ''current_schema'')
+            ORDER BY ALL_OBJECTS.OWNER, ALL_OBJECTS.OBJECT_NAME
+            ) V0_SYS_OBJECTS
+            
+            INNER JOIN SYS.ALL_TAB_COLUMNS
+            ON V0_SYS_OBJECTS.OWNER        = ALL_TAB_COLUMNS.OWNER
+            AND V0_SYS_OBJECTS.OBJECT_NAME = ALL_TAB_COLUMNS.TABLE_NAME
+            INNER JOIN SYS.ALL_COL_COMMENTS
+            ON ALL_COL_COMMENTS.OWNER        = V0_SYS_OBJECTS.OWNER
+            AND ALL_COL_COMMENTS.TABLE_NAME  = V0_SYS_OBJECTS.OBJECT_NAME
+            AND ALL_COL_COMMENTS.COLUMN_NAME = ALL_TAB_COLUMNS.COLUMN_NAME
+            WHERE V0_SYS_OBJECTS.OBJECT_NAME = :QC_OBJECT_NAME
+            ORDER BY V0_SYS_OBJECTS.OWNER,
+              V0_SYS_OBJECTS.OBJECT_NAME,
+              ALL_TAB_COLUMNS.COLUMN_NAME';
+              
+            
+            EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO v_result_fields USING QC_OBJECT_NAME;
+            
+            --loop through all of the result set rows:
+            FOR i IN 1 .. v_result_fields.COUNT LOOP
+            
+                --loop through each of the error templates' 
+                FOR j in 1.. v_array_fields.COUNT LOOP
+                    
+                    --check if the current placeholder field name matches the current QC object's column name:
+                    IF (v_array_fields(j) = v_result_fields(i)) THEN
+                        
+                        --the current field was found, update the tracking array: 
+                        v_array_found_fields(j) := true;
+                    
+                        --exit the current loop (commented out because it would ignore any subsequent occurences of the same placeholder that match a result set field name)
+                        --EXIT;
+                    
+                    END IF;
+                
+                
+                
+                END LOOP;
+            
+            
+            END LOOP;
+            
+            
+            --initialize tracking field:
+            v_first_unmatched_field := true;
+
+            --initialize return variable:
+            v_temp_return := '';
+
+            --loop through the array fields:
+            FOR j in 1.. v_array_fields.COUNT LOOP
+                    
+                --check if the current placeholder field name matches the current QC object's column name:
+                IF (NOT v_array_found_fields(j)) THEN
+                    --a match was found in the result set:
+                    
+                    
+                    
+                    
+                    --check if this is the first field:
+                    IF v_first_unmatched_field THEN
+                        
+                        
+                        v_first_unmatched_field := false;
+                    
+                    ELSE
+                        --this is not the first placeholder that was not matched, add the comma delimiter:
+                        v_temp_return := v_temp_return||', ';
+                        
+                    
+                    END IF;
+                    
+                    --add the current field name to the delimited string:
+                    v_temp_return := v_temp_return||v_array_fields(j);
+                    
+                END IF;
+            
+            
+            
+            END LOOP;
+            
+            --check if all of the placeholders were found in the result set:
+            IF (v_first_unmatched_field) THEN
+                v_temp_return := NULL;
+            END IF;            
+            
+            
+            
+            
+        ELSE
+            --no placeholders found:
+            v_temp_return := NULL;
+        
+        END IF;
+        
+    
+    
+        
+    
+        RETURN v_temp_return;
+    
+    
+        EXCEPTION
+        --catch all PL/SQL database exceptions:
+        WHEN OTHERS THEN
+            --catch all other errors:
+        
+            --print out error message:
+            DBMS_OUTPUT.PUT_LINE('The error code is ' || SQLCODE || '- ' || SQLERRM);
+            
+            --since there was an error return NULL:
+            v_temp_return := NULL;
+
+            RETURN v_temp_return;
+    
+    END QC_MISSING_QUERY_FIELDS;
 
 
 END DVM_PKG;

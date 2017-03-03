@@ -1,11 +1,11 @@
-deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+_ - deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
 
-implement transactions
+X - implement transactions
 
 X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
 
-need to handle replacing existing errors so that the error records are not purged each time the module is executed:
-    - match up on generated ERROR_DESCRIPTION and error_type_ID and remove/disable the existing errors that don't match up 
+_ - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+    _ - match up on generated ERROR_DESCRIPTION and error_type_ID and remove/disable the existing errors that don't match up 
 
 
 
@@ -18,11 +18,11 @@ X - No DVM_PTA_ERRORS record for the given parent record
 
 X - A DVM_PTA_ERRORS record exists for the give parent record
 
-A DVM_PTA_ERRORS record and error records exist for the give parent record
+_ - A DVM_PTA_ERRORS record and error records exist for the give parent record
 
 
 
-application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query
+X - application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query (DVM_QC_MSG_MISS_FIELDS_V)
 
 X - update the LAST_EVAL_DATE on the PTA_ERRORS record
 

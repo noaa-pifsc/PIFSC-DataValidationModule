@@ -20,17 +20,17 @@ delete from dvm_pta_errors where PTA_ERROR_ID IN (SELECT pta_error_id from spt_v
 
 --sample usage for data validation module:
 DECLARE
-  P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
-  P_PK_ID NUMBER;
+    P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_PK_ID NUMBER;
 BEGIN
-  -- Modify the code to initialize the variable
-  P_DATA_STREAM_CODE(1) := 'RPL';
-  P_DATA_STREAM_CODE(2) := 'XML';
-  P_PK_ID := :vtid;
-
-  DVM_PKG.VALIDATE_PARENT_RECORD(
+    -- Modify the code to initialize the variable
+    P_DATA_STREAM_CODE(1) := 'RPL';
+    P_DATA_STREAM_CODE(2) := 'XML';
+    P_PK_ID := 46;
+    
+    DVM_PKG.VALIDATE_PARENT_RECORD(
     P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
     P_PK_ID => P_PK_ID
-  );
---rollback; 
+    );
+    --rollback; 
 END;
