@@ -479,7 +479,60 @@ ON
   SPT_APP_XML_FILES.XML_FILE_ID = SPT_VESSEL_TRIPS.XML_FILE_ID
   
   WHERE SPT_VESSEL_TRIPS.PTA_ERROR_ID = SPT_APP_XML_FILES.PTA_ERROR_ID 
-  AND SPT_VESSEL_TRIPS.PTA_ERROR_ID = SPT_APP_XML_FILES.PTA_ERROR_TYPE_ID
+  AND SPT_VESSEL_TRIPS.PTA_ERROR_ID = SPT_APP_XML_FILES.PTA_ERROR_TYPE_ID;
+
+
+
+
+--adding parent table information:
+ALTER TABLE DVM_DATA_STREAMS 
+ADD (DATA_STREAM_PAR_TABLE VARCHAR2(30) );
+
+COMMENT ON COLUMN DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
+
+
+
+
+CREATE OR REPLACE VIEW
+
+DVM_DATA_STREAMS_V AS
+
+SELECT 
+DVM_DATA_STREAMS.DATA_STREAM_ID,
+DVM_DATA_STREAMS.DATA_STREAM_CODE,
+DVM_DATA_STREAMS.DATA_STREAM_NAME,
+DVM_DATA_STREAMS.DATA_STREAM_DESC,
+DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE,
+PK_INFO.COLUMN_NAME DATA_STREAM_PK_FIELD
+from 
+dvm_data_streams left join
+(
+  SELECT A.TABLE_NAME, A.COLUMN_NAME
+  
+  FROM 
+
+user_cons_columns A
+
+INNER JOIN user_CONSTRAINTS C
+ON
+A.TABLE_NAME       = C.TABLE_NAME
+AND A.CONSTRAINT_NAME  = C.CONSTRAINT_NAME
+--retrieve only primary key constraints
+AND C.CONSTRAINT_TYPE IN ('P')) PK_INFO
+ON PK_INFO.TABLE_NAME = DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE;
+
+
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
+COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
+
+
+COMMENT ON TABLE DVM_DATA_STREAMS_V IS 'Data Streams (View)
+
+This query returns all data streams that are implemented in the data validation module.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter error records based on the given context of the processing/validation.  This view also returns the PK field name for each of the data streams based on the value of DATA_STREAM_PAR_TABLE using the current schema''s data dictionary';
 
 
 --update Views:
@@ -1298,11 +1351,6 @@ COMMENT ON COLUMN SPT_RPT_RPL_ERR_TALLIES_V.TOTAL_INACTIVE_WARNINGS IS 'The tota
 
 
 
---adding parent table information:
-ALTER TABLE DVM_DATA_STREAMS 
-ADD (DATA_STREAM_PAR_TABLE VARCHAR2(30) );
-
-COMMENT ON COLUMN DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
 
 
 
@@ -1336,51 +1384,6 @@ MODIFY (ERROR_DESCRIPTION VARCHAR2(2000 BYTE) );
 
 
 
-
-
-
-
-
-CREATE OR REPLACE VIEW
-
-DVM_DATA_STREAMS_V AS
-
-SELECT 
-DVM_DATA_STREAMS.DATA_STREAM_ID,
-DVM_DATA_STREAMS.DATA_STREAM_CODE,
-DVM_DATA_STREAMS.DATA_STREAM_NAME,
-DVM_DATA_STREAMS.DATA_STREAM_DESC,
-DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE,
-PK_INFO.COLUMN_NAME DATA_STREAM_PK_FIELD
-from 
-dvm_data_streams left join
-(
-  SELECT A.TABLE_NAME, A.COLUMN_NAME
-  
-  FROM 
-
-user_cons_columns A
-
-INNER JOIN user_CONSTRAINTS C
-ON
-A.TABLE_NAME       = C.TABLE_NAME
-AND A.CONSTRAINT_NAME  = C.CONSTRAINT_NAME
---retrieve only primary key constraints
-AND C.CONSTRAINT_TYPE IN ('P')) PK_INFO
-ON PK_INFO.TABLE_NAME = DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE;
-
-
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_ID IS 'Primary Key for the SPT_DATA_STREAMS table';
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_CODE IS 'The code for the given data stream';
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_NAME IS 'The name for the given data stream';
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_DESC IS 'The description for the given data stream';
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PK_FIELD IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
-COMMENT ON COLUMN DVM_DATA_STREAMS_V.DATA_STREAM_PAR_TABLE IS 'The Data stream''s parent table name (used when evaluating QC validation criteria to specify a given parent table)';
-
-
-COMMENT ON TABLE DVM_DATA_STREAMS_V IS 'Data Streams (View)
-
-This query returns all data streams that are implemented in the data validation module.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter error records based on the given context of the processing/validation.  This view also returns the PK field name for each of the data streams based on the value of DATA_STREAM_PAR_TABLE using the current schema''s data dictionary';
 
 
 
@@ -1443,33 +1446,3 @@ DROP COLUMN ERR_TYPE_COMMENT_TEMPLATE;
 
 ALTER TABLE DVM_ERROR_TYPES RENAME COLUMN ERR_TYPE_COMMENT_TEMP TO ERR_TYPE_COMMENT_TEMPLATE;
 
-
-
-
-
-
---QC query for all of the missing fields
-
-CREATE OR REPLACE VIEW DVM_QC_MSG_MISSING_FIELDS_V AS 
-select DATA_STREAM_CODE,
-DATA_STREAM_DESC,
-DATA_STREAM_ID,
-DATA_STREAM_NAME,
-DATA_STREAM_PK_FIELD,
-ERROR_TYPE_ID,
-ERR_SEVERITY_CODE,
-ERR_SEVERITY_DESC,
-ERR_SEVERITY_ID,
-ERR_SEVERITY_NAME,
-ERR_TYPE_ACTIVE_YN,
-ERR_TYPE_COMMENT_TEMPLATE,
-ERR_TYPE_DESC,
-ERR_TYPE_NAME,
-IND_FIELD_NAME,
-OBJECT_NAME,
-QC_OBJECT_ID,
-QC_OBJ_ACTIVE_YN,
-QC_SORT_ORDER,
-DVM_PKG.QC_MISSING_QUERY_FIELDS(ERR_TYPE_COMMENT_TEMPLATE, OBJECT_NAME) MISSING_VIEW_FIELDS
-
-from DVM_QC_CRITERIA_V WHERE DVM_PKG.QC_MISSING_QUERY_FIELDS(ERR_TYPE_COMMENT_TEMPLATE, OBJECT_NAME) IS NOT NULL;
