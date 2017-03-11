@@ -1,0 +1,220 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AB612A7A-D394-DF5F-4E38-1201C279A263" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_ERR_RES_TYPES">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:10 UTC</createdTime>
+<commentInRDBMS>Error Resolution Types&lt;br/&gt;&lt;br/&gt;This is a reference table that defines all error resolutions types that will be used to define the status of a given QC data validation issue.  When an error is marked as resolved it will have an annotation to explain the resolution of the error.  The types of error resolutions include no data available, manually reviewed and accepted, no resolution can be reached yet.  Certain error resolutions types will cause an error to be filtered out from the standard error reports.</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ERR_RES_TYPE_ID" id="ED0338CA-4E0E-3095-29EB-0FD9A66F9CF7">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>ERR_RES_TYPE_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>Primary Key for the SPT_ERR_RES_TYPES table</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_RES_TYPE_CODE" id="EAF51B78-3C49-CFEC-B4AE-6B7E1270CD44">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>ERR_RES_TYPE_CODE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The Error Resolution Type code</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_RES_TYPE_NAME" id="61FE4905-7797-55CE-98B9-A674E00974A4">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>ERR_RES_TYPE_NAME</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The Error Resolution Type name</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200 BYTE</dataTypeSize>
+<ownDataTypeParameters>200 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_RES_TYPE_DESC" id="FF582610-AFB8-4361-B7DC-5B8C983AA3FA">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>ERR_RES_TYPE_DESC</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The Error Resolution Type description</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000 BYTE</dataTypeSize>
+<ownDataTypeParameters>1000 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="F193E941-15C4-9E1D-7D01-46E4F76EF323">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The date on which this record was created in the database</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="446FCFBB-D5EB-9782-947A-FA5152A9AB90">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The Oracle username of the person creating this record in the database</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_DATE" id="D53E0DDB-2B05-2FCE-EFD8-6A225F5A341D">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>LAST_MOD_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The last date on which any of the data in this record was changed</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_BY" id="3F036D91-8436-A3B5-FEB2-9DF90BD6AF19">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_ERR_RES_TYPES</sourceObjSchema>
+<sourceObjName>LAST_MOD_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The Oracle username of the person making the most recent change to this record</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3456A69C-C740-882D-2DF8-E442C5CFACB5" name="DVM_ERR_RES_TYPES_PK">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="ED0338CA-4E0E-3095-29EB-0FD9A66F9CF7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F0D1BC43-BA18-8C9C-4CC9-97342E1869EB" name="DVM_ERR_RES_TYPES_U1">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EAF51B78-3C49-CFEC-B4AE-6B7E1270CD44"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="CE2605C2-BEFC-9A35-BB4A-705395594E00" name="DVM_ERR_RES_TYPES_U2">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_U2</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="61FE4905-7797-55CE-98B9-A674E00974A4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4DFA57C0-1837-E11D-F696-9339B9062EEA" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_ERR_RES_TYPES_PK">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="ED0338CA-4E0E-3095-29EB-0FD9A66F9CF7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0BDDD4E4-E0E1-850C-0BC9-C260ED7C57A0" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_ERR_RES_TYPES_U1">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EAF51B78-3C49-CFEC-B4AE-6B7E1270CD44"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4D72A91C-8F73-72EF-6F5F-7B535B39C29B" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_ERR_RES_TYPES_U2">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_RES_TYPES_U2</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="61FE4905-7797-55CE-98B9-A674E00974A4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

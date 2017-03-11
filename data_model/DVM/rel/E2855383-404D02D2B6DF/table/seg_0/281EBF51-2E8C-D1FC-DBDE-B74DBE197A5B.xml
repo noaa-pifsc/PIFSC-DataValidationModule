@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="281EBF51-2E8C-D1FC-DBDE-B74DBE197A5B" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_PTA_ERRORS">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:10 UTC</createdTime>
+<commentInRDBMS>Error Types/Errors (PTA)&lt;br/&gt;&lt;br/&gt;This table represents a generalized intersection table that allows multiple Error and Error Type Association records to reference this consolidated table that allows multiple Errors and Error Types to be associated with the given parent table record (e.g. SPT_VESSEL_TRIPS, SPT_UL_TRANSACTIONS, SPT_CANN_TRANSACTIONS, etc.).</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="PTA_ERROR_ID" id="B97F57FE-80FE-FA8A-A7FB-ABBC398ECE76">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>PTA_ERROR_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>Primary Key for the SPT_PTA_ERRORS table</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="A81D8833-A566-0B93-6982-91705EDB0F9C">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The date on which this record was created in the database (indicates when the given associated data stream parent record was first evaluated)</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_EVAL_DATE" id="8EB090C4-F356-CF63-0D4E-C0D2E43049DC">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>LAST_EVAL_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<commentInRDBMS>The date on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated</commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="C25A231C-A121-3C49-F654-CA8547BF861C" name="DVM_PTA_ERRORS_PK">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B97F57FE-80FE-FA8A-A7FB-ABBC398ECE76"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1FC97CFD-789A-E2B9-298B-EE30828CA278" schemaObject="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F" name="DVM_PTA_ERRORS_PK">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B97F57FE-80FE-FA8A-A7FB-ABBC398ECE76"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

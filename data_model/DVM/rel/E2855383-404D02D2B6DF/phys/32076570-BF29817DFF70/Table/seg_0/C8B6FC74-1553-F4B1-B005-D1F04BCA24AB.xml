@@ -1,0 +1,119 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="DVM_ERR_SEVERITY" directorySegmentName="seg_0" id="C8B6FC74-1553-F4B1-B005-D1F04BCA24AB">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>ACD87B64-5EC6-2F15-E204-9A80B82DDA7F</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>AB443035-6039-DB0A-3C7B-508F64DF0EFB</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="ERR_SEVERITY_ID" id="477423E8-C440-F2F8-74C5-A14A80FF7C68">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ERR_SEVERITY_DESC" id="602D2CBB-3DFC-2935-5FC8-05882EDACC31">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ERR_SEVERITY_NAME" id="7B695A7A-2A6A-6115-ECF9-98D9E83A4511">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LAST_MOD_BY" id="842447DF-234A-3DDD-28DC-5ADB60B8D37E">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LAST_MOD_DATE" id="9BFA6E68-EA54-4337-F49D-43308C700C78">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATE_DATE" id="AB4119AE-792A-EB30-FE83-B07D8D6A4044">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ERR_SEVERITY_CODE" id="DD992D23-0464-57FC-0A6D-639A6F39A47A">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATED_BY" id="F2821F7C-5C10-B571-4C44-25D141300488">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ERR_SEVERITY_U1" id="205D0B9C-A3D8-7834-AF62-A3F6B2DE9E07">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>ACD87B64-5EC6-2F15-E204-9A80B82DDA7F</schemaObject>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ERR_SEVERITY_PK" id="E25E5139-7EF2-DE7D-D620-3EFA1F4169B9">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>ACD87B64-5EC6-2F15-E204-9A80B82DDA7F</schemaObject>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ERR_SEVERITY_U2" id="E8FFAE44-3BB6-8F48-DCF5-FED82251116D">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>ACD87B64-5EC6-2F15-E204-9A80B82DDA7F</schemaObject>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+</IndexProxy>
+</indexProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="DVM_ERR_SEVERITY_PK" id="42776EE3-2FF8-E45C-BBBD-958EF18E73C3">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+<existingIndex>E25E5139-7EF2-DE7D-D620-3EFA1F4169B9</existingIndex>
+<indexSegment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+<uniqueKeys>
+<UniqueKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UniqueOraclev10g" name="DVM_ERR_SEVERITY_U2" id="44611403-F9E8-A30E-2233-991571CCA5D9">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+<existingIndex>E8FFAE44-3BB6-8F48-DCF5-FED82251116D</existingIndex>
+<indexSegment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</UniqueKey>
+<UniqueKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UniqueOraclev10g" name="DVM_ERR_SEVERITY_U1" id="D2CD4473-5F4C-19EF-E0CB-0E0787DABF5C">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</segment>
+<tableSpace>1B1C5198-6A9E-768E-25D3-4BE58A866AAF</tableSpace>
+<existingIndex>205D0B9C-A3D8-7834-AF62-A3F6B2DE9E07</existingIndex>
+<indexSegment>F68071C6-0DB0-9C8B-4B69-46A0E72487A8</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</UniqueKey>
+</uniqueKeys>
+</TableProxyOraclev11g>

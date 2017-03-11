@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableSpaceOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TableSpaceOraclev10g" name="SPTT" directorySegmentName="seg_0" id="1B1C5198-6A9E-768E-25D3-4BE58A866AAF">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>SPTT</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<emUniformSize>0</emUniformSize>
+<extentManagement>LOCAL</extentManagement>
+</TableSpaceOraclev10g>

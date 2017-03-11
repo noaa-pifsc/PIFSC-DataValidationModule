@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="7CDFEBE5-27A5-00C2-2C4D-ECCEE83FF8EC" containerWithKeyObject="18421380-9FD1-732D-822A-03C1AC793D1F" localFKIndex="2FC2B0E7-DB2A-8561-4668-CDC0CF887A12" name="DVM_ERROR_TYPES_FK3">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_FK3</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>2EE28A7C-EF88-D4BD-2D15-454ACA5877E9</referredTableID>
+<keyObject>1BF8F8A8-051C-6327-2177-DFD562253FF4</keyObject>
+<referredKeyID>1BF8F8A8-051C-6327-2177-DFD562253FF4</referredKeyID>
+<mandatory>false</mandatory>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_ERR_SEVERITY_AUTO_BRI" directorySegmentName="seg_0" id="101563EB-03C4-DA58-A034-AE88F1B2A078">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_ERR_SEVERITY_AUTO_BRI</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;select DVM_ERR_SEVERITY_SEQ.nextval into :new.ERR_SEVERITY_ID from dual;&lt;br/&gt;end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>6F17A9E2-89C2-EAED-C2B3-0BD2812A4C9E</owner>
+<table>C8B6FC74-1553-F4B1-B005-D1F04BCA24AB</table>
+</TriggerOraclev10g>

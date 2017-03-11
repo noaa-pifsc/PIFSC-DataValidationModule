@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_PTA_ERRORS_AUTO_BRI" directorySegmentName="seg_0" id="9CF08D5B-391C-D851-4BCB-2D48C0EA89F8">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjSchema>SPTT_DATA_VALIDATOR</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS_AUTO_BRI</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:12 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>INSERT</actions>
+<body>begin&lt;br/&gt;select DVM_PTA_ERRORS_SEQ.nextval into :new.PTA_ERROR_ID from dual;&lt;br/&gt;end;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>6F17A9E2-89C2-EAED-C2B3-0BD2812A4C9E</owner>
+<table>281EBF51-2E8C-D1FC-DBDE-B74DBE197A5B</table>
+</TriggerOraclev10g>

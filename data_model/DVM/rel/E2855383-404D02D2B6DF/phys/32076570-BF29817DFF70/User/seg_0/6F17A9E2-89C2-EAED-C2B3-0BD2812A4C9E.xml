@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="SPTT_DATA_VALIDATOR" directorySegmentName="seg_0" id="6F17A9E2-89C2-EAED-C2B3-0BD2812A4C9E">
+<sourceConnName>PICD_SPTT_DATA_VALIDATOR</sourceConnName>
+<sourceObjName>SPTT_DATA_VALIDATOR</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2017-03-11 02:33:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>ACD87B64-5EC6-2F15-E204-9A80B82DDA7F</schemaObject>
+</UserOraclev10g>
