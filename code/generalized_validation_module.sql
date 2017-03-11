@@ -323,20 +323,161 @@ CREATE SEQUENCE DVM_QC_OBJECTS_SEQ INCREMENT BY 1 START WITH 146;
 
 --create replacement triggers with new naming convention prefix (DVM)
 --these scripts were generated using the define_naming_convention_simple_triggers.sql scripting file:
-CREATE OR REPLACE TRIGGER DVM_DATA_STREAMS_AUTO_BRI
-before insert on DVM_DATA_STREAMS
+
+
+
+
+
+
+CREATE OR REPLACE TRIGGER DVM_ERRORS_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_ERRORS FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+CREATE OR REPLACE TRIGGER DVM_ERROR_TYPES_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_ERROR_TYPES FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+CREATE OR REPLACE TRIGGER DVM_QC_OBJECTS_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_QC_OBJECTS FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER DVM_ERR_SEVERITY_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_ERR_SEVERITY FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+CREATE OR REPLACE TRIGGER DVM_DATA_STREAMS_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_DATA_STREAMS FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+CREATE OR REPLACE TRIGGER DVM_ERR_RES_TYPES_AUTO_BRU BEFORE
+  UPDATE
+    ON DVM_ERR_RES_TYPES FOR EACH ROW 
+    BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+/
+
+
+
+create or replace TRIGGER DVM_ERRORS_AUTO_BRI
+before insert on DVM_ERRORS
 for each row
 begin
-select DVM_DATA_STREAMS_SEQ.nextval into :new.DATA_STREAM_ID from dual;
+  select DVM_ERRORS_SEQ.nextval into :new.ERROR_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
 end;
 /
-CREATE OR REPLACE TRIGGER DVM_QC_OBJECTS_AUTO_BRI
+
+create or replace TRIGGER DVM_ERROR_TYPES_AUTO_BRI
+before insert on DVM_ERROR_TYPES
+for each row
+begin
+  select DVM_ERROR_TYPES_SEQ.nextval into :new.ERROR_TYPE_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+/
+
+create or replace TRIGGER DVM_QC_OBJECTS_AUTO_BRI
 before insert on DVM_QC_OBJECTS
 for each row
 begin
-select DVM_QC_OBJECTS_SEQ.nextval into :new.QC_OBJECT_ID from dual;
+  select DVM_QC_OBJECTS_SEQ.nextval into :new.QC_OBJECT_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
 end;
 /
+
+
+
+create or replace TRIGGER DVM_ERR_SEVERITY_AUTO_BRI
+before insert on DVM_ERR_SEVERITY
+for each row
+begin
+  select DVM_ERR_SEVERITY_SEQ.nextval into :new.ERR_SEVERITY_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+/
+
+create or replace TRIGGER DVM_DATA_STREAMS_AUTO_BRI
+before insert on DVM_DATA_STREAMS
+for each row
+begin
+  select DVM_DATA_STREAMS_SEQ.nextval into :new.DATA_STREAM_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+/
+
+create or replace TRIGGER DVM_ERR_RES_TYPES_AUTO_BRI
+before insert on DVM_ERR_RES_TYPES
+for each row
+begin
+  select DVM_ERR_RES_TYPES_SEQ.nextval into :new.ERR_RES_TYPE_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE OR REPLACE TRIGGER DVM_PTA_ERR_TYP_ASSOC_AUTO_BRI
 before insert on DVM_PTA_ERR_TYP_ASSOC
 for each row
@@ -344,6 +485,9 @@ begin
 select DVM_PTA_ERR_TYP_ASSOC_SEQ.nextval into :new.PTA_ERR_TYP_ASSOC_ID from dual;
 end;
 /
+
+
+
 CREATE OR REPLACE TRIGGER DVM_PTA_ERRORS_AUTO_BRI
 before insert on DVM_PTA_ERRORS
 for each row
@@ -351,34 +495,9 @@ begin
 select DVM_PTA_ERRORS_SEQ.nextval into :new.PTA_ERROR_ID from dual;
 end;
 /
-CREATE OR REPLACE TRIGGER DVM_ERR_SEVERITY_AUTO_BRI
-before insert on DVM_ERR_SEVERITY
-for each row
-begin
-select DVM_ERR_SEVERITY_SEQ.nextval into :new.ERR_SEVERITY_ID from dual;
-end;
-/
-CREATE OR REPLACE TRIGGER DVM_ERR_RES_TYPES_AUTO_BRI
-before insert on DVM_ERR_RES_TYPES
-for each row
-begin
-select DVM_ERR_RES_TYPES_SEQ.nextval into :new.ERR_RES_TYPE_ID from dual;
-end;
-/
-CREATE OR REPLACE TRIGGER DVM_ERROR_TYPES_AUTO_BRI
-before insert on DVM_ERROR_TYPES
-for each row
-begin
-select DVM_ERROR_TYPES_SEQ.nextval into :new.ERROR_TYPE_ID from dual;
-end;
-/
-CREATE OR REPLACE TRIGGER DVM_ERRORS_AUTO_BRI
-before insert on DVM_ERRORS
-for each row
-begin
-select DVM_ERRORS_SEQ.nextval into :new.ERROR_ID from dual;
-end;
-/
+
+
+
 
 --recompile all invalid triggers:
 begin FOR cur IN (SELECT OBJECT_NAME, OBJECT_TYPE, owner FROM all_objects WHERE object_type in ('TRIGGER') and owner = sys_context( 'userenv', 'current_schema' ) AND status = 'INVALID' ) LOOP 
