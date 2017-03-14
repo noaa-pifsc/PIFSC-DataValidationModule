@@ -3,7 +3,7 @@
 DECLARE
     
     --declare variable for storing data stream codes
-    P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
 
     --declare variable for numeric surrogate primary key
     P_PK_ID NUMBER;

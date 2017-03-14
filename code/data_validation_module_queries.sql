@@ -21,7 +21,7 @@ delete from dvm_pta_errors where PTA_ERROR_ID IN (SELECT pta_error_id from spt_v
 --sample usage for data validation module:
 --define :vtid as the VESS_TRIP_ID of the SPT_VESSEL_TRIPS parent record that is being validated
 DECLARE
-    P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
     P_PK_ID NUMBER;
 BEGIN
     -- Modify the code to initialize the variable

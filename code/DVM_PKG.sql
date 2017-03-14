@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE DVM_PKG IS
 /*
     --sample usage for data validation module:
     DECLARE
-        P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+        P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
         P_PK_ID NUMBER;
     BEGIN
         -- Modify the code to initialize the variable
@@ -160,7 +160,7 @@ CREATE OR REPLACE PACKAGE BODY DVM_PKG IS
 /*
 --sample usage for data validation module:
 DECLARE
-    P_DATA_STREAM_CODE SPTT_DATA_VALIDATOR.DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
     P_PK_ID NUMBER;
 BEGIN
     -- Modify the code to initialize the variable

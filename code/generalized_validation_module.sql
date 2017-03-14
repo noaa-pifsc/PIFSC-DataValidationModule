@@ -144,7 +144,7 @@ drop sequence SPT_PTA_ERROR_TYPES_SEQ;
 
 drop trigger SPT_PTA_ERROR_TYPES_AUTO_BRI;
 
-drop table "SPTT_DATA_VALIDATOR"."DVM_PTA_ERROR_TYPES" cascade constraints PURGE;
+drop table "DVM_PTA_ERROR_TYPES" cascade constraints PURGE;
 
 
 drop synonym DAT_STRM;
