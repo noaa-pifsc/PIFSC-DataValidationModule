@@ -469,7 +469,7 @@ END;
     
     BEGIN
     
-        DBMS_OUTPUT.PUT_LINE('running RETRIEVE_DATA_STREAM_INFO()');
+--        DBMS_OUTPUT.PUT_LINE('running RETRIEVE_DATA_STREAM_INFO()');
     
         --construct the bind variables and display variable for the data stream code(s):
         GENERATE_PLACEHOLDERS (v_data_stream_codes, v_data_str_placeholder_string, v_data_str_placeholder_array, v_data_stream_code_string);
@@ -530,7 +530,7 @@ END;
         --check how many rows were returned by the data stream query, only one parent record should be indicated even if there are multiple data stream codes defined since only one parent record can be validated at a time with the module and if more than one parent record are returned the PK value would indicate more than one separate record:       
         IF (v_row_counter = 1) THEN
             --there was one row returned by the query, continue processing the parent record:
-            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were found in the database');
+--            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were found in the database');
 
 
             --define the return code that indicates that the processing should continue because a single parent record was identified by the query:
@@ -539,7 +539,7 @@ END;
         ELSIF (v_row_counter = 0) THEN
             --no rows were returned by the query, no parent record was indicated.  Stop the processing since the parent record cannot be determined:
 
-            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were not found in the database');
+--            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" were not found in the database');
 
             --define the return code that indicates that there was processing error due to the query results:
             p_proc_return_code := 0;
@@ -547,7 +547,7 @@ END;
         ELSE
             --more than one row was returned by the query which indicates that multiple parent records are associated.  Stop the processing
 
-            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" identified more than one parent table, only one parent table can be validated at a time');
+--            DBMS_OUTPUT.PUT_LINE('The data stream code(s) "'||v_data_stream_code_string||'" identified more than one parent table, only one parent table can be validated at a time');
 
             --define the return code that indicates that there was processing error due to the query results:
             p_proc_return_code := -1;
@@ -585,7 +585,7 @@ END;
     
     BEGIN
 
-        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_PARENT_REC()');
+--        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_PARENT_REC()');
     
     
         --construct the SQL query the parent table to see if the record exists:
@@ -633,7 +633,7 @@ END;
     
     BEGIN
 
-        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_PARENT_ERROR_REC()');
+--        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_PARENT_ERROR_REC()');
     
     
         --construct the query to check if the parent error record (DVM_PTA_ERRORS) already exists, if so then re-use that PTA_ERROR_ID otherwise query for all of the active data validation criteria:
@@ -722,7 +722,7 @@ END;
             
     BEGIN
 
-        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_QC_CRITERIA()');
+--        DBMS_OUTPUT.PUT_LINE('Running RETRIEVE_QC_CRITERIA()');
     
     
         --check if this is the first time this parent record has been validated:
@@ -765,7 +765,7 @@ END;
                 --retrieve column metadata from query results (the select list is known at compile time so it is already known that only numeric and character data types are used).  Check the data type of the current column
                 
                 
-                DBMS_OUTPUT.PUT_LINE('The current col name is: ' ||desctab(i).col_name || ' col type is: '|| desctab(i).col_type);
+--                DBMS_OUTPUT.PUT_LINE('The current col name is: ' ||desctab(i).col_name || ' col type is: '|| desctab(i).col_type);
                 
                 IF desctab(i).col_type = 2 THEN
                     --this is a numeric value:
@@ -1039,13 +1039,13 @@ END;
     
     BEGIN
     
-        DBMS_OUTPUT.PUT_LINE('running ASSOC_PARENT_ERROR_REC ()');
+--        DBMS_OUTPUT.PUT_LINE('running ASSOC_PARENT_ERROR_REC ()');
     
         --construct the query to update the parent table to associate it with the new parent error record::
         v_temp_SQL := 'UPDATE '||v_data_stream_par_table||' SET PTA_ERROR_ID = :pta_errid WHERE '||v_data_stream_pk_field||' = :pkid';
         
 
-        DBMS_OUTPUT.PUT_LINE('v_temp_SQL is: '||v_temp_SQL);
+--        DBMS_OUTPUT.PUT_LINE('v_temp_SQL is: '||v_temp_SQL);
         
         --execute the query
         EXECUTE IMMEDIATE v_temp_SQL USING v_PTA_ERROR.PTA_ERROR_ID, v_PK_ID;
@@ -1105,7 +1105,7 @@ END;
     
     BEGIN
    
-        DBMS_OUTPUT.PUT_LINE('running EVAL_QC_CRITERIA ()');
+--        DBMS_OUTPUT.PUT_LINE('running EVAL_QC_CRITERIA ()');
 
         --initialize the tracking variable for the processing loop:
         v_current_QC_OBJ_ID := NULL;
@@ -1195,13 +1195,13 @@ END;
         IF (v_continue) THEN
             --the QC criteria was processed successfully, loop through each of the error records that were defined in the package variable by the POPULATE_ERROR_REC() procedure:
             
-            DBMS_OUTPUT.PUT_LINE('insert all of the DVM errors, there are '||v_error_rec_table.COUNT||' errors to load');
+--            DBMS_OUTPUT.PUT_LINE('insert all of the DVM errors, there are '||v_error_rec_table.COUNT||' errors to load');
 
             --check if this is the first time the given record has been validated:
             IF NOT (v_first_validation) THEN
                 --this is not the first time the given record has been validated, check the pending error records against the existing ones:
 
-                DBMS_OUTPUT.PUT_LINE('This is a revalidation attempt, attempt to purge resolved errors, and add the new errors');
+--                DBMS_OUTPUT.PUT_LINE('This is a revalidation attempt, attempt to purge resolved errors, and add the new errors');
 
                 
                 --determine all of the ERROR_ID values of the existing error records that should be deleted (those are the existing error records that do not match a pending error record's generated error description)
@@ -1212,7 +1212,7 @@ END;
                 --store the existing error records in v_existing_error_rec_table:
                 EXECUTE IMMEDIATE v_temp_SQL BULK COLLECT INTO v_existing_error_rec_table USING v_PTA_ERROR.PTA_ERROR_ID;
                 
-                DBMS_OUTPUT.PUT_LINE ('There are '||v_existing_error_rec_table.COUNT||' existing error records, compare them to the pending errors to determine which should be deleted, maintained, or added');
+--                DBMS_OUTPUT.PUT_LINE ('There are '||v_existing_error_rec_table.COUNT||' existing error records, compare them to the pending errors to determine which should be deleted, maintained, or added');
                 
                 --loop through and compare all existing error records to the pending error records:
                 v_existing_error_rec_counter := v_existing_error_rec_table.FIRST;
@@ -1220,7 +1220,7 @@ END;
                 --begin the loop through the existing error records:
                 WHILE v_existing_error_rec_counter IS NOT NULL LOOP 
                     
-                    DBMS_OUTPUT.PUT_LINE ('Looping through the existing error record ('||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_ID||') description: '||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_DESCRIPTION);
+--                    DBMS_OUTPUT.PUT_LINE ('Looping through the existing error record ('||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_ID||') description: '||v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_DESCRIPTION);
                     
                     
                     --loop through all pending error records::
@@ -1229,14 +1229,14 @@ END;
                     --start the loop:
                     WHILE v_error_rec_counter IS NOT NULL LOOP
                     
-                        DBMS_OUTPUT.PUT_LINE ('Looping through the pending error record: '||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
+--                        DBMS_OUTPUT.PUT_LINE ('Looping through the pending error record: '||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
 
 
                         --check if the current existing error description and error_type_ID matches the pending error description:
                         IF (v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION = v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_DESCRIPTION) AND (v_error_rec_table(v_error_rec_counter).ERROR_TYPE_ID = v_existing_error_rec_table(v_existing_error_rec_counter).ERROR_TYPE_ID) THEN
                             --the current existing error description and error_type_ID matches the pending error description
                             
-                            DBMS_OUTPUT.PUT_LINE ('The Pending and Existing record description and error_type_ID match, remove both the pending and existing nested table elements');
+--                            DBMS_OUTPUT.PUT_LINE ('The Pending and Existing record description and error_type_ID match, remove both the pending and existing nested table elements');
                             
                         
                             --remove the current pending error record from the nested table variable:
@@ -1293,7 +1293,7 @@ END;
             v_temp_SQL := 'INSERT INTO DVM_ERRORS (PTA_ERROR_ID, ERROR_DESCRIPTION, CREATE_DATE, CREATED_BY, ERROR_TYPE_ID) VALUES (:p01, :p02, SYSDATE, :p03, :p04)';
 
 
-            DBMS_OUTPUT.PUT_LINE('insert all of the unmatched pending error records ('||v_error_rec_table.COUNT||' total)');
+--            DBMS_OUTPUT.PUT_LINE('insert all of the unmatched pending error records ('||v_error_rec_table.COUNT||' total)');
 
             --loop through each element in the v_error_rec_table package variable:
             v_error_rec_counter := v_error_rec_table.FIRST;
@@ -1301,7 +1301,7 @@ END;
             --start the loop:
             WHILE v_error_rec_counter IS NOT NULL LOOP
                 
-                DBMS_OUTPUT.PUT_LINE('insert the error with error description: "'||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
+--                DBMS_OUTPUT.PUT_LINE('insert the error with error description: "'||v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION);
                 
                 --execute the QC criteria error record insert query using the current v_error_rec_table package variable:
                 EXECUTE IMMEDIATE v_temp_SQL USING v_error_rec_table(v_error_rec_counter).PTA_ERROR_ID, v_error_rec_table(v_error_rec_counter).ERROR_DESCRIPTION, sys_context( 'userenv', 'current_schema' ), v_error_rec_table(v_error_rec_counter).ERROR_TYPE_ID;
@@ -1376,7 +1376,7 @@ END;
     
     BEGIN
 
-        DBMS_OUTPUT.PUT_LINE('running PROCESS_QC_CRITERIA ('||p_begin_pos||', '||p_end_pos||')');
+--        DBMS_OUTPUT.PUT_LINE('running PROCESS_QC_CRITERIA ('||p_begin_pos||', '||p_end_pos||')');
 
         --initialize the v_continue variable:
         v_continue := true;
@@ -1390,7 +1390,7 @@ END;
         --construct the QC query to be executed:
         v_temp_SQL := 'SELECT * FROM '||ALL_CRITERIA(p_begin_pos).OBJECT_NAME||' WHERE '||ALL_CRITERIA(p_begin_pos).DATA_STREAM_PK_FIELD||' = :pkid';
 
-        DBMS_OUTPUT.PUT_LINE('the value of the QC query to be executed is: '||v_temp_SQL);
+--        DBMS_OUTPUT.PUT_LINE('the value of the QC query to be executed is: '||v_temp_SQL);
 
         -- Open REF CURSOR variable:
         OPEN src_cur FOR v_temp_SQL USING v_PK_ID;
@@ -1401,7 +1401,7 @@ END;
         --retrieve the result set column information:
         DBMS_SQL.DESCRIBE_COLUMNS(curid, colcnt, desctab);
 
-        DBMS_OUTPUT.PUT_LINE ('fetching column descriptions');
+--        DBMS_OUTPUT.PUT_LINE ('fetching column descriptions');
 
         -- loop through each column and defined the data type of each column dynamically:
         FOR i IN 1 .. colcnt LOOP
@@ -1435,7 +1435,7 @@ END;
       
         END LOOP;
       
-        DBMS_OUTPUT.PUT_LINE ('fetching rows');
+--        DBMS_OUTPUT.PUT_LINE ('fetching rows');
               
         
         -- Fetch rows with DBMS_SQL package to loop through the result set:
@@ -1466,7 +1466,7 @@ END;
                   --the current QC criteria was evaluated as an error, generate the error message:
                   
                   
-                  DBMS_OUTPUT.PUT_LINE ('The IND_FIELD_NAME ('||ALL_CRITERIA(j).IND_FIELD_NAME||') is ''Y'', evaluate the error description and save the error information');
+--                  DBMS_OUTPUT.PUT_LINE ('The IND_FIELD_NAME ('||ALL_CRITERIA(j).IND_FIELD_NAME||') is ''Y'', evaluate the error description and save the error information');
                   --populate the error rec based on the current QC criteria that was evaluated to true:
                   POPULATE_ERROR_REC (curid, j, v_temp_error_rec, v_proc_return_code);
               
@@ -1538,12 +1538,12 @@ END;
     BEGIN
         
         
-        DBMS_OUTPUT.PUT_LINE('Running POPULATE_ERROR_REC('||QC_criteria_pos||')');
+--        DBMS_OUTPUT.PUT_LINE('Running POPULATE_ERROR_REC('||QC_criteria_pos||')');
         
         --set the temp_error_message to the given error type comment template:
         temp_error_message := ALL_CRITERIA(QC_criteria_pos).ERR_TYPE_COMMENT_TEMPLATE;
         
-        DBMS_OUTPUT.PUT_LINE('The value of temp_error_message before any replacements is: '||temp_error_message);
+--        DBMS_OUTPUT.PUT_LINE('The value of temp_error_message before any replacements is: '||temp_error_message);
         
         --loop through each field and replace each placeholder value with the corresponding result set row value:
         
@@ -1595,7 +1595,7 @@ END;
         
         
     
-        DBMS_OUTPUT.PUT_LINE('The value of the replaced temp_error_message is: '||temp_error_message);
+--        DBMS_OUTPUT.PUT_LINE('The value of the replaced temp_error_message is: '||temp_error_message);
 
         --set the attribute information for the given error message so the calling procedure can process the current QC validation error:
         error_rec.ERROR_DESCRIPTION := temp_error_message;
