@@ -151,7 +151,8 @@ BEGIN
 
     --define the data stream codes for the given data stream (hard-coded due to RPL data stream):
     P_DATA_STREAM_CODE(1) := 'RPL';
-    P_DATA_STREAM_CODE(2) := 'XML';
+--  for all validations on data entered via APEX use only the RPL data stream rules:
+--    P_DATA_STREAM_CODE(2) := 'XML'; 
 
     --query for VESS_TRIP_ID values that are to be batch processed (currently for processing all 2016 RPL data):
     FOR rec IN (SELECT VESS_TRIP_ID FROM SPT_VESSEL_TRIPS WHERE TO_CHAR(VESS_TRIP_DEPART_DTM, 'YYYY') IN ('2016'))
