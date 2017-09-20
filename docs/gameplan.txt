@@ -1,0 +1,357 @@
+--restore DB in data validator 1&2
+
+@C:\Users\jesse.abdul\Documents\Database\export\PIC_SPTT_DDL_only20170306.sql
+@C:\Users\jesse.abdul\Documents\Database\export\PIC_SPTT_View_DDL_only20170306.sql
+
+
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\centralized-tools\SQL scripts\recompile_all_db_objects.sql"
+(2 is complete)
+
+
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\data-validation-module\code\generalized_validation_module.sql"
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\data-validation-module\code\DVM_PKG.sql"
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\data-validation-module\code\data_validation_module_view_DDL.sql"
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\data-validation-module\code\history_pkg_objects.sql"
+(2 is complete)
+
+
+
+
+--update schema for data transfer
+ALTER TABLE "SPT_UL_TRANSACTIONS" MODIFY ("UL_TRANS_END_DATE" NULL);
+ALTER TABLE "SPT_UL_TRANSACTIONS" MODIFY ("UL_TRANS_PORT_DEP_DATE" NULL);
+
+--recompile all objects:
+
+@"C:\Users\jesse.abdul\Documents\Version Control\Git\centralized-tools\SQL scripts\recompile_all_db_objects.sql"
+
+(2 is complete)
+
+
+
+--diff between PIC.SPTT and PICD.SPTT_DATA_VALIDATOR
+(1 is finished with diff)
+
+
+--diff between PIC.SPTT and PICD.SPTT_DATA_VALIDATOR2
+(2 is finished with diff)
+
+
+
+--load data over DB link:
+(1 is finished with data loading)
+(2 is finished with data loading)
+
+
+
+
+--adjust the sequence vals for errors and error assoc and PTA errors
+DROP SEQUENCE DVM_ERRORS_SEQ;
+CREATE SEQUENCE DVM_ERRORS_SEQ NOCACHE INCREMENT BY 1 START WITH 266968;
+DROP SEQUENCE DVM_PTA_ERRORS_SEQ;
+CREATE SEQUENCE DVM_PTA_ERRORS_SEQ NOCACHE INCREMENT BY 1 START WITH 34312;
+DROP SEQUENCE DVM_PTA_ERR_TYP_ASSOC_SEQ;
+CREATE SEQUENCE DVM_PTA_ERR_TYP_ASSOC_SEQ NOCACHE INCREMENT BY 1 START WITH 5036309;
+
+(1 is finished with sequence updates)
+(2 is finished with sequence updates)
+
+
+
+--implement the MV on 1, update the DVM package on 1, execute on all 2016 recs on 1
+(1 is finished with updated implementation)
+
+
+--execute on all 2016 recs on 2
+(2 started 3/18 4:32 PM)
+
+--compare the results and performance of 1 & 2
+1) took 234 seconds (< 4 minutes) - for 2016: 882 existing error record count, 39 new error record count
+2) took 955 seconds (~16 minutes) - for 2016: 882 existing error record count, 39 new error record count
+
+
+
+--spot check the error report for some of the records ()
+
+--check on the BLANK_DB_PAGE_NUM to see if it should be moved to XML validation or disabled
+
+of all data entered into the interface it appears that RPL original activity code, RPL orig page number are not saved in the database - these checks should probably be disabled altogether otherwise they will always be triggered in interface:
+
+
+BLANK_RPL_PAGE_NUM - 102 occurrences:
+
+BLANK_RPL_ACT_CODE - 102 occurrences:
+
+BLANK_DB_PAGE_NUM - 102 occurrences:
+
+
+JIRA content:
+
+I took a look at the data validation module and developed a workaround for the slow performance of the module due to the slow query SPT_QC_EVT_DIST_ISSUE_V by converting it to a materialized that is redefined right before the batch execution (Batch_DVM_execution.sql) is executed in order to refresh the results of the slow query and save in a materialized view of the same name.  The long term solution is to re-engineer the query so that it executes in a timely manner or integrate the materialized view re-definition via a stored procedure that calls the batch PL/SQL code.
+
+I executed the module with the materialized view on the development instance and it took 1/4 of the time that the View implementation took so this module should execute quicker when it is time to run it on the database.  During the weekend it took about 4 minutes but this was during a period where there was little to no activity in the database so it will take longer during business hours.  Once the PL/SQL code begins executing it appears that it will continue to run even if you cancel the task presumably because the code is sent to the server and runs until it errors out of is finished.  The updated code I executed worked on SQL Developer.  
+
+When I took a look at the validation report results from the database I noticed that there were certain errors that were being found each time due to the data (e.g. trip events, set catch, etc.) being entered via the APEX application.  As a result I disabled three trip event-level validation criteria (IND_FIELD_NAME: BLANK_RPL_PAGE_NUM, BLANK_RPL_ACT_CODE, BLANK_DB_PAGE_NUM) that appeared to occur on each new trip event entered into the database (saved in Git in code\disable_rpl_header_validation.sql).  The APEX application should be reviewed to determine any additional validation checks that will always evaluate to true if they are entered via the APEX application and they should also be documented/updated in the same way that I updated the three error types mentioned earlier.
+
+
+
+
+
+[provide guidance on how to identify errors that are new occurences and tally by error type]
+
+
+
+
+
+
+
+
+
+
+I have executed the data validation module with the updated rules on the production database and have uploaded the updated data validation report to: [GDrive Address]
+
+Chris and Haiying please do a Git Pull to get the updated Batch_DVM_execution.sql code before attempting to execute on the production database.
+
+Please let me know if you have any questions.
+
+Thanks,
+Jesse
+
+
+
+
+
+
+
+
+--re-assign some of the error types to the XML data stream (e.g. total pages, etc.)
+
+
+
+
+
+
+
+
+
+
+--disable the blank RPL error types:
+UPDATE DVM_ERROR_TYPES SET ERR_TYPE_ACTIVE_YN = 'N', ERR_TYPE_DESC = 'JDA (3/19/2017) - Deactivated this Trip Event error type due to the RPL APEX application being deployed into production which does not expose the corresponding database fields in the application interface, so they will always be blank when the Trip Event records are created via the APEX application.  Since all existing RPL RPL trips that have already been validated will continue to evaluate this check the corresponding error types were also deleted from the Error Type Associations (PTA) table' WHERE IND_FIELD_NAME IN ('BLANK_RPL_PAGE_NUM', 'BLANK_RPL_ACT_CODE', 'BLANK_DB_PAGE_NUM');
+
+--delete the Error Type Associations (PTA) records for the disabled RPL error types:
+DELETE FROM DVM_PTA_ERR_TYP_ASSOC WHERE ERROR_TYPE_ID IN (SELECT ERROR_TYPE_ID FROM DVM_ERROR_TYPES WHERE IND_FIELD_NAME IN ('BLANK_RPL_PAGE_NUM', 'BLANK_RPL_ACT_CODE', 'BLANK_DB_PAGE_NUM'));
+
+
+
+
+
+
+
+
+
+--disable the following IND_FIELD_NAMES (moving forward it should no longer be evaluated since ):
+
+BLANK_DB_TOT_PAGES
+BLANK_DB_FRM_VERS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Record tallies:
+908 vessel trips
+
+900 trips that have been validated (DVM_PTA_ERRORS record exists)
+
+904 parent error records (DVM_PTA_ERRORS) - *********Look into this***********
+
+902 parent error records (DVM_PTA_ERRORS) with 172 criteria associated with it (DVM_PTA_ERR_TYP_ASSOC)
+
+
+
+
+
+
+306 
+
+
+
+
+
+
+MIS_ORIG_CATCH_WT - 42
+
+BLANK_RPL_CATCH_WT_CHR_NBR - 33
+
+BLANK_DB_CATCH_WT_MT_NBR - 3
+
+
+MIS_EVT_SCH_CODE - 6
+
+MIS_ACT_CODE - 10
+
+BLANK_RPL_TUNA_CATCH_WT_CHR - 31
+
+
+
+--how do we deal with these errors?  I think we need to disable as active error types and remove them from the PTA_ERR_TYPE_ASSOC table. -- document what happened and why that decision was made (APEX) - does not maintain all of the same fields as the eTunaLog import module so those will always be blank and mismatched.  Move these criteria over to the XML data stream code and document when and why they were moved.  
+
+--update example PL/SQL script to make everything only have 'RPL' data stream code:
+
+
+
+--these fields all seem to be blank on the RPL header when entered via APEX:
+BLANK_DB_FRM_VERS
+BLANK_DB_TOT_PAGES
+
+
+
+
+
+
+
+
+
+
+
+
+run the updated script on PIC.SPTT
+
+
+
+
+
+
+I took a look at the query results you provided and it looks like the script was running on 3/17 on quite a few trips but never completed.  I did some testing on a dev database and made some small modifications to make it run faster for this data freeze, there is a slow query (SPT_QC_EVT_DIST_ISSUE_V) that I added some code to save the trip event distance query results in a materialized view that is very quick to query.  As long as this is run in batch mode it will always save the results of the slow query first and then each validation will be much faster since the slow query is not executing on each parent record (e.g. vessel trip) that is being validated.
+
+
+
+Do a Git pull to get the most recent files to use for the 2016 RPL data freeze.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--update the following IND_FIELD_NAME criteria: (MIDT APP: 520): - based on PIC_SPTT_all_errors_warnings20170320v3.xlsx
+--started 3/20/2017
+
+
+
+X - 1 - BLANK_DB_FRM_VERS - Move this to XML data stream code (guaranteed to have a value in eTunaLog XML files)
+X - 1 - BLANK_DB_TOT_PAGES - move into XML data stream (guaranteed to have a value in eTunaLog XML files)
+
+X - 28 - BLANK_RPL_ARRIVAL_DTM - This field is not exposed in APEX, this condition is already being evaluated in BLANK_DB_ARRIVAL_DTM so this error type has been disabled and removed from the Error Type Associations (PTA) table.  
+
+X - 0 - BLANK_RPL_DEPART_DTM - This field is not exposed in APEX, this condition is already being evaluated in BLANK_DB_DEPART_DTM so this error type has been disabled and removed from the Error Type Associations (PTA) table.  
+
+
+
+_ - 33 - BLANK_RPL_CATCH_WT_CHR_NBR - update to look at CATCH_NUM and RPL_ORIG_CATCH_WT_NUM instead of the CHR fields and change to RPL data stream code.  Also need to maintain the existing errors and annotations (requires testing)
+
+--disable for all 2016-2017 data - this was done to maintain the error annotations that were made on the 2014-2015 data.  
+
+
+
+
+X - 37 - BLANK_RPL_SUB_DTM - This field is not exposed in APEX, disable the check (all trips that violate this criteria are in 2016-2017, also the corresponding BLANK_DB_SUB_DTM criteria check was disabled based on feedback from VAC on 2/16/2016)
+
+
+X - 31 - BLANK_RPL_TUNA_CATCH_WT_CHR - This field is not exposed in APEX, disable the check
+
+
+
+X - 10 - MIS_ACT_CODE - This field is not exposed in APEX
+
+X - 5 - MIS_CATCH_NUM - This field is not exposed in the APEX app, it will always be considered an error
+
+
+
+X - 6 - MIS_EVT_SCH_CODE - APEX does not capture the RPL_ORIG field
+
+
+X - 1 - MIS_OB_FISH_WT - This field is not exposed in APEX
+
+
+X - 42 - MIS_ORIG_CATCH_WT - This field is not exposed in APEX
+
+
+--195 total records should be removed from the errors based on the updated rules that were defined.  Previous count was 1597.  Should be 1402 total when this is done executing
+
+
+--dev query:
+
+select
+ERROR_ID,
+RPL_ORIG_VESS_NAME,
+to_char(VESS_TRIP_DEPART_DTM, 'YYYY-MM-DD') vess_trip_depart_date,
+ERROR_DESCRIPTION,
+ERR_TYPE_NAME,
+--ERR_TYPE_COMMENT_TEMPLATE,
+DATA_STREAM_CODE,
+OBJECT_NAME,
+IND_FIELD_NAME,
+'' "Manual Developer Comment", '' "Notes"
+from DVM_PTA_ERRORS_V
+left join SPT_VESSEL_TRIPS ON (SPT_VESSEL_TRIPS.PTA_ERROR_ID = DVM_PTA_ERRORS_V.PTA_ERROR_ID) 
+where to_char(SPT_VESSEL_TRIPS.vess_trip_depart_dtm, 'YYYY') in ('2016','2017')
+AND ERR_SEVERITY_CODE = 'FATAL' 
+AND ERR_RES_TYPE_ID IS NULL 
+AND ERROR_ID IS NOT NULL
+AND IND_FIELD_NAME NOT IN ('BLANK_DB_FRM_VERS', 'BLANK_DB_TOT_PAGES', 'BLANK_RPL_CATCH_WT_CHR_NBR', 'BLANK_RPL_SUB_DTM', 'BLANK_RPL_TUNA_CATCH_WT_CHR', 'MIS_ACT_CODE', 'MIS_CATCH_NUM', 'MIS_EVT_SCH_CODE', 'MIS_OB_FISH_WT', 'MIS_ORIG_CATCH_WT')
+--AND DATA_STREAM_CODE in ('RPL','XML')
+--and RPL_ORIG_VESS_NAME not like 'e%' 
+--and RPL_ORIG_VESS_NAME not like 'i%' 
+order by RPL_ORIG_VESS_NAME,VESS_TRIP_DEPART_DTM,ERROR_ID;
+
+
+
+--135 errors/warnings should be resolved once the rule changes are made
+
+
+
+
+
+
+
+
+11 trips were entered via the APEX application (XML_FILE_ID is null), these were run with data_stream_code = 'RPL' so all of the XML checks were not evaluated on these particular records
+
+10 - 2017
+1 - 2016
+
