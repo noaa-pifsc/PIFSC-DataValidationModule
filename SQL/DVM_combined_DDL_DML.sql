@@ -3367,3 +3367,15 @@ ALTER TRIGGER "TRG_DVM_QC_OBJECTS_HIST" ENABLE;
 
 --define the upgrade version in the database upgrade log table:
 INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.1', TO_DATE('20-SEP-17', 'DD-MON-YY'), 'Initial implementation of the DB Version Control Module, created all necessary folders and files to define version 0.1 of the DVM');
+
+--------------------------------------------------------
+--version 0.2 updates:
+--------------------------------------------------------
+
+
+insert into DVM_ERR_SEVERITY (ERR_SEVERITY_CODE, ERR_SEVERITY_NAME, ERR_SEVERITY_DESC) values ('WARN', 'Warning', 'Warning that indicates that a given value or set of values is not typical but acceptable');
+insert into DVM_ERR_SEVERITY (ERR_SEVERITY_CODE, ERR_SEVERITY_NAME, ERR_SEVERITY_DESC) values ('FATAL', 'Fatal Data Error', 'Error that indicates that a given value or set of values is invalid and cannot happen based on the business rules and validation criteria.  This must be resolved before the data can be certified.');
+
+
+--define the upgrade version in the database upgrade log table:
+INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.2', TO_DATE('20-SEP-17', 'DD-MON-YY'), 'Updated the module to set some default error severity records (fatal and warnings)');

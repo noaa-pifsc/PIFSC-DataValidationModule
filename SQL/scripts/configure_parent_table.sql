@@ -5,28 +5,4 @@
 
 
 --SQL code to generate the SQL necessary to configure a given data table as a parent record so it can be used in the data validation module.  Copy and paste the code into SQL Developer/Plus and execute on the target database instance to generate the necessary SQL.  Copy and paste the query results to execute on the target database instance:
-SELECT 
-'ALTER TABLE '||:table_name||' 
-ADD (PTA_ERROR_ID NUMBER );
-
-
-ALTER TABLE '||:table_name||'
-ADD CONSTRAINT '||:uk_name||' UNIQUE 
-(
-  PTA_ERROR_ID 
-)
-ENABLE;
-
-
-ALTER TABLE '||:table_name||'
-ADD CONSTRAINT '||:fk_name||' FOREIGN KEY
-(
-  PTA_ERROR_ID 
-)
-REFERENCES DVM_PTA_ERRORS
-(
-  PTA_ERROR_ID 
-)
-ENABLE;
-
-COMMENT ON COLUMN '||:table_name||'.PTA_ERROR_ID IS ''Foreign key reference to the Errors (PTA) intersection table'';' FROM DUAL;
+SELECT 'ALTER TABLE '||:table_name||' ADD (PTA_ERROR_ID NUMBER );'||CHR(10)||'ALTER TABLE '||:table_name||' ADD CONSTRAINT '||:uk_name||' UNIQUE (PTA_ERROR_ID) ENABLE; /'||CHR(10)||'ALTER TABLE '||:table_name||' ADD CONSTRAINT '||:fk_name||' FOREIGN KEY (PTA_ERROR_ID) REFERENCES DVM_PTA_ERRORS (PTA_ERROR_ID) ENABLE; /'||CHR(10)||'COMMENT ON COLUMN '||:table_name||'.PTA_ERROR_ID IS ''Foreign key reference to the Errors (PTA) intersection table'';' FROM DUAL;
