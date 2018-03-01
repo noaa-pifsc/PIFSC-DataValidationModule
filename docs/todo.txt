@@ -1,0 +1,1 @@
+_ compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
