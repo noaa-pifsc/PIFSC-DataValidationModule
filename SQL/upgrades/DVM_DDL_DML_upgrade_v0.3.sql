@@ -1874,4 +1874,4 @@ This history table was implemented using the data history tracking package (svn:
 
 
 --define the upgrade version in the database upgrade log table:
-INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.3', TO_DATE('17-APR-17', 'DD-MON-YY'), 'Updated the DVM_PKG to fix a bug where cursors weren''t closed properly that would cause the following errors:  ORA-00604: error occurred at recursive SQL level 1 and ORA-01000: maximum open cursors exceeded.  Also defined the table object comments for the DVM history tables');
+INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.3', TO_DATE('17-APR-18', 'DD-MON-YY'), 'Updated the DVM_PKG to fix a bug where cursors weren''t closed properly that would cause the following errors:  ORA-00604: error occurred at recursive SQL level 1 and ORA-01000: maximum open cursors exceeded.  Also defined the table object comments for the DVM history tables');
