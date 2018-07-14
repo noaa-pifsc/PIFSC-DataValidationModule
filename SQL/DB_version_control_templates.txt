@@ -3,9 +3,11 @@
 **************************
 
 **Project name qualifier for the heading of code commit messages for projects that have multiple applications/modules in one repository that use the same database**
-**[APPLICATION NAME] is the name of the given application/module that was updated in the code commit**
+**[DATABASE NAME] is the name of the given database module that was updated in the code commit**
 **[SHORT DESCRIPTION] is the short description of the type of code commit (e.g. database upgrade, documentation update, new functionality, etc.)**
---[APPLICATION NAME]: [SHORT DESCRIPTION]--
+**Example: --PIFSC Data Set Database: DB Version Control Module Upgrade--**
+**Note: There should only be one standard commit message heading so when there are application and database upgrades in the same commit combine the information from both into one standard heading (e.g. --PIFSC Data Set Database: Bulk Download Module Code Update--)** 
+--[DATABASE NAME]: [SHORT DESCRIPTION]--
 
 
 **Heading that can be used to define which version of the database was used in a given code commit message:**
@@ -16,6 +18,53 @@
 **Heading that can be used to define which version of the database was defined and used in a given code commit message:**
 **[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.**
 (this version defines and uses version [MAJOR].[MINOR] of the database)
+
+
+**Standard commit message content for upgrading a database module**
+**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+**[DATABASE NAME] is the name of the given database module**
+**Example: Defined version 0.3 of the Data Validation Module Database**
+Defined version [MAJOR].[MINOR] of the [DATABASE NAME] Database
+
+
+**Standard commit message content for installing/upgrading an external database module:**
+**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+**[DATABASE NAME] is the name of the given external database module**
+**[GIT URL] is the git URL for the external database module**
+**Example: Installed version 0.2 of the DB Version Control Module database (Git URL: git@pichub.pifsc.gov:application-development/centralized-tools.git in the DB_version_control folder)**
+Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT URL])
+
+
+	**************************
+	*******GIT TAGS:**********
+	**************************
+	
+	**git tag name for upgrading a database module**
+	**[DATABASE ABBREVIATION] is the abbreviation for the database module**
+	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+	**Example: DVM_db_v0.3**
+	[DATABASE ABBREVIATION]_db_v[MAJOR].[MINOR]
+	
+	**git tag message for upgrading a database module**
+	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+	**[DATABASE NAME] is the name of the database module**
+	**[GIT URL] is the git URL for the database module**
+	**Example: Defined Version 0.3 of the Data Validation Module Database**
+	Defined Version [MAJOR].[MINOR] of the [DATABASE NAME] Database
+	
+	
+	**git tag name for installing/upgrading an external database module:**
+	**[DATABASE ABBREVIATION] is the abbreviation for the external database module**
+	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+	**Example: db_vers_ctrl_db_v0.2**
+	[DATABASE ABBREVIATION]_db_v[MAJOR].[MINOR]
+	
+	**git tag message for installing/upgrading an external database module:**
+	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+	**[DATABASE NAME] is the name of the given external database module**
+	**[GIT URL] is the git URL for the external database module**
+	**Example: Installed version 0.2 of the DB Version Control Module Database (Git URL: git@pichub.pifsc.gov:application-development/centralized-tools.git in the DB_version_control folder)**
+	Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 
 *******************************
@@ -35,14 +84,14 @@
 
 **Heading for the combined DDL/DML file:**
 --------------------------------------------------------
---Combined DDL/DML file:
+--[DATABASE NAME] - Combined DDL/DML file:
 --------------------------------------------------------
 
 
 **Heading for a given database version's upgrade SQL statements**
 **[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.  The exception to the rule is that the first version of a database should be 0.1.  Otherwise when each major version is incremented the minor version should be reset to 0 for that major version (e.g. version 3.0).**
 --------------------------------------------------------
---version [MAJOR].[MINOR] updates:
+--[DATABASE NAME] - version [MAJOR].[MINOR] updates:
 --------------------------------------------------------
 
 
@@ -53,3 +102,15 @@
 **[UPGRADE DESCRIPTION] is the description of the database upgrade that was developed**
 --define the upgrade version in the database upgrade log table:
 INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('[DATABASE NAME]', '[MAJOR].[MINOR]', TO_DATE('[UPGRADE_DATE]', 'DD-MON-YY'), '[UPGRADE DESCRIPTION]');
+
+--commit the DB_UPGRADE_LOGS record insertion
+COMMIT;
+
+
+**When installing a new external database module**
+**Indent the database module code so it is clear that it is part of the database module installation**
+--Installing version [MAJOR].[MINOR] of [DATABASE NAME]--
+
+**When upgrading an existing external database module**
+**Indent the database module code so it is clear that it is part of the database module installation**
+--Upgrading from version [MAJOR].[MINOR] to [MAJOR].[MINOR] of [DATABASE NAME]--
