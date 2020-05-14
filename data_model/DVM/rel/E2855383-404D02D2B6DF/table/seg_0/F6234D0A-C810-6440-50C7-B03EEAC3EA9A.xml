@@ -1,0 +1,254 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F6234D0A-C810-6440-50C7-B03EEAC3EA9A" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_DATA_STREAMS">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Data Streams
+
+This is a reference table that defines all data streams that are implemented in the data validation module.  This reference table is referenced by the DVM_ERROR_TYPES to define the data stream that the given error type is associated with.  Examples of data streams are RPL, eTunaLog, UL, FOT, LFSC.  This is used to filter these records based on the given context of the processing/validation]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>4CCA1999-1CEF-2D72-0C66-5330C3196C28</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="DATA_STREAM_ID" id="8F71E337-2BA8-2AF6-5B34-D4513C6BAAFD">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary Key for the SPT_DATA_STREAMS table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>9DB50E0E-7994-BBBF-DF59-FEC3D8594971</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATA_STREAM_CODE" id="49809DE5-42DF-8875-490E-28441C29D895">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_CODE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The code for the given data stream]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>498F03AF-94B9-E7DF-4BFC-AEEF0936EF75</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATA_STREAM_NAME" id="67BE0CBC-84B7-912C-BA2B-3B7ABC6A20DE">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_NAME</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The name for the given data stream]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>E2E293ED-B3D3-212B-CE4B-71A61E4EA9C5</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 BYTE</dataTypeSize>
+<ownDataTypeParameters>100 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATA_STREAM_DESC" id="961BD5B3-57F8-D342-8739-A76E06E26993">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_DESC</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The description for the given data stream]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>B5E2FE3E-27FB-0476-AE87-C0CE68808CBC</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000 BYTE</dataTypeSize>
+<ownDataTypeParameters>1000 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="5D76F67B-4869-3360-5D4B-14F98F29C218">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date on which this record was created in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>6D63E9ED-330B-2F5D-F435-40D5F519E4E1</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="2DBF75AC-EF4C-A891-8216-8E80E975DA29">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person creating this record in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>7653A48C-0779-7B63-D7DE-8FE34AB0CB4C</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_DATE" id="49DD25EC-FB2E-778C-369C-F0E641ACDB59">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>LAST_MOD_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The last date on which any of the data in this record was changed]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>6DBFEB8E-36B6-27A8-8A54-B7E20FD0430D</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_BY" id="DDE97FC6-F80C-5CA9-2E1E-61DFC9818A46">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>LAST_MOD_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person making the most recent change to this record]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>9AB62AE7-1B7B-D952-6347-31612F8EE9FA</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATA_STREAM_PAR_TABLE" id="52AF7AD2-EF31-7933-0BCF-B5483F669191">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_DATA_STREAMS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_PAR_TABLE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Data stream's parent table name (used when evaluating QC validation criteria to specify a given parent table)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>DD099C06-11E5-3B3B-059A-44E76309ACCD</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="12FF75F1-1168-F9B8-916B-EC6B9D1096BC" name="DVM_DATA_STREAMS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>6C274537-DB93-6C7E-F0F5-9A63DB107C74</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8F71E337-2BA8-2AF6-5B34-D4513C6BAAFD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="788A5207-58DD-5552-74F1-20F173167AFA" name="DVM_DATA_STREAMS_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>65E81D29-BB78-D2FB-EAF3-12B9C5050FC0</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="49809DE5-42DF-8875-490E-28441C29D895"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="94BE10A8-4FF0-05EA-3545-F6C85008332E" name="DVM_DATA_STREAMS_U2">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_U2</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>18C6B34E-1AF5-D870-A6F3-291647DF71A3</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="67BE0CBC-84B7-912C-BA2B-3B7ABC6A20DE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="32808032-F5EE-05B0-CEC4-A5A6D32E071F" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_DATA_STREAMS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>1BFEECF7-383B-272C-DAC0-C7A887ECE9BC</importedID>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8F71E337-2BA8-2AF6-5B34-D4513C6BAAFD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="51F2A296-CE8C-71B1-E5B8-DA2AF50E0D77" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_DATA_STREAMS_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>F084AA2E-6C5E-A790-3DF4-271C908259E9</importedID>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="49809DE5-42DF-8875-490E-28441C29D895"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1FEC39A4-5AAF-72BA-9448-CED09835A159" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_DATA_STREAMS_U2">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_DATA_STREAMS_U2</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>5137A419-673E-827B-1EB7-7F257D984E7F</importedID>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="67BE0CBC-84B7-912C-BA2B-3B7ABC6A20DE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

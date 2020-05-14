@@ -1,0 +1,170 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="832E0120-AE78-6205-8957-BCE1C0A6136C" schemaObject="07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD" name="DVM_QC_OBJECTS">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_QC_OBJECTS</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Data QC Objects
+
+This is a reference table that defines all of the QC validation views that are executed on the data model after a given data stream is loaded into the database (e.g. SPT_VESSEL_TRIPS, SPT_UL_TRANSACTIONS, SPT_APP_XML_FILES).]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="QC_OBJECT_ID" id="A86D27E6-D4EA-5FBD-19EE-9A8094A668D6">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>QC_OBJECT_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary Key for the SPT_QC_OBJECTS table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OBJECT_NAME" id="62F9D9F7-93A1-47C5-9CD9-3A4877F6EC45">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>OBJECT_NAME</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The name of the object that is used in the given QC validation criteria]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QC_OBJ_ACTIVE_YN" id="3089FB15-D72B-6E71-3E14-F427C0EB3F9E">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>QC_OBJ_ACTIVE_YN</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Flag to indicate if the QC object is active (Y) or inactive (N)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<defaultValue>&apos;Y&apos;</defaultValue>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QC_SORT_ORDER" id="A4418758-529A-4FD5-3421-FC22B7A0B25D">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>QC_SORT_ORDER</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Relative sort order for the QC object to be executed in]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="386254F4-0D85-5AA2-EED9-351B99B71978">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date on which this record was created in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="5F3C83BD-3468-24EE-E999-E7DE414F7A09">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person creating this record in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_DATE" id="A0DBA653-0B55-0145-95FC-C842D3B861D7">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>LAST_MOD_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The last date on which any of the data in this record was changed]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_BY" id="12884FD7-084C-4E3A-1BE8-2EDDF022393E">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_QC_OBJECTS</sourceObjSchema>
+<sourceObjName>LAST_MOD_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person making the most recent change to this record]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A9A5001C-471B-9C13-8E05-253AC416B532" name="DVM_QC_OBJECTS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_QC_OBJECTS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A86D27E6-D4EA-5FBD-19EE-9A8094A668D6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5FF09DF8-D138-CFBD-AFE8-878BA675DE6B" schemaObject="07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD" name="DVM_QC_OBJECTS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_QC_OBJECTS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A86D27E6-D4EA-5FBD-19EE-9A8094A668D6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

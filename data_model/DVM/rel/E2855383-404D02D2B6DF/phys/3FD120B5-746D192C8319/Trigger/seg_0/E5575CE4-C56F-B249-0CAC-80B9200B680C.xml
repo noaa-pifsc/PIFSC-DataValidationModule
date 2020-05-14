@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_ERROR_TYPES_AUTO_BRU" directorySegmentName="seg_0" id="E5575CE4-C56F-B249-0CAC-80B9200B680C">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_AUTO_BRU</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:50 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>UPDATE</actions>
+<body><![CDATA[BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+]]></body>
+<triggerTime>BEFORE</triggerTime>
+<owner>E8DCB2C6-61E3-B61C-EA16-BC4682DB6CE1</owner>
+<table>229D547A-E3A1-19CC-4CC5-711DA4659932</table>
+</TriggerOraclev10g>

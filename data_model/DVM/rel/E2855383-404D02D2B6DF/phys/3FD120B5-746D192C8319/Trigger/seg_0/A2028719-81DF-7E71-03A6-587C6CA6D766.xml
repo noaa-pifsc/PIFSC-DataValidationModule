@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="TRG_DVM_ERRORS_HIST" directorySegmentName="seg_0" id="A2028719-81DF-7E71-03A6-587C6CA6D766">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>TRG_DVM_ERRORS_HIST</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:50 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>INSERT, UPDATE, DELETE</actions>
+<body><![CDATA[DECLARE
+  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+
+  PROCEDURE insert_data(
+    p_type_of_change IN VARCHAR2,
+    p_changed_column IN VARCHAR2 DEFAULT NULL,
+    p_old_data       IN VARCHAR2 DEFAULT NULL,
+    p_new_data       IN VARCHAR2 DEFAULT NULL ) IS
+  BEGIN
+    INSERT INTO DVM_ERRORS_hist (
+      h_seqnum, ERROR_ID, h_type_of_change, h_user_making_change, h_os_user,
+      h_date_of_change, h_changed_column, h_old_data, h_new_data)
+    VALUES(
+      DVM_ERRORS_hist_seq.NEXTVAL, :old.ERROR_ID, p_type_of_change, user, os_user,      SYSDATE, p_changed_column, p_old_data, p_new_data);
+  END;
+
+  PROCEDURE check_update(
+    p_changed_column IN VARCHAR2,
+    p_old_data       IN VARCHAR2,
+    p_new_data       IN VARCHAR2 ) IS
+  BEGIN
+    IF p_old_data <> p_new_data
+    OR (p_old_data IS NULL AND p_new_data IS NOT NULL)
+    OR (p_new_data IS NULL AND p_old_data IS NOT NULL) THEN
+      insert_data('UPDATE', p_changed_column, p_old_data, p_new_data);
+    END IF;
+  END;
+BEGIN
+  IF INSERTING THEN
+    INSERT INTO DVM_ERRORS_hist (
+      h_seqnum, ERROR_ID, h_type_of_change, h_user_making_change, h_os_user, h_date_of_change)
+    VALUES (
+      DVM_ERRORS_hist_seq.NEXTVAL, :new.ERROR_ID, 
+      'INSERT', user, os_user, SYSDATE);
+  ELSIF DELETING THEN
+    insert_data('DELETE');
+    insert_data('DELETE', 'pta_error_id', :old.pta_error_id);
+    insert_data('DELETE', 'error_type_id', :old.error_type_id);
+    insert_data('DELETE', 'error_notes', :old.error_notes);
+    insert_data('DELETE', 'err_res_type_id', :old.err_res_type_id);
+  ELSE
+    NULL;
+    check_update('PTA_ERROR_ID', :old.pta_error_id, :new.pta_error_id);
+    check_update('ERROR_TYPE_ID', :old.error_type_id, :new.error_type_id);
+    check_update('ERROR_NOTES', :old.error_notes, :new.error_notes);
+    check_update('ERR_RES_TYPE_ID', :old.err_res_type_id, :new.err_res_type_id);
+  END IF;
+END;
+]]></body>
+<triggerTime>AFTER</triggerTime>
+<owner>E8DCB2C6-61E3-B61C-EA16-BC4682DB6CE1</owner>
+<table>1416AAE0-187A-4CEE-88DE-50EE765615B0</table>
+</TriggerOraclev10g>

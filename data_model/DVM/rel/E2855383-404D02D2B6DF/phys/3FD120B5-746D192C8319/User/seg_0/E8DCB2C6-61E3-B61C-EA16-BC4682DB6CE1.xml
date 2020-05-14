@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="CEN_CRUISE" directorySegmentName="seg_0" id="E8DCB2C6-61E3-B61C-EA16-BC4682DB6CE1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjName>CEN_CRUISE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:49 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>12E2A07F-8395-4EF4-7671-EF0885E32202</schemaObject>
+</UserOraclev10g>

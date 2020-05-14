@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_ERROR_TYPES_AUTO_BRI" directorySegmentName="seg_0" id="E607579A-AB32-FF58-0AF6-269C9AC4FB45">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_AUTO_BRI</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>INSERT</actions>
+<body><![CDATA[begin
+  select DVM_ERROR_TYPES_SEQ.nextval into :new.ERROR_TYPE_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+]]></body>
+<triggerTime>BEFORE</triggerTime>
+<owner>0DD5199B-91B6-0C8C-E75C-652205DB2B3C</owner>
+<table>BD1F8B89-5354-8965-9193-F7769C3CD60A</table>
+</TriggerOraclev10g>

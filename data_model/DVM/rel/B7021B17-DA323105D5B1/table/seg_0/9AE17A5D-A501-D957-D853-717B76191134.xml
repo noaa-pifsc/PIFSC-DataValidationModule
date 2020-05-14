@@ -1,0 +1,90 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9AE17A5D-A501-D957-D853-717B76191134" schemaObject="07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD" name="DVM_PTA_ERRORS">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Error Types/Errors (PTA)
+
+This table represents a generalized intersection table that allows multiple Error and Error Type Association records to reference this consolidated table that allows multiple Errors and Error Types to be associated with the given parent table record (e.g. SPT_VESSEL_TRIPS, SPT_UL_TRANSACTIONS, SPT_CANN_TRANSACTIONS, etc.).]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="PTA_ERROR_ID" id="BBFA41F8-4F0D-8B13-6C02-45AF82B93E4E">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>PTA_ERROR_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary Key for the SPT_PTA_ERRORS table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="A6FE571B-ED73-8FF6-DB12-E12095B51BCC">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date on which this record was created in the database (indicates when the given associated data stream parent record was first evaluated)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_EVAL_DATE" id="D966BBD4-8E6D-4AEA-3638-DFF80E90FAB6">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_ERRORS</sourceObjSchema>
+<sourceObjName>LAST_EVAL_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date on which this record was last evaluated based on its associated validation criteria that was active at when the given associated data stream parent record was first evaluated]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="372D758C-ECD9-3C1A-47AD-A5C298FEC13B" name="DVM_PTA_ERRORS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BBFA41F8-4F0D-8B13-6C02-45AF82B93E4E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="232C0D7A-A831-55B0-B579-939E2D886AE6" schemaObject="07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD" name="DVM_PTA_ERRORS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_ERRORS_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BBFA41F8-4F0D-8B13-6C02-45AF82B93E4E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

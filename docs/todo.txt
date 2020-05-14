@@ -1,1 +1,43 @@
 _ compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
+
+
+
+_ not null constraint on error severity
+_ error messages or some type of initialization process that indicates which views/objects don't exist (e.g. QC queries) and when references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
+	_ initialization checks otherwise it won't run properly
+_ implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
+
+_ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
+
+
+**_ qc queries for orphaned DVM records (DVM view)
+
+
+X link to web pages with the corresponding IDs
+	for each QC view it can refer to a given page number, and page parameters so it has the information APEX needs to generate the URL
+	maybe this should be defined in the DVM_QC_OBJECTS records? -> yes (define APEX page ID, APEX page parameters, and table name which can be used in a case statement to determine which field should be used)
+		X how to figure out which field values to use when generating the URLs (e.g. CRUISE_ID vs. CRUISE_LEG_ID but also which CRUISE_LEG_ID should be used when the errors are associated with the parent, not the corresponding child record?)
+	DVM error type is used to generate DVM Errors (error records linked to CCD_CRUISES record)
+		X **Use the placeholder approach for constructing the necessary pieces of the URL and the rest of it can be determined at runtime like APP_ID and session id
+
+
+
+_ document how the batch proceess records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
+
+
+X update the code to ensure that only the placeholders are replaced not every single field (optimization) - right now if there are 100 fields it will attempt to replace all of them even if there are no placeholders
+	X do this is a SP that takes the result set and the specified field and replaces all found placeholders instead of all of them
+
+	X change the QC query in the DVM_PKG to ignore the two reserved placeholder values ([APP_SESSION], [APP_ID])
+
+_ convert all documentation to MD files and link them together (spreadsheets must be maintained as .xlsx or other open format to allow them to be used by the public)
+
+_ document the [APP_SESSION] and [APP_ID] APEX placeholder business rules:
+
+
+
+_ change the missing placeholder QC query to use a loop instead of bulk collect (still not sure why this doesn't work in 12c)
+
+--compile and test the Core DVM DDL.sql
+
+--update the DVM triggers for all tables with auditing fields (DDL Helper)

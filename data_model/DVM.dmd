@@ -5,4 +5,9 @@
 <ownerDesignName>DVM</ownerDesignName>
 <capitalNames>false</capitalNames>
 <designId>B9CD5EF5-9455-C9C7-12FF-C5114C4C7DE3</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="80B0B420-9048-126D-A660-D3F6FA0DD008">
+<designStoragePath>C:\Users\Jesse.Abdul\Documents\Version Control\Git\data-validation-module\data_model</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
 </OSDM_Design>

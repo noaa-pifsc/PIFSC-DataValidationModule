@@ -1,0 +1,389 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="229D547A-E3A1-19CC-4CC5-711DA4659932" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Data Error Types
+
+This is a reference table that defines the different QC Data Error Types that indicate how to identify QC errors and report them to end-users for resolution.  Each Data Error will have a corresponding Data Error Type.]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>149DDF5F-5671-3003-046C-A8E27F2997D3</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ERROR_TYPE_ID" id="31C9C8DE-C478-3E04-16E5-4BA05FD1A3F4">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERROR_TYPE_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary Key for the SPT_ERROR_TYPES table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>4B9B9C54-EA09-FEFE-A7DC-F14F774F73C3</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_TYPE_NAME" id="EF4F95CF-C38B-1144-6499-AF57718748BC">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERR_TYPE_NAME</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The name of the given QC validation criteria]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>7AF4522B-38E7-F038-9CBA-726B470201C0</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QC_OBJECT_ID" id="CFD1E4A5-B510-47B3-640E-09D36BE0D66F">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>QC_OBJECT_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Data QC Object that the error type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>6361FEC8-CFE4-7299-C07A-25E965CAF71A</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="FBD97A72-9785-CF9B-051E-1A873EF79164" referredColumn="3E10E485-BC7C-DB14-D9BB-A0B0538E516A"/>
+</associations>
+</Column>
+<Column name="ERR_TYPE_DESC" id="48313F12-F208-C364-58EB-4B5B7F21D7F8">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERR_TYPE_DESC</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The description for the given QC validation error type]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>5F5029CB-A8FB-7217-CCB4-1C7C729C6F72</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000 BYTE</dataTypeSize>
+<ownDataTypeParameters>1000 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATE_DATE" id="8461CD18-5A05-129A-B517-DC397CE8EE21">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>CREATE_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date on which this record was created in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>48C36898-45B6-26D1-CE79-8A2C8313DE96</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_BY" id="94DB3766-6DDD-E68E-58AA-6A22855F51EA">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>CREATED_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person creating this record in the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>69137D0F-1806-6E1B-E5EB-169939129FCF</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_DATE" id="920356D9-1CCD-1350-A73B-78CAD426789C">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>LAST_MOD_DATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The last date on which any of the data in this record was changed]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>87775BB9-D16D-4BFE-0050-4633FB056FC5</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_MOD_BY" id="A33A9AEC-26EF-F048-72BC-5A29AF55F9D1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>LAST_MOD_BY</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Oracle username of the person making the most recent change to this record]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>06E9F34D-9896-B2BF-1EB0-BE430C997499</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="IND_FIELD_NAME" id="DF41A3EB-4B33-7569-0CF7-883579E26270">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>IND_FIELD_NAME</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The field in the result set that indicates if the current error type has been identified.  A 'Y' value indicates that the given error condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current error type]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>D10C88A0-49F9-E77E-4FBC-FAC93AE778C5</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30 BYTE</dataTypeSize>
+<ownDataTypeParameters>30 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_SEVERITY_ID" id="6F24F0FA-7425-3FD2-21C9-A531B19C9B63">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERR_SEVERITY_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Severity of the given error type criteria.  These indicate the status of the given error (e.g. warnings, data errors, violations of law, etc.)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>E65C3977-362E-C971-9256-DE002E8A7679</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="DA7BB057-D6FE-F6B9-2B7A-ED6A52615104" referredColumn="0E82427D-D292-75DF-06B8-6111079807F5"/>
+</associations>
+</Column>
+<Column name="DATA_STREAM_ID" id="9F950D72-6187-E58A-6D95-6E350845EE20">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>DATA_STREAM_ID</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The Category for the given error type criteria.  This is used to filter error criteria based on the given context of the validation (e.g. eTunaLog XML data import, tracking QC, etc.)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>6D802FAA-599A-C4AF-40B0-FAE3BF334305</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A7667F4F-19B9-0FF3-89D3-F89EF4C0D520" referredColumn="8F71E337-2BA8-2AF6-5B34-D4513C6BAAFD"/>
+</associations>
+</Column>
+<Column name="ERR_TYPE_ACTIVE_YN" id="CDCBBB78-99A6-5E82-17BC-D8BD2E26658E">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERR_TYPE_ACTIVE_YN</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Flag to indicate if the given error type criteria is active]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>58BAE960-C7CE-B222-B304-A63BB9B62DC3</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<defaultValue>&apos;Y&apos;</defaultValue>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ERR_TYPE_COMMENT_TEMPLATE" id="29F00131-CC41-81FD-939B-6FFE4801DCFB">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>ERR_TYPE_COMMENT_TEMPLATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The template for the specific error description that exists in the specific error condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>80C5ACE9-6090-A075-DF4C-FDE0089A0048</importedID>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT028</logicalDatatype>
+<dataTypeSize>4000</dataTypeSize>
+<ownDataTypeParameters>4000,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="APP_LINK_TEMPLATE" id="DDEF561C-9CCE-409F-3BA0-774D23635CD5">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ERROR_TYPES</sourceObjSchema>
+<sourceObjName>APP_LINK_TEMPLATE</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[The template for the specific application link to resolve the given data issue.  This is intended to provide the necessary parameters in a given URL that can be used to generate the full URL based on the server (e.g. generate the parameters for a given cruise leg and the APEX application will use the [APP_ID] and [APP_SESSION] placeholders at runtime to generate the full URL - f?p=[APP_ID]:220:[APP_SESSION]::NO::CRUISE_ID,CRUISE_ID_COPY:[CRUISE_ID],)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>30E74BC6-DB98-766C-63E8-F7EDB85EF6A2</importedID>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7AA1CD9C-AA02-F05C-D2CC-686009FEA11B" name="DVM_ERROR_TYPES_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>46A82674-1E99-B438-631C-F45F09AFB0D1</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="31C9C8DE-C478-3E04-16E5-4BA05FD1A3F4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E119A651-7282-E810-8CE6-490D9FC279EC" name="DVM_ERROR_TYPES_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>9DC9AC95-44F5-CBC5-4799-C234758721D7</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF41A3EB-4B33-7569-0CF7-883579E26270"/>
+<colUsage columnID="9F950D72-6187-E58A-6D95-6E350845EE20"/>
+<colUsage columnID="CFD1E4A5-B510-47B3-640E-09D36BE0D66F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E25E6F9C-6051-05DE-D54E-403FAA8CE6B2" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES_I1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_I1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>3B70E831-C68A-782B-129E-3D12D419C210</importedID>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CFD1E4A5-B510-47B3-640E-09D36BE0D66F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1246C2F6-62D9-257A-5D8F-C8BB9C928FF2" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES_I2">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_I2</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>ADCE6301-6C26-EFBA-5D6C-DCB8A7DEB139</importedID>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6F24F0FA-7425-3FD2-21C9-A531B19C9B63"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9F5F25B9-7985-5CDE-855B-C49CC4B5C761" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES_I3">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_I3</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>E5327FEE-010A-2E12-E7FF-1C0AF5B98C0C</importedID>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9F950D72-6187-E58A-6D95-6E350845EE20"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E8A71D06-2256-4107-65F7-49EAEA0AA7A7" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_PK</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>E07CC016-9F1B-BC56-B314-9BF8D2EDFE75</importedID>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="31C9C8DE-C478-3E04-16E5-4BA05FD1A3F4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="46685B46-ABDC-7E70-2B29-81F5B52CC840" schemaObject="12E2A07F-8395-4EF4-7671-EF0885E32202" name="DVM_ERROR_TYPES_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ERROR_TYPES_U1</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<importedID>CBCAABA1-E4DB-D3E2-82B7-2E8FE6E7A2A6</importedID>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF41A3EB-4B33-7569-0CF7-883579E26270"/>
+<colUsage columnID="9F950D72-6187-E58A-6D95-6E350845EE20"/>
+<colUsage columnID="CFD1E4A5-B510-47B3-640E-09D36BE0D66F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1F6B2197-D01D-6D28-D499-2A08E79C9390" name="DVM_ERROR_TYPES_FK1">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CFD1E4A5-B510-47B3-640E-09D36BE0D66F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DBC40AA2-E310-7E4C-7700-BD2CC5D34A02" name="DVM_ERROR_TYPES_FK2">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6F24F0FA-7425-3FD2-21C9-A531B19C9B63"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C1F8627B-C4F0-6AE8-9A5C-D224972E09D0" name="DVM_ERROR_TYPES_FK3">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9F950D72-6187-E58A-6D95-6E350845EE20"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

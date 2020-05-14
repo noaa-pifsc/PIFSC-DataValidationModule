@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_QC_OBJECTS_AUTO_BRU" directorySegmentName="seg_0" id="88B5D40E-45CC-425D-2AA6-09AA4FDF2EC3">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_QC_OBJECTS_AUTO_BRU</sourceObjName>
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:50 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>UPDATE</actions>
+<body><![CDATA[BEGIN 
+      :NEW.LAST_MOD_DATE := SYSDATE;
+      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+END;
+]]></body>
+<triggerTime>BEFORE</triggerTime>
+<owner>E8DCB2C6-61E3-B61C-EA16-BC4682DB6CE1</owner>
+<table>6C56BDA5-4F65-CDE9-E46B-F49EA8634529</table>
+</TriggerOraclev10g>

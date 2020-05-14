@@ -3,13 +3,17 @@
 <createdBy>Jesse.Abdul</createdBy>
 <createdTime>2017-03-11 02:33:09 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
-<shouldBeOpen>false</shouldBeOpen>
-<selectedRDBMSSite>32076570-2523-435C-2E92-BF29817DFF70</selectedRDBMSSite>
+<shouldBeOpen>true</shouldBeOpen>
+<selectedRDBMSSite>3FD120B5-9F4E-6278-D5E2-746D192C8319</selectedRDBMSSite>
 <importConnectionStamps>
 <importConnectionStamp class="oracle.dbtools.crest.imports.DBConnectionStamp">
 <connName>PICD_SPTT_DATA_VALIDATOR</connName>
-<connUrl>jdbc:oracle:thin:@picd.pic.gov:1521:picd</connUrl>
 <connUser>SPTT_DATA_VALIDATOR</connUser>
+<connType>1</connType>
+</importConnectionStamp>
+<importConnectionStamp class="oracle.dbtools.crest.imports.DBConnectionStamp">
+<connName>DevVM_PDB_CEN_CRUISE</connName>
+<connUser>CEN_CRUISE</connUser>
 <connType>1</connType>
 </importConnectionStamp>
 </importConnectionStamps>

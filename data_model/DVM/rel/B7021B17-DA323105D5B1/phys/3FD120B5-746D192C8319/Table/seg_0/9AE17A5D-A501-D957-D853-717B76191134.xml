@@ -1,0 +1,55 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev12c class="oracle.dbtools.crest.model.design.storage.oracle.v12c.TableProxyOraclev12c" name="DVM_PTA_ERRORS" directorySegmentName="seg_0" id="9AE17A5D-A501-D957-D853-717B76191134">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>92A638B4-DA13-DC29-1DA1-EAACD227BE9F</segment>
+<tableSpace>321DC4ED-357B-C5A9-CCBC-2D5EE8F7F7E2</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="CREATE_DATE" id="A6FE571B-ED73-8FF6-DB12-E12095B51BCC">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="PTA_ERROR_ID" id="BBFA41F8-4F0D-8B13-6C02-45AF82B93E4E">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LAST_EVAL_DATE" id="D966BBD4-8E6D-4AEA-3638-DFF80E90FAB6">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:10 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_PTA_ERRORS_PK" id="232C0D7A-A831-55B0-B579-939E2D886AE6">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>07F8C94F-9B2C-8829-2BE4-B3FE7840E4FD</schemaObject>
+<segment>BAC91C25-D00E-4E99-325F-6501A10297DE</segment>
+<tableSpace>321DC4ED-357B-C5A9-CCBC-2D5EE8F7F7E2</tableSpace>
+</IndexProxy>
+</indexProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="DVM_PTA_ERRORS_PK" id="372D758C-ECD9-3C1A-47AD-A5C298FEC13B">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-05-14 01:39:11 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>BAC91C25-D00E-4E99-325F-6501A10297DE</segment>
+<tableSpace>321DC4ED-357B-C5A9-CCBC-2D5EE8F7F7E2</tableSpace>
+<existingIndex>232C0D7A-A831-55B0-B579-939E2D886AE6</existingIndex>
+<indexSegment>BAC91C25-D00E-4E99-325F-6501A10297DE</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev12c>
