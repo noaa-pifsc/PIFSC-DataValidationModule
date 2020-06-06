@@ -1,0 +1,105 @@
+--query to verify that the new data model (validation rule set and associated issue types) are equivalent to the old error type associations (DVM_PTA_ERR_TYP_ASSOC):
+--if the RULE_SET_EQUIV_YN has a value of 'Y' then the migrated rules are equivalent, if it has a value of 'N' it does not
+select CASE WHEN count(*) = 0 THEN 'Y' ELSE 'N' END RULE_SET_EQUIV_YN from
+((select
+PTA_ERROR_ID,
+ERROR_TYPE_ID,
+ERR_TYPE_NAME,
+QC_OBJECT_ID,
+OBJECT_NAME,
+DATA_STREAM_ID,
+DATA_STREAM_CODE
+from DVM_PTA_ERROR_TYPES_V
+MINUS
+select
+PTA_ERROR_ID,
+ERROR_TYPE_ID,
+ERR_TYPE_NAME,
+QC_OBJECT_ID,
+OBJECT_NAME,
+DATA_STREAM_ID,
+DATA_STREAM_CODE
+from DVM_PTA_ISSUE_TYPES_V)
+UNION ALL
+
+(select
+PTA_ERROR_ID,
+ERROR_TYPE_ID,
+ERR_TYPE_NAME,
+QC_OBJECT_ID,
+OBJECT_NAME,
+DATA_STREAM_ID,
+DATA_STREAM_CODE
+from DVM_PTA_ISSUE_TYPES_V
+MINUS
+select
+PTA_ERROR_ID,
+ERROR_TYPE_ID,
+ERR_TYPE_NAME,
+QC_OBJECT_ID,
+OBJECT_NAME,
+DATA_STREAM_ID,
+DATA_STREAM_CODE
+from DVM_PTA_ERROR_TYPES_V));
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+SELECT
+CASE WHEN
+(select count(*) from DVM_CRITERIA_V WHERE QC_OBJ_ACTIVE_YN = 'Y' AND ERR_TYPE_ACTIVE_YN = 'Y') = total_matches AND
+(select count(*) from DVM_RULE_SETS_V WHERE RULE_SET_ACTIVE_YN = 'Y') = total_matches
+THEN 'Y' ELSE 'N' END values_match_yn
+
+
+
+
+
+FROM
+(SELECT
+count(*) total_matches
+FROM
+(SELECT ERROR_TYPE_ID FROM DVM_CRITERIA_V WHERE QC_OBJ_ACTIVE_YN = 'Y' AND ERR_TYPE_ACTIVE_YN = 'Y') ACTIVE_ERROR_TYPES
+
+
+
+INNER JOIN
+--query for all old DVM PTA errors and their associated error_type_ids:
+(SELECT ERROR_TYPE_ID FROM
+DVM_RULE_SETS_V WHERE RULE_SET_ACTIVE_YN = 'Y') rule_set_error_types
+ON
+rule_set_error_types.ERROR_TYPE_ID = ACTIVE_ERROR_TYPES.ERROR_TYPE_ID)
+;
+
+
+
+--SET operators
+SELECT CASE WHEN COUNT(*) = 0 THEN 'Y' ELSE 'N' END VALUES_MATCH_YN FROM
+
+((SELECT ERROR_TYPE_ID FROM
+DVM_RULE_SETS_V WHERE RULE_SET_ACTIVE_YN = 'Y'
+MINUS
+SELECT ERROR_TYPE_ID FROM
+DVM_CRITERIA_V WHERE QC_OBJ_ACTIVE_YN = 'Y' AND ERR_TYPE_ACTIVE_YN = 'Y')
+union all
+
+(SELECT ERROR_TYPE_ID FROM
+DVM_CRITERIA_V WHERE QC_OBJ_ACTIVE_YN = 'Y' AND ERR_TYPE_ACTIVE_YN = 'Y'
+MINUS
+SELECT ERROR_TYPE_ID FROM
+DVM_RULE_SETS_V WHERE RULE_SET_ACTIVE_YN = 'Y'));
+
+
+
+*/

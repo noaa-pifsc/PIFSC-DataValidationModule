@@ -59,11 +59,60 @@ _ - how do we reduce the amount of error type assoc intersection records?  - Use
     What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
 
 
+Update DVM_PTA_ERRORS references RULE_SET_ID
+
+DVM_PTA_RULE_SETS
+(
+		RULE_SET_ID
+)
+
+
+
+
+Business Rules:
+_ QC query that only one rule set is active
+(enable when it is created)
+(disable when it doesn't match the active rules and update the disable date)
+
+
+--check if there is more than one active rule set:
+
+
+--procedure checks the current active rules and the active result set (if any)
+--procedure RETRIEVE_ACTIVE_RULE_SET_SP ()
+
+
+
+Have the PTA_ERR_TYP_ASSOC table reference the rule set record
+
+
+		Each time a record is evaluated have the PL/SQL code check to see if the active error types are the same as the last execution:
+
+
+
+_ qc query for more than one active rule set
+
+
 
 X - instructions and scripts for how to configure the given parent table for DVM
 
 
+** _How do we migrate during the upgrade?
+	_ need to think this through (maybe based on the DVM_PTA_ERRORS record values)
+		_ maybe query for the delimited values (order by error_type_id) and then look for unique values with max and min values for the CREATE_DATE
 
+		--query to find the different error groups
+		select MIN(CREATE_DATE), MAX(CREATE_DATE), error_type_list,
+		LISTAGG(pta_error_id, ', ') WITHIN GROUP (order by pta_error_id) as pta_error_list
+		FROM
+		(select pta_error_id,
+		CREATE_DATE,
+		LISTAGG(error_type_id, ', ') WITHIN GROUP (order by error_type_id) as error_type_list
+
+		FROM
+		DVM_PTA_ERR_TYP_ASSOC group by pta_error_id, create_date)
+		group by error_Type_list
+		order by  MIN(CREATE_DATE);
 
 cases for script:
 
@@ -87,3 +136,130 @@ X - how do we query for the validation criteria using DBMS_SQL so that we can us
 _ - QC query to identify any orphan parent error records
 
 _ semantic change - use issue instead of error since there are also warnings that are not considered errors
+
+business rules:
+	_ policy - should we ignore the inactive rules when evaluating the DVM criteria associated with a given parent error record?
+
+	_ can't remove columns from queries or else the QC queries will break.
+	_ how to handle when existing criteria are modified
+
+
+
+		if the record has been validated before
+			query for the associated issue types based on the associated rule set: (RETRIEVE_QC_CRITERIA)
+		if the record has not been validated before
+			query for the rules for the active rule set (only one should exist)
+			query for the rules that are currently active and compare the lists (two delimited lists with an equals operator)
+
+
+
+		SELECT 1 GROUP_VAL, LISTAGG(error_type_id, ',') WITHIN GROUP (order by error_type_id) as error_type_list from dvm_qc_criteria_v where ERR_TYPE_ACTIVE_YN = 'Y' AND QC_OBJ_ACTIVE_YN = 'Y'
+		AND DATA_STREAM_CODE IN ('CCD')
+
+		group by GROUP_VAL;
+
+
+
+_ foundational views:
+(X NO NEED) DVM_ISSUE_TYPES_V (DVM_ERROR_TYPES, DVM_ERR_SEVERITY)
+
+
+(X renamed from DVM_QC_CRITERIA_V) X DVM_CRITERIA_V (DVM_QC_OBJECTS, DVM_ERROR_TYPES_V, DVM_DATA_STREAMS_V)
+
+X DVM_RULE_SETS_V (DVM_PTA_RULE_SETS, DVM_ISS_TYP_ASSOC, DVM_QC_CRITERIA_V)
+
+X DVM_PTA_ERRORS_V (DVM_ERRORS, DVM_PTA_ERRORS, DVM_ERR_RES_TYPES, DVM_QC_CRITERIA_V)
+
+_ need to test DVM with multiple data streams
+	_ rule sets must be defined at the data stream level (keep them separate even if they are called together)
+		_ may need to process them separately or there may be some gains from evaluating them together
+
+_ Will the active rule set work for each data stream (e.g. RPL, UL, FOT) -> how do we keep these from interfering with each other?
+
+
+_ PL/SQL naming conventions
+
+
+
+_ qc query rule set data stream does not match one of the associated error types' data stream
+
+
+_ design principle:
+	Define the rule sets and reference them instead of associating each issue type with the parent record directly to cut down on the number of records
+
+
+_ DVM use cases:
+	_ Multiple data streams defined for a single parent table
+		_ need to be able to handle the use case where one of the data streams was evaluated and then the other one was (there is already a DVM_PTA_ERRORS record but no associated DVM_PTA_RULE_SETS record for the specified data stream)
+	_ multiple data streams defined for different parent tables
+		_ allow the data streams to be evaluated separately
+	_ allow multiple rule sets (based on data stream) to be evaluated separately (do not purge the rule sets
+
+
+**	_ evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)
+
+
+
+
+	_ TEST CASES: split the CCD data stream into two different data streams and split some criteria in the same view objects for testing purposes
+		_ that will allow them to be executed independently or together
+
+
+_ udpate the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is evaluated:
+
+
+
+** _RETRIEVE_ACTIVE_RULE_SET_SP needs to be modified for the DEFINE_RULE_SET_SP (this needs to take a data stream code as an argument) as well
+
+
+
+
+
+_ Validate Parent Record:
+	- Retrieve the data stream info for all data stream codes:
+		- data stream exists:
+			- retrieve parent record
+				- parent record exists
+					- retrieve parent error record
+						- parent error record exists
+							- loop through data stream codes to determine if all of the corresponding rule sets have been evaluated before for the parent error record
+								- if one or more rule sets has not been evaluated
+									- RETRIEVE_ACTIVE_RULE_SET_SP on the data stream codes that have not been evaluated
+										- this will insert the DVM_RULE_SETS record if necessary and the DVM_PTA_RULE_SETS record for the parent error record and data stream code argument(s)
+										- the rule_set_id array will be returned so it can be used with RETRIEVE_QC_CRITERIA
+										- RETRIEVE_ACTIVE_RULE_SET_SP success:
+											- add the rule_set_id values to the v_rule_set_id_array so it contains all rule sets that will be validated
+
+										- RETRIEVE_ACTIVE_RULE_SET_SP failure:
+								- if one or more rule sets have been evaluated add the rule_set_id values to the v_rule_set_id_array array
+						- parent error record does not exist
+							- define the parent error record
+								- define parent error record success:
+									- RETRIEVE_ACTIVE_RULE_SET_SP on the data stream codes
+										- this will insert the DVM_RULE_SETS record if necessary and the DVM_PTA_RULE_SETS record for the parent error record and data stream code argument(s)
+										- the rule_set_id array will be returned so it can be used with RETRIEVE_QC_CRITERIA
+										- RETRIEVE_ACTIVE_RULE_SET_SP success:
+											-associate parent record with parent error record
+												- associate parent record success:
+													- continue processing
+												- associate parent record failure:
+										- RETRIEVE_ACTIVE_RULE_SET_SP failure:
+								- define parent error record error:
+				- parent record does not exist
+		- data stream doesn't exist:
+
+
+		--continue processing:
+			- RETRIEVE_QC_CRITERIA for the specified rule_set_id array
+				- RETRIEVE_QC_CRITERIA success:
+					- EVAL_QC_CRITERIA()
+						- EVAL_QC_CRITERIA() success
+						- EVAL_QC_CRITERIA() failure
+				- RETRIEVE_QC_CRITERIA failure:
+
+
+
+
+_ add in the first_eval and last_eval dates for the DVM_PTA_ERRORS or a different view so the information is available
+
+_ pre check the data stream codes provided are all valid otherwise throw an error:
