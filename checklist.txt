@@ -1,0 +1,3 @@
+--compile and test the Core DVM DDL.sql
+
+--update the DVM triggers for all tables with auditing fields (DDL Helper)

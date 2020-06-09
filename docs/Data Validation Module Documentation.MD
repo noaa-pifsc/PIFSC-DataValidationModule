@@ -51,7 +51,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- DVM_QC_MSG_MISS_FIELDS_V - This query returns all issue types (DVM_ERROR_TYPES) that have a ERR_TYPE_COMMENT_TEMPLATE or APP_LINK_TEMPLATE value that is missing one or more field references in the corresponding QC View object (based on the data dictionary). The [APP_ID] and [APP_SESSION] are special reserved placeholders that are intended to be used by a given APEX application and replaced at runtime by the APEX application variables so they are not identified in this QC query.  This View should be used to identify if there are any field references that will not be populated by the Data Validation Module.  MISSING_ERR_DESC_FIELDS and MISSING_APP_LINK_FIELDS will contain a comma-delimited list of field references that are not in the corresponding QC View object for the issue description templates and application link templates respectively.
 
 ## Algorithm Used:
-- Actual QC validation process is performed by the DVM_PKG. VALIDATE_PARENT_RECORD package procedure defined in the PL/SQL definition file: docs\Data Validation Module\code \ DVM_PKG.sql.  
+- Actual QC validation process is performed by the DVM_PKG.VALIDATE_PARENT_RECORD procedure.  
 	- **Note: This process is executed by running a PL/SQL block of code (see [Ex 1](#ex1))
 - The data stream code supplied to the VALIDATE_PARENT_RECORD() procedure is queried to determine the given data stream's parent table so that the necessary database queries can be generated.  
 - The given parent table is queried to check if the given parent record identified by the p_PK_ID primary key value exists, if it doesn't the module does nothing otherwise the process continues.
@@ -97,7 +97,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## <a name="ex1"><a/>Ex 1:
 
 
-`
+```
 --sample usage for data validation module:
 --P_DATA_STREAM_CODE(i) contains the ith data stream that will be evaluated on the associated parent record
 --P_PK_ID is the primary key value of the parent record that will be evaluated when VALIDATE_PARENT_RECORD is executed
@@ -119,6 +119,4 @@ BEGIN
 
   --rollback;
 END;
-`
-
-**Note: The P_DATA_STREAM_CODE variable can handle multiple data stream codes if necessary.  P_PK_ID is the numeric primary key value of the given parent record that will be validated.
+```

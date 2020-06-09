@@ -196,8 +196,8 @@ _ DVM use cases:
 	_ allow multiple rule sets (based on data stream) to be evaluated separately (do not purge the rule sets
 
 
-**	_ evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)
-
+**	X evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)
+	X this was resolved by initializing the ALL_CRITERIA member variable in the package definition on each execution (it would retain the values from the last execution unless it was cleared with .delete)
 
 
 
@@ -213,7 +213,7 @@ _ udpate the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is eva
 
 
 
-
+DVM Algorithm (as of 6/5/20):
 
 _ Validate Parent Record:
 	- Retrieve the data stream info for all data stream codes:
@@ -263,3 +263,6 @@ _ Validate Parent Record:
 _ add in the first_eval and last_eval dates for the DVM_PTA_ERRORS or a different view so the information is available
 
 _ pre check the data stream codes provided are all valid otherwise throw an error:
+
+_ optimization updates (queries and PL/SQL code execution)
+	_ make the flexible procedures multi-purpose so they can be used by multiple code branches (e.g. RETRIEVE_ACTIVE_RULE_SET_SP)

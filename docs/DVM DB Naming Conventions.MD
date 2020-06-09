@@ -26,6 +26,7 @@ When developing a database it is important to use consistent naming conventions 
 	- ASSOC: Associated
 	- ERR: Error
 	- IND: Indicator
+	- ISS: Issue
 	- MISS: Missing
 	- MOD: Modified
 	- MSG: Message
