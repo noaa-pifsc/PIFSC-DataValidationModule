@@ -1,4 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<oracle.dbtools.crest.model.design.relational.RelationalDesign>
-   <object objectType="main_view" objectID="05979E7C-B410-805F-43EE-840A939D207D" name="PICD_SPTT_DATA_VALIDATOR" visible="true"/>
-</oracle.dbtools.crest.model.design.relational.RelationalDesign>

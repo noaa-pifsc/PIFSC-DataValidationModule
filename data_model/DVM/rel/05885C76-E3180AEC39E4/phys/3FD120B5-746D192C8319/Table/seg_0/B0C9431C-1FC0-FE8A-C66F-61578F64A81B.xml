@@ -1,0 +1,151 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev12c class="oracle.dbtools.crest.model.design.storage.oracle.v12c.TableProxyOraclev12c" name="DVM_ISSUES" directorySegmentName="seg_0" id="B0C9431C-1FC0-FE8A-C66F-61578F64A81B">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>568A9F02-377A-8221-446E-4CBE771EAA47</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="CREATED_BY" id="0982C168-360E-2B56-AB0B-223C884AB229">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="APP_LINK_URL" id="0FC2AF34-6362-92A1-FA40-BDC980DB65D2">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATE_DATE" id="163CE6CB-528F-C957-F03A-E17E85B581F6">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ISS_DESC" id="3C70161F-7661-13F0-60A5-E680ADD277DA">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LAST_MOD_DATE" id="731D159A-4D8F-6EC1-53FF-B7160FCEC359">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="PTA_ISS_ID" id="82243399-3C5C-7D6B-54E3-DDE8BC05013A">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ISS_NOTES" id="8B908C2B-7510-F2CE-4CBF-E61D39FAAC29">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LAST_MOD_BY" id="BD7EAAA6-6086-16CA-4352-B8EEF0956C4E">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ISS_TYPE_ID" id="C1051504-6965-C0E0-DEF7-6C03E1782E2F">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ISS_ID" id="EFCC6471-C6EE-013E-B184-284DFF6BAB4D">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ISS_RES_TYPE_ID" id="F4EA81A6-F052-E5E6-1AAE-AF4FB2A58121">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ISSUES_PK" id="077A415E-C1D2-CDF4-8798-8F611890FC70">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ISSUES_I3" id="11EC12A9-1CB0-21D8-A638-9B1343E9B0A4">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ISSUES_I2" id="ACBE768F-2FF8-E000-A9F0-FD824F623998">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_ISSUES_I1" id="AF538272-8517-E888-4CD8-74C146265FDB">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="DVM_ISSUES_FK2" id="38AC14F3-51BF-B06F-6EA8-E71EEC4ED295">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="DVM_ISSUES_FK1" id="69AA6D7A-B160-7977-3371-3A775EF660C7">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="DVM_ISS_FK3" id="FDCED5E9-C49D-BF3D-304C-88F9B29DB894">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<lobStorages>
+<LobStorage class="oracle.dbtools.crest.model.design.storage.oracle.v11g.LobStorageOraclev11g" name="SYS_LOB0000137258C00010$$" id="88E57803-D4C4-85CF-A7EE-F5B00F43D489">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:08 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<cache>NOCACHE</cache>
+<chunk>8192</chunk>
+<column>ISS_DESC</column>
+<compression>NO</compression>
+<duplication>KEEP_DUPLICATES</duplication>
+<logging>YES</logging>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<lobStorageType>SECUREFILE</lobStorageType>
+</LobStorage>
+</lobStorages>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="DVM_ISSUES_PK" id="35174AF9-64FF-44AD-A13D-7A88F56B8296">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<existingIndex>077A415E-C1D2-CDF4-8798-8F611890FC70</existingIndex>
+<indexSegment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev12c>

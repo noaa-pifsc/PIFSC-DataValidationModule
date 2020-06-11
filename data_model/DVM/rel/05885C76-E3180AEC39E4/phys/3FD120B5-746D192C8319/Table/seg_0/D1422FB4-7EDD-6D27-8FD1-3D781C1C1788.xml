@@ -1,0 +1,50 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev12c class="oracle.dbtools.crest.model.design.storage.oracle.v12c.TableProxyOraclev12c" name="DVM_PTA_ISSUES" directorySegmentName="seg_0" id="D1422FB4-7EDD-6D27-8FD1-3D781C1C1788">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:52 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>568A9F02-377A-8221-446E-4CBE771EAA47</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="PTA_ISS_ID" id="2FD73D6E-C96D-41AB-8637-0B7EA1F893B5">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATE_DATE" id="B5B412EB-058B-56A7-5980-826AE4012B3D">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_PTA_ISSUES_PK" id="AC5006A5-9077-2679-FCF9-ED8B06294959">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
+</indexProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="DVM_PTA_ISSUES_PK" id="0413CFC4-0D26-EF17-98D8-9105B528DA4B">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<existingIndex>AC5006A5-9077-2679-FCF9-ED8B06294959</existingIndex>
+<indexSegment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev12c>

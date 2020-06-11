@@ -10,36 +10,36 @@
 --version 0.6 updates:
 --------------------------------------------------------
 
---renamed DVM_ISS_RES_TYPES table to DVM_ISS_RES_TYPES:
+--renamed DVM_ERR_RES_TYPES table to DVM_ISS_RES_TYPES:
 
-ALTER TABLE DVM_ISS_RES_TYPES
+ALTER TABLE DVM_ERR_RES_TYPES
 RENAME TO DVM_ISS_RES_TYPES;
 
-ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ISS_RES_TYPE_ID TO ISS_RES_TYPE_ID;
+ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ERR_RES_TYPE_ID TO ISS_RES_TYPE_ID;
 
-ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ISS_RES_TYPE_CODE TO ISS_RES_TYPE_CODE;
+ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ERR_RES_TYPE_CODE TO ISS_RES_TYPE_CODE;
 
-ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ISS_RES_TYPE_NAME TO ISS_RES_TYPE_NAME;
+ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ERR_RES_TYPE_NAME TO ISS_RES_TYPE_NAME;
 
-ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ISS_RES_TYPE_DESC TO ISS_RES_TYPE_DESC;
+ALTER TABLE DVM_ISS_RES_TYPES RENAME COLUMN ERR_RES_TYPE_DESC TO ISS_RES_TYPE_DESC;
 
-ALTER INDEX DVM_ISS_RES_TYPES_PK
+ALTER INDEX DVM_ERR_RES_TYPES_PK
 RENAME TO DVM_ISS_RES_TYPES_PK;
 
-ALTER INDEX DVM_ISS_RES_TYPES_U1
+ALTER INDEX DVM_ERR_RES_TYPES_U1
 RENAME TO DVM_ISS_RES_TYPES_U1;
 
-ALTER INDEX DVM_ISS_RES_TYPES_U2
+ALTER INDEX DVM_ERR_RES_TYPES_U2
 RENAME TO DVM_ISS_RES_TYPES_U2;
 
 ALTER TABLE DVM_ISS_RES_TYPES
-RENAME CONSTRAINT DVM_ISS_RES_TYPES_PK TO DVM_ISS_RES_TYPES_PK;
+RENAME CONSTRAINT DVM_ERR_RES_TYPES_PK TO DVM_ISS_RES_TYPES_PK;
 
 ALTER TABLE DVM_ISS_RES_TYPES
-RENAME CONSTRAINT DVM_ISS_RES_TYPES_U1 TO DVM_ISS_RES_TYPES_U1;
+RENAME CONSTRAINT DVM_ERR_RES_TYPES_U1 TO DVM_ISS_RES_TYPES_U1;
 
 ALTER TABLE DVM_ISS_RES_TYPES
-RENAME CONSTRAINT DVM_ISS_RES_TYPES_U2 TO DVM_ISS_RES_TYPES_U2;
+RENAME CONSTRAINT DVM_ERR_RES_TYPES_U2 TO DVM_ISS_RES_TYPES_U2;
 
 COMMENT ON TABLE DVM_ISS_RES_TYPES IS 'Issue Resolution Types
 
@@ -58,34 +58,34 @@ COMMENT ON COLUMN DVM_ISS_RES_TYPES.ISS_RES_TYPE_DESC IS 'The Issue Resolution T
 --renamed DVM_ISS_SEVERITY table to DVM_ISS_SEVERITY:
 
 
-ALTER TABLE DVM_ISS_SEVERITY
+ALTER TABLE DVM_ERR_SEVERITY
 RENAME TO DVM_ISS_SEVERITY;
 
-ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ISS_SEVERITY_ID TO ISS_SEVERITY_ID;
+ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ERR_SEVERITY_ID TO ISS_SEVERITY_ID;
 
-ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ISS_SEVERITY_CODE TO ISS_SEVERITY_CODE;
+ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ERR_SEVERITY_CODE TO ISS_SEVERITY_CODE;
 
-ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ISS_SEVERITY_NAME TO ISS_SEVERITY_NAME;
+ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ERR_SEVERITY_NAME TO ISS_SEVERITY_NAME;
 
-ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ISS_SEVERITY_DESC TO ISS_SEVERITY_DESC;
+ALTER TABLE DVM_ISS_SEVERITY RENAME COLUMN ERR_SEVERITY_DESC TO ISS_SEVERITY_DESC;
 
-ALTER INDEX DVM_ISS_SEVERITY_PK
+ALTER INDEX DVM_ERR_SEVERITY_PK
 RENAME TO DVM_ISS_SEVERITY_PK;
 
-ALTER INDEX DVM_ISS_SEVERITY_U1
+ALTER INDEX DVM_ERR_SEVERITY_U1
 RENAME TO DVM_ISS_SEVERITY_U1;
 
-ALTER INDEX DVM_ISS_SEVERITY_U2
+ALTER INDEX DVM_ERR_SEVERITY_U2
 RENAME TO DVM_ISS_SEVERITY_U2;
 
 ALTER TABLE DVM_ISS_SEVERITY
-RENAME CONSTRAINT DVM_ISS_SEVERITY_PK TO DVM_ISS_SEVERITY_PK;
+RENAME CONSTRAINT DVM_ERR_SEVERITY_PK TO DVM_ISS_SEVERITY_PK;
 
 ALTER TABLE DVM_ISS_SEVERITY
-RENAME CONSTRAINT DVM_ISS_SEVERITY_U1 TO DVM_ISS_SEVERITY_U1;
+RENAME CONSTRAINT DVM_ERR_SEVERITY_U1 TO DVM_ISS_SEVERITY_U1;
 
 ALTER TABLE DVM_ISS_SEVERITY
-RENAME CONSTRAINT DVM_ISS_SEVERITY_U2 TO DVM_ISS_SEVERITY_U2;
+RENAME CONSTRAINT DVM_ERR_SEVERITY_U2 TO DVM_ISS_SEVERITY_U2;
 
 COMMENT ON TABLE DVM_ISS_SEVERITY IS 'Issue Severity
 
@@ -107,15 +107,15 @@ RENAME TO DVM_ISS_TYPES;
 
 ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERROR_TYPE_ID TO ISS_TYPE_ID;
 
-ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ISS_TYPE_NAME TO ISS_TYPE_NAME;
+ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERR_TYPE_NAME TO ISS_TYPE_NAME;
 
-ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ISS_TYPE_DESC TO ISS_TYPE_DESC;
+ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERR_TYPE_DESC TO ISS_TYPE_DESC;
 
-ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ISS_SEVERITY_ID TO ISS_SEVERITY_ID;
+ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERR_SEVERITY_ID TO ISS_SEVERITY_ID;
 
-ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ISS_TYPE_ACTIVE_YN TO ISS_TYPE_ACTIVE_YN;
+ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERR_TYPE_ACTIVE_YN TO ISS_TYPE_ACTIVE_YN;
 
-ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ISS_TYPE_COMMENT_TEMPLATE TO ISS_TYPE_COMMENT_TEMPLATE;
+ALTER TABLE DVM_ISS_TYPES RENAME COLUMN ERR_TYPE_COMMENT_TEMPLATE TO ISS_TYPE_COMMENT_TEMPLATE;
 
 ALTER INDEX DVM_ERROR_TYPES_I1
 RENAME TO DVM_ISS_TYPES_I1;
@@ -180,7 +180,7 @@ ALTER TABLE DVM_ISSUES RENAME COLUMN ERROR_TYPE_ID TO ISS_TYPE_ID;
 
 ALTER TABLE DVM_ISSUES RENAME COLUMN ERROR_NOTES TO ISS_NOTES;
 
-ALTER TABLE DVM_ISSUES RENAME COLUMN ISS_RES_TYPE_ID TO ISS_RES_TYPE_ID;
+ALTER TABLE DVM_ISSUES RENAME COLUMN ERR_RES_TYPE_ID TO ISS_RES_TYPE_ID;
 
 ALTER TABLE DVM_ISSUES RENAME COLUMN ERROR_DESCRIPTION TO ISS_DESC;
 
@@ -319,7 +319,7 @@ EXECUTE IMMEDIATE v_temp_SQL;
 
 
 
-v_temp_SQL := 'DROP SEQUENCE DVM_ISS_RES_TYPES_SEQ';
+v_temp_SQL := 'DROP SEQUENCE DVM_ERR_RES_TYPES_SEQ';
 dbms_output.put_line('the value of v_temp_SQL is: '||v_temp_SQL);
 EXECUTE IMMEDIATE v_temp_SQL;
 
@@ -336,7 +336,7 @@ EXECUTE IMMEDIATE v_temp_SQL;
 
 
 
-v_temp_SQL := 'DROP SEQUENCE DVM_ISS_SEVERITY_SEQ';
+v_temp_SQL := 'DROP SEQUENCE DVM_ERR_SEVERITY_SEQ';
 dbms_output.put_line('the value of v_temp_SQL is: '||v_temp_SQL);
 EXECUTE IMMEDIATE v_temp_SQL;
 
@@ -376,10 +376,10 @@ END;
 
 
 --drop old triggers:
-drop trigger DVM_ISS_RES_TYPES_AUTO_BRI;
-drop trigger DVM_ISS_RES_TYPES_AUTO_BRU;
-drop trigger DVM_ISS_SEVERITY_AUTO_BRI;
-drop trigger DVM_ISS_SEVERITY_AUTO_BRU;
+drop trigger DVM_ERR_RES_TYPES_AUTO_BRI;
+drop trigger DVM_ERR_RES_TYPES_AUTO_BRU;
+drop trigger DVM_ERR_SEVERITY_AUTO_BRI;
+drop trigger DVM_ERR_SEVERITY_AUTO_BRU;
 drop trigger DVM_ERROR_TYPES_AUTO_BRI;
 drop trigger DVM_ERROR_TYPES_AUTO_BRU;
 drop trigger DVM_ERRORS_AUTO_BRI;
@@ -475,10 +475,10 @@ end;
 
 
 
-ALTER TABLE DVM_ISS_RES_TYPES_HIST
+ALTER TABLE DVM_ERR_RES_TYPES_HIST
 RENAME TO DVM_ISS_RES_TYPES_HIST;
 
-ALTER TABLE DVM_ISS_RES_TYPES_HIST RENAME COLUMN ISS_RES_TYPE_ID TO ISS_RES_TYPE_ID;
+ALTER TABLE DVM_ISS_RES_TYPES_HIST RENAME COLUMN ERR_RES_TYPE_ID TO ISS_RES_TYPE_ID;
 
 COMMENT ON TABLE DVM_ISS_RES_TYPES_HIST IS 'Issue Resolution Types (history table)
 
@@ -486,10 +486,10 @@ This history table was implemented using the data history tracking package (svn:
 
 
 
-ALTER TABLE DVM_ISS_SEVERITY_HIST
+ALTER TABLE DVM_ERR_SEVERITY_HIST
 RENAME TO DVM_ISS_SEVERITY_HIST;
 
-ALTER TABLE DVM_ISS_SEVERITY_HIST RENAME COLUMN ISS_SEVERITY_ID TO ISS_SEVERITY_ID;
+ALTER TABLE DVM_ISS_SEVERITY_HIST RENAME COLUMN ERR_SEVERITY_ID TO ISS_SEVERITY_ID;
 
 COMMENT ON TABLE DVM_ISS_SEVERITY_HIST IS 'Issue Severity (history table)
 
@@ -518,8 +518,8 @@ This history table was implemented using the data history tracking package (svn:
 
 
 
-drop trigger TRG_DVM_ISS_RES_TYPES_HIST;
-drop trigger TRG_DVM_ISS_SEVERITY_HIST;
+drop trigger TRG_DVM_ERR_RES_TYPES_HIST;
+drop trigger TRG_DVM_ERR_SEVERITY_HIST;
 drop trigger TRG_DVM_ERROR_TYPES_HIST;
 drop trigger TRG_DVM_ERRORS_HIST;
 
@@ -531,8 +531,8 @@ drop trigger TRG_DVM_ERRORS_HIST;
 
 --redo the sequences for the modified history tables:
 
-drop sequence DVM_ISS_RES_TYPES_HIST_SEQ;
-drop sequence DVM_ISS_SEVERITY_HIST_SEQ;
+drop sequence DVM_ERR_RES_TYPES_HIST_SEQ;
+drop sequence DVM_ERR_SEVERITY_HIST_SEQ;
 drop sequence DVM_ERROR_TYPES_HIST_SEQ;
 drop sequence DVM_ERRORS_HIST_SEQ;
 
@@ -1238,12 +1238,12 @@ ON
   ORDER BY DVM_PTA_ISSUES.PTA_ISS_ID, DVM_CRITERIA_V.QC_SORT_ORDER, DVM_CRITERIA_V.OBJECT_NAME, DVM_CRITERIA_V.ISS_SEVERITY_CODE, DVM_CRITERIA_V.ISS_TYPE_NAME;
 
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."PTA_ISS_ID" IS 'Foreign key reference to the Issues (PTA) intersection table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."CREATE_DATE" IS 'The date on which this record was created in the database';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."FORMATTED_CREATE_DATE" IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."CREATE_DATE" IS 'The date/time the Validation Issue parent record was created in the database, this indicates the first time the parent record was validated using the DVM';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."FORMATTED_CREATE_DATE" IS 'The formatted date/time the Validation Issue parent record was created in the database, this indicates the first time the parent record was validated using the DVM (MM/DD/YYYY HH24:MI)';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_ID" IS 'Primary Key for the DVM_ISSUES table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_DESC" IS 'The description of the given XML Data File error';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_NOTES" IS 'Manually entered notes for the corresponding data error';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_ID" IS 'The Error Type for the given error';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_DESC" IS 'The description of the given Validation Issue';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_NOTES" IS 'Manually entered notes for the corresponding data issue';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_ID" IS 'The Issue Type for the given issue';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_NAME" IS 'The name of the given QC validation criteria';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_COMMENT_TEMPLATE" IS 'The template for the specific issue description that exists in the specific issue condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."QC_OBJECT_ID" IS 'The Data QC Object that the issue type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB error)';
@@ -1262,9 +1262,9 @@ ON
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_DESC" IS 'The description for the given data stream';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_ACTIVE_YN" IS 'Flag to indicate if the given issue type criteria is active';
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_ID" IS 'Primary Key for the DVM_ISS_RES_TYPES table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_CODE" IS 'The Error Resolution Type code';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_NAME" IS 'The Error Resolution Type name';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_DESC" IS 'The Error Resolution Type description';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_CODE" IS 'The Issue Resolution Type code';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_NAME" IS 'The Issue Resolution Type name';
+   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_DESC" IS 'The Issue Resolution Type description';
 
    COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."APP_LINK_TEMPLATE" IS 'The template for the specific application link to resolve the given data issue.  This is intended to provide the necessary parameters in a given URL that can be used to generate the full URL based on the server (e.g. generate the parameters for a given cruise leg and the APEX application will use the [APP_ID] and [APP_SESSION] placeholders at runtime to generate the full URL - f?p=[APP_ID]:220:[APP_SESSION]::NO::CRUISE_ID,CRUISE_ID_COPY:[CRUISE_ID],)';
 
@@ -1294,115 +1294,15 @@ COMMENT ON COLUMN DVM_PTA_ISSUES_V.RULE_DATA_STREAM_PAR_TABLE IS 'The Data strea
 
    COMMENT ON TABLE "DVM_PTA_ISSUES_V"  IS 'PTA Issues (View)
 
-This View returns all unresolved Issues associated with a given PTA Error record that were identified during the last evaluation of the associated PTA Error Types.  A PTA Error record can be referenced by any data table that represents the parent record for a given data stream (e.g. SPT_VESSEL_TRIPS for RPL data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Error''s Error Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.';
+This View returns all unresolved Issues associated with a given PTA Validation Issue record that were identified during the last evaluation of the associated Validation Issue Types.  A PTA Validation Issue record can be referenced by any data table that represents the parent record for a given data stream (e.g. SPT_VESSEL_TRIPS for RPL data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Validation Issue''s Issue Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.';
 
 
+
+COMMENT ON COLUMN DVM_PTA_ISSUES.CREATE_DATE IS 'The date/time the Validation Issue parent record was created in the database, this indicates the first time the parent record was validated using the DVM';
 
 
 
 drop view dvm_pta_errors_v;
-
-  CREATE OR REPLACE VIEW DVM_PTA_ISSUES_V
-AS
-  SELECT
-  DVM_PTA_ISSUES.PTA_ISS_ID,
-  DVM_PTA_ISSUES.CREATE_DATE,
-  TO_CHAR(DVM_PTA_ISSUES.CREATE_DATE, 'MM/DD/YYYY HH24:MI') FORMATTED_CREATE_DATE,
-
-	DVM_ISSUES.ISS_ID,
-  DVM_ISSUES.ISS_DESC,
-  DVM_ISSUES.ISS_NOTES,
-  DVM_ISSUES.ISS_RES_TYPE_ID,
-	DVM_ISS_RES_TYPES.ISS_RES_TYPE_CODE,
-  DVM_ISS_RES_TYPES.ISS_RES_TYPE_NAME,
-  DVM_ISS_RES_TYPES.ISS_RES_TYPE_DESC,
-  DVM_ISSUES.APP_LINK_URL,
-  DVM_ISSUES.ISS_TYPE_ID,
-
-
-	DVM_CRITERIA_V.QC_OBJECT_ID,
-	DVM_CRITERIA_V.OBJECT_NAME,
-	DVM_CRITERIA_V.QC_OBJ_ACTIVE_YN,
-	DVM_CRITERIA_V.QC_SORT_ORDER,
-	DVM_CRITERIA_V.ISS_TYPE_NAME,
-	DVM_CRITERIA_V.ISS_TYPE_COMMENT_TEMPLATE,
-	DVM_CRITERIA_V.ISS_TYPE_DESC,
-	DVM_CRITERIA_V.IND_FIELD_NAME,
-	DVM_CRITERIA_V.APP_LINK_TEMPLATE,
-	DVM_CRITERIA_V.ISS_SEVERITY_ID,
-	DVM_CRITERIA_V.ISS_SEVERITY_CODE,
-	DVM_CRITERIA_V.ISS_SEVERITY_NAME,
-	DVM_CRITERIA_V.ISS_SEVERITY_DESC,
-	DVM_CRITERIA_V.DATA_STREAM_ID,
-	DVM_CRITERIA_V.DATA_STREAM_CODE,
-	DVM_CRITERIA_V.DATA_STREAM_NAME,
-	DVM_CRITERIA_V.DATA_STREAM_DESC,
-	DVM_CRITERIA_V.DATA_STREAM_PK_FIELD,
-	DVM_CRITERIA_V.ISS_TYPE_ACTIVE_YN
-
-
-
-
-FROM
-  DVM_ISSUES
-INNER JOIN DVM_PTA_ISSUES
-ON
-  DVM_PTA_ISSUES.PTA_ISS_ID = DVM_ISSUES.PTA_ISS_ID
-INNER JOIN DVM_CRITERIA_V
-ON
-	DVM_CRITERIA_V.ISS_TYPE_ID = DVM_ISSUES.ISS_TYPE_ID
-LEFT JOIN DVM_ISS_RES_TYPES
-ON
-  DVM_ISS_RES_TYPES.ISS_RES_TYPE_ID = DVM_ISSUES.ISS_RES_TYPE_ID
-
-
-
-
-  ORDER BY DVM_PTA_ISSUES.PTA_ISS_ID, DVM_CRITERIA_V.QC_SORT_ORDER, DVM_CRITERIA_V.OBJECT_NAME, DVM_CRITERIA_V.ISS_SEVERITY_CODE, DVM_CRITERIA_V.ISS_TYPE_NAME;
-
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."PTA_ISS_ID" IS 'Foreign key reference to the Issues (PTA) intersection table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."CREATE_DATE" IS 'The date on which this record was created in the database';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."FORMATTED_CREATE_DATE" IS 'The formatted date/time on which this record was created in the database (MM/DD/YYYY HH24:MI)';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_ID" IS 'Primary Key for the DVM_ISSUES table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_DESC" IS 'The description of the given Data issue';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_NOTES" IS 'Manually entered notes for the corresponding data issue';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_ID" IS 'The Issue Type for the given issue';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_NAME" IS 'The name of the given QC validation criteria';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_COMMENT_TEMPLATE" IS 'The template for the specific issue description that exists in the specific issue condition.  This field should contain placeholders in the form: [PLACEHOLDER] where PLACEHOLDER is the corresponding field name in the result set that will have its placeholder replaced by the corresponding result set field value.  This is NULL only when XML_QC_OBJ_ID is NULL';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."QC_OBJECT_ID" IS 'The Data QC Object that the issue type is determined from.  If this is NULL it is not associated with a QC query validation constraint (e.g. DB issue)';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."OBJECT_NAME" IS 'The name of the object that is used in the given QC validation criteria';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."QC_OBJ_ACTIVE_YN" IS 'Flag to indicate if the QC object is active (Y) or inactive (N)';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."QC_SORT_ORDER" IS 'Relative sort order for the QC object to be executed in';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_DESC" IS 'The description for the given QC validation issue type';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."IND_FIELD_NAME" IS 'The field in the result set that indicates if the current issue type has been identified.  A ''Y'' value indicates that the given issue condition has been identified.  When XML_QC_OBJ_ID is NULL this is the constant name that is used to refer to the current issue type';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_SEVERITY_ID" IS 'The Severity of the given issue type criteria.  These indicate the status of the given issue (e.g. warnings, data issues, violations of law, etc.)';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_SEVERITY_CODE" IS 'The code for the given issue severity';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_SEVERITY_NAME" IS 'The name for the given issue severity';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_SEVERITY_DESC" IS 'The description for the given issue severity';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_ID" IS 'Primary Key for the DVM_DATA_STREAMS table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_CODE" IS 'The code for the given data stream';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_NAME" IS 'The name for the given data stream';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_DESC" IS 'The description for the given data stream';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_TYPE_ACTIVE_YN" IS 'Flag to indicate if the given issue type criteria is active';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_ID" IS 'Primary Key for the DVM_ISS_RES_TYPES table';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_CODE" IS 'The Issue Resolution Type code';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_NAME" IS 'The Issue Resolution Type name';
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."ISS_RES_TYPE_DESC" IS 'The Issue Resolution Type description';
-
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."APP_LINK_TEMPLATE" IS 'The template for the specific application link to resolve the given data issue.  This is intended to provide the necessary parameters in a given URL that can be used to generate the full URL based on the server (e.g. generate the parameters for a given cruise leg and the APEX application will use the [APP_ID] and [APP_SESSION] placeholders at runtime to generate the full URL - f?p=[APP_ID]:220:[APP_SESSION]::NO::CRUISE_ID,CRUISE_ID_COPY:[CRUISE_ID],)';
-
-
-	COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."DATA_STREAM_PK_FIELD" IS 'The Data stream''s parent record''s primary key field (used when evaluating QC validation criteria to specify a given parent record)';
-
-   COMMENT ON COLUMN "DVM_PTA_ISSUES_V"."APP_LINK_URL" IS 'The generated specific application link URL to resolve the given data issue.  This is generated at runtime of the DVM based on the values returned by the corresponding QC query and by the related DVM_ISS_TYPES record''s APP_LINK_TEMPLATE value';
-
-
-
-
-   COMMENT ON TABLE "DVM_PTA_ISSUES_V"  IS 'PTA Issues (View)
-
-This View returns all validation issues associated with a given PTA Issue record that were identified during the last evaluation of the associated PTA Issue Types.  A PTA Issue record can be referenced by any data table that represents the parent record for a given data stream (e.g. SPT_VESSEL_TRIPS for RPL data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Issue''s Issue Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.';
-
 
 
 
@@ -4271,4 +4171,4 @@ COMMENT ON COLUMN DVM_QC_MSG_MISS_FIELDS_V.MISSING_APP_LINK_FIELDS IS 'The comma
 
 
 --define the upgrade version in the database upgrade log table:
-INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.6', TO_DATE('08-JUN-20', 'DD-MON-YY'), 'Updated the terminology of all objects from ERR/ERROR to ISS/ISSUE so the module is more accurately named since there are warnings and errors and additional issue severity values can be defined');
+INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '0.6', TO_DATE('10-JUN-20', 'DD-MON-YY'), 'Updated the terminology of all objects from ERR/ERROR to ISS/ISSUE so the module is more accurately named since there are warnings and errors and additional issue severity values can be defined');

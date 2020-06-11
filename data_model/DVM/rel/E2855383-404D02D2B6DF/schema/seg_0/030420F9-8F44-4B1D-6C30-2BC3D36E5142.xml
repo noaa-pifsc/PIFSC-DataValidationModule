@@ -1,7 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<SchemaObject class="oracle.dbtools.crest.model.design.relational.SchemaObject" name="MDSYS" directorySegmentName="seg_0" id="030420F9-8F44-4B1D-6C30-2BC3D36E5142">
-<createdBy>Jesse.Abdul</createdBy>
-<createdTime>2020-05-14 01:39:52 UTC</createdTime>
-<ownerDesignName>DVM</ownerDesignName>
-<importedID>5B20A845-3A2E-A632-141B-85C6D1835C44</importedID>
-</SchemaObject>

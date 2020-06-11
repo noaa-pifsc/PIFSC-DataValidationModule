@@ -135,7 +135,7 @@ X - how do we query for the validation criteria using DBMS_SQL so that we can us
 
 _ - QC query to identify any orphan parent error records
 
-_ semantic change - use issue instead of error since there are also warnings that are not considered errors
+X semantic change - use issue instead of error since there are also warnings that are not considered errors
 
 business rules:
 	_ policy - should we ignore the inactive rules when evaluating the DVM criteria associated with a given parent error record?
@@ -266,3 +266,34 @@ _ pre check the data stream codes provided are all valid otherwise throw an erro
 
 _ optimization updates (queries and PL/SQL code execution)
 	_ make the flexible procedures multi-purpose so they can be used by multiple code branches (e.g. RETRIEVE_ACTIVE_RULE_SET_SP)
+
+
+
+
+	_ - deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+
+	X - implement transactions
+
+	X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
+
+	X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+	    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
+	    - What if the error description template changes, then it will never match up - how is this handled?
+
+	X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
+	    What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
+
+
+
+			cases for script:
+
+			X - Give parent record does not exist
+
+			X - No DVM_PTA_ERRORS record for the given parent record
+
+			X - A DVM_PTA_ERRORS record exists for the give parent record
+
+			X - A DVM_PTA_ERRORS record and error records exist for the give parent record
+
+
+			_ - QC query to identify any orphan parent error records

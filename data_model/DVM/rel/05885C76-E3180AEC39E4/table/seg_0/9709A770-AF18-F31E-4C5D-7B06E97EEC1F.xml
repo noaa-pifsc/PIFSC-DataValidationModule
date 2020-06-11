@@ -1,0 +1,146 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9709A770-AF18-F31E-4C5D-7B06E97EEC1F" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_RULE_SETS">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_RULE_SETS</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:53 UTC</createdTime>
+<commentInRDBMS><![CDATA[DVM Rule Sets
+
+This table defines the different rule sets that were active over time.  As the active DVM validation criteria changes over time new rule set records will be added to define the time period that the corresponding error types were active.]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="RULE_SET_ID" id="FC662424-E692-D072-729E-C4C8B4EE6721">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_RULE_SETS</sourceObjSchema>
+<sourceObjName>RULE_SET_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary key for the DVM_RULE_SETS table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RULE_SET_ACTIVE_YN" id="161492D9-07CB-A3AB-A386-B96A05376FE9">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_RULE_SETS</sourceObjSchema>
+<sourceObjName>RULE_SET_ACTIVE_YN</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Flag to indicate if the given rule set is currently active (Y) or inactive (N).  Only one rule set can be active at any given time]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RULE_SET_CREATE_DATE" id="14020D8D-AB97-6167-0A42-1E1719D09152">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_RULE_SETS</sourceObjSchema>
+<sourceObjName>RULE_SET_CREATE_DATE</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date/time that the given rule set was created]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RULE_SET_INACTIVE_DATE" id="CF9BE37D-3CCC-6FE3-631C-F3D1D6D19154">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_RULE_SETS</sourceObjSchema>
+<sourceObjName>RULE_SET_INACTIVE_DATE</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date/time that the given rule set was deactivated (due to a change in active rules)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DATA_STREAM_ID" id="9DFA1A78-3026-07D6-AD29-452FDEE9A2ED">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_RULE_SETS</sourceObjSchema>
+<sourceObjName>DATA_STREAM_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Foreign key reference to the DVM_DATA_STREAMS table that represents the rule set's data stream for the given DVM rule set]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5EC2F145-853A-4606-62D1-3A8B89943B89" referredColumn="D8874169-8236-DA47-09D9-A3EEADCD9860"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="EB028BA7-719E-4C64-5576-1BA3FD8FF083" name="DVM_RULE_SETS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_RULE_SETS_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC662424-E692-D072-729E-C4C8B4EE6721"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6446A47D-C056-B523-C3F3-B99C02298F0F" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_RULE_SETS_I1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_RULE_SETS_I1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9DFA1A78-3026-07D6-AD29-452FDEE9A2ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="72A69092-18AC-22E9-6845-FA4CFAE7979A" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_RULE_SETS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_RULE_SETS_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC662424-E692-D072-729E-C4C8B4EE6721"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DBB6C2B4-BA7C-8829-4D67-764F264FDE84" name="DVM_RULE_SETS_FK1">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9DFA1A78-3026-07D6-AD29-452FDEE9A2ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

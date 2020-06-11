@@ -24,7 +24,6 @@ When developing a database it is important to use consistent naming conventions 
 - Abbreviations:
 	- APP: Application
 	- ASSOC: Associated
-	- ERR: Error
 	- IND: Indicator
 	- ISS: Issue
 	- MISS: Missing

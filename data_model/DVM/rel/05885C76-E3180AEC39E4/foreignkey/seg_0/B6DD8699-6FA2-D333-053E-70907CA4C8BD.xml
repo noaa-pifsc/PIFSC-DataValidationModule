@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="B6DD8699-6FA2-D333-053E-70907CA4C8BD" containerWithKeyObject="B0C9431C-1FC0-FE8A-C66F-61578F64A81B" localFKIndex="FDCED5E9-C49D-BF3D-304C-88F9B29DB894" name="DVM_ISS_FK3">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_FK3</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<referredTableLongName>CEN_CRUISE.DVM_ISS_RES_TYPES</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>762C6F8B-6997-9ACB-8F72-BD869565AB28</referredTableID>
+<keyObject>7DB4CAB0-DE2D-4662-CFEE-601855124498</keyObject>
+<referredKeyID>7DB4CAB0-DE2D-4662-CFEE-601855124498</referredKeyID>
+<mandatory>false</mandatory>
+<refColNames>ISS_RES_TYPE_ID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

@@ -1,0 +1,152 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="156CAE26-3CFC-BAED-6251-37078756D2DE" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_ISS_TYP_ASSOC">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Rule Set Error Type Associations (PTA)
+
+This intersection table defines which error types are/were active for a given rule set.  These associations represent the Error Types that are defined at the time that a given table record is evaluated using the DVM so that the specific rules can be applied for subsequent validation assessments over time.]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ISS_TYP_ASSOC_ID" id="C964B95F-D4D9-17DF-68CD-6F6F0CC0FAC3">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ISS_TYP_ASSOC</sourceObjSchema>
+<sourceObjName>ISS_TYP_ASSOC_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Primary Key for the DVM_ISS_TYP_ASSOC table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RULE_SET_ID" id="C28E99B7-9BA2-D483-3D57-AA6D14A7F406">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ISS_TYP_ASSOC</sourceObjSchema>
+<sourceObjName>RULE_SET_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Foreign key reference to the Rule Set (PTA) table.  This indicates a given Data Error Type rule was active at the time a given data table record was validated using the DVM]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0601774C-2C8F-DBF1-3251-4125DD8D7105" referredColumn="FC662424-E692-D072-729E-C4C8B4EE6721"/>
+</associations>
+</Column>
+<Column name="ISS_TYPE_ID" id="AF6DD060-B735-C692-E72F-8BA22649C197">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_ISS_TYP_ASSOC</sourceObjSchema>
+<sourceObjName>ISS_TYPE_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Foreign key reference to the Data Issue Types table that indicates a given Data Issue Type was active for a given data table (depends on related Issue Data Category) at the time it was added to the database]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="41829E60-9111-4EA2-02D2-CA9FD9207B89" referredColumn="1D0EF062-2A6D-27AA-FC9A-EAADD7A7636F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1658240B-7896-7720-6FCC-A6F02490BE7F" name="DVM_ISS_TYP_ASSOC_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C964B95F-D4D9-17DF-68CD-6F6F0CC0FAC3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B9BF1F16-C409-4AA2-E406-3BD7190FCA0E" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_ISS_TYP_ASSOC_I1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC_I1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C28E99B7-9BA2-D483-3D57-AA6D14A7F406"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E1503C6E-476F-B817-FDDA-09A6D7621819" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_ISS_TYP_ASSOC_I2">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC_I2</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AF6DD060-B735-C692-E72F-8BA22649C197"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="12A2D6A5-558D-CF92-6EE4-A01837EADFFB" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_ISS_TYP_ASSOC_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C964B95F-D4D9-17DF-68CD-6F6F0CC0FAC3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0334DE35-23BD-766A-8361-2E63288914A4" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_ISS_TYP_ASSOC_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYP_ASSOC_U1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C28E99B7-9BA2-D483-3D57-AA6D14A7F406"/>
+<colUsage columnID="AF6DD060-B735-C692-E72F-8BA22649C197"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="96A94294-D01F-ACD2-5A55-F893DA26EE76" name="DVM_ISS_TYP_ASSOC_FK1">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C28E99B7-9BA2-D483-3D57-AA6D14A7F406"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="75D3705B-34C6-4642-A66A-009E8BBA8140" name="DVM_ISS_TYP_ASSOC_FK2">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AF6DD060-B735-C692-E72F-8BA22649C197"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

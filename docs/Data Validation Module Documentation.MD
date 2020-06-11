@@ -6,7 +6,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 0.5 (Git tag: DVM_db_v0.5)
+  - Database: 0.6 (Git tag: DVM_db_v0.6)
+- [Database View Comments](./DVM_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
 - [Database Naming Conventions](./DVM%20DB%20Naming%20Conventions.MD)
@@ -92,7 +93,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- _develop this further
 	- Could be part of a more generalized application that could be used throughout the Center
 - <mark>Look into combining and generalizing the SPT_PTA_ERRORS and SPT_PTA_ERROR_TYPES tables (e.g. SPT_PTA_VALIDATIONS) since they seem to be redundant.  Could use a single key that two different tables reference.   This would simplify the logic and reduce the requirements for implementing framework on other data streams.
-- Generalize objects and use less-specific names for the different database entities.  (e.g. should not refer to things as errors since some are warnings, maybe use the term "data issue" instead).  All object names should be changed accordingly as well.
+- <mark>Generalize objects and use less-specific names for the different database entities.  (e.g. should not refer to things as errors since some are warnings, maybe use the term "data issue" instead).  All object names should be changed accordingly as well.</mark>
 
 ## <a name="ex1"><a/>Ex 1:
 

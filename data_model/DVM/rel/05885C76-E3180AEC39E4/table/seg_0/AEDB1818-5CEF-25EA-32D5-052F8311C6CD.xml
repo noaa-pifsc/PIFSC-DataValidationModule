@@ -1,0 +1,198 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AEDB1818-5CEF-25EA-32D5-052F8311C6CD" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_PTA_RULE_SETS">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[DVM PTA Rule Sets
+
+This table defines the relationship between validation rule sets (DVM_RULE_SETS) and the individual PTA parent issue record (DVM_PTA_ISSUES) that is associated with a given parent record.  This table is used to track which rule sets were used to evaluate which parent records.]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="PTA_RULE_SET_ID" id="B70124BD-3858-810D-5D6C-ADFC6884E79C">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_RULE_SETS</sourceObjSchema>
+<sourceObjName>PTA_RULE_SET_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[The primary key field for the DVM_PTA_RULE_SETS table]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RULE_SET_ID" id="C14CC4A4-3AC6-D6D5-C90A-40A986590E67">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_RULE_SETS</sourceObjSchema>
+<sourceObjName>RULE_SET_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Foreign key reference to the associated validation rule set (DVM_RULE_SETS)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="568C120E-D7CD-A95D-9D52-A8443A0CDF3C" referredColumn="FC662424-E692-D072-729E-C4C8B4EE6721"/>
+</associations>
+</Column>
+<Column name="PTA_ISS_ID" id="3F800270-7C1F-722F-E96E-45D15C049999">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_RULE_SETS</sourceObjSchema>
+<sourceObjName>PTA_ISS_ID</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Foreign key reference to the PTA Issue record associated validation rule set (DVM_PTA_ISSUES)]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="74912D3E-32E9-9E08-03DE-F0A595E350E9" referredColumn="2FD73D6E-C96D-41AB-8637-0B7EA1F893B5"/>
+</associations>
+</Column>
+<Column name="FIRST_EVAL_DATE" id="9A002FC2-4E0C-127A-50F6-380CC097476C">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_RULE_SETS</sourceObjSchema>
+<sourceObjName>FIRST_EVAL_DATE</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date/time the rule set was first evaluated for the given parent issue record]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LAST_EVAL_DATE" id="DC0441D5-1C15-05CD-128D-D6542C4033C1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>DVM_PTA_RULE_SETS</sourceObjSchema>
+<sourceObjName>LAST_EVAL_DATE</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:10:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[The date/time the rule set was most recently evaluated for the given parent issue record]]></commentInRDBMS>
+<ownerDesignName>DVM</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F1A9DB29-2F9F-E2AE-4D94-391B17DE6406" name="DVM_PTA_RULE_SETS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B70124BD-3858-810D-5D6C-ADFC6884E79C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="83FB05BB-4B39-DCAE-87D9-4EEA897C16D1" name="DVM_PTA_RULE_SETS_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_U1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:03 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C14CC4A4-3AC6-D6D5-C90A-40A986590E67"/>
+<colUsage columnID="3F800270-7C1F-722F-E96E-45D15C049999"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E5C0D85D-D9C0-3973-95FA-888450243C57" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_PTA_RULE_SETS_I1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_I1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C14CC4A4-3AC6-D6D5-C90A-40A986590E67"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5B9C3A3A-A118-C7A1-4E28-25DA9E2A54E6" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_PTA_RULE_SETS_I2">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_I2</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3F800270-7C1F-722F-E96E-45D15C049999"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3A566BF6-E568-FEF2-D1B8-BEB0B051258E" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_PTA_RULE_SETS_PK">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_PK</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B70124BD-3858-810D-5D6C-ADFC6884E79C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DD273018-ACE1-7A02-F918-FEF4AFC99E77" schemaObject="C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1" name="DVM_PTA_RULE_SETS_U1">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_PTA_RULE_SETS_U1</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:01 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C14CC4A4-3AC6-D6D5-C90A-40A986590E67"/>
+<colUsage columnID="3F800270-7C1F-722F-E96E-45D15C049999"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AF005EF2-5FA9-4909-EE37-F9B22F6F94E4" name="DVM_PTA_RULE_SETS_FK1">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C14CC4A4-3AC6-D6D5-C90A-40A986590E67"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="EDF19EA7-7471-F060-19F9-073A13A04541" name="DVM_PTA_RULE_SETS_FK2">
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:07 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3F800270-7C1F-722F-E96E-45D15C049999"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

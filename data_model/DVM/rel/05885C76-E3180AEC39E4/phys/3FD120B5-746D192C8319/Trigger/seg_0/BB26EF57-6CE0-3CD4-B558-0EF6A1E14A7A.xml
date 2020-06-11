@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="DVM_ISS_TYPES_AUTO_BRI" directorySegmentName="seg_0" id="BB26EF57-6CE0-3CD4-B558-0EF6A1E14A7A">
+<sourceConnName>DevVM_PDB_CEN_CRUISE</sourceConnName>
+<sourceObjSchema>CEN_CRUISE</sourceObjSchema>
+<sourceObjName>DVM_ISS_TYPES_AUTO_BRI</sourceObjName>
+<createdBy>jesse</createdBy>
+<createdTime>2020-06-11 02:11:05 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<actions>INSERT</actions>
+<body><![CDATA[begin
+  select DVM_ISS_TYPES_SEQ.nextval into :new.ISS_TYPE_ID from dual;
+  :NEW.CREATE_DATE := SYSDATE;
+  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+end;
+]]></body>
+<triggerTime>BEFORE</triggerTime>
+<owner>B33E0CA9-47A9-86F4-BB7D-DA77B8D9FA60</owner>
+<table>AC92AD26-8BEE-4E89-0134-167BDB87D826</table>
+</TriggerOraclev10g>

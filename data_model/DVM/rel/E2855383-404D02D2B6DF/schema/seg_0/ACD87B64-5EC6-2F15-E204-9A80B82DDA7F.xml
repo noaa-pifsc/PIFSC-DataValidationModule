@@ -1,6 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<SchemaObject class="oracle.dbtools.crest.model.design.relational.SchemaObject" name="SPTT_DATA_VALIDATOR" directorySegmentName="seg_0" id="ACD87B64-5EC6-2F15-E204-9A80B82DDA7F">
-<createdBy>Jesse.Abdul</createdBy>
-<createdTime>2017-03-11 02:33:10 UTC</createdTime>
-<ownerDesignName>DVM</ownerDesignName>
-</SchemaObject>
