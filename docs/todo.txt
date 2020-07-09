@@ -1,11 +1,13 @@
-_ compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
+Documentation:
+	_ compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
+	_ document how the batch process records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
 
 
 
 _ not null constraint on error severity
-_ error messages or some type of initialization process that indicates which views/objects don't exist (e.g. QC queries) and when references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
-	_ initialization checks otherwise it won't run properly
-_ implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
+_ error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
+	X initialization checks otherwise it won't run properly
+X implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
 
 _ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
 
@@ -22,7 +24,6 @@ X link to web pages with the corresponding IDs
 
 
 
-_ document how the batch proceess records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
 
 
 X update the code to ensure that only the placeholders are replaced not every single field (optimization) - right now if there are 100 fields it will attempt to replace all of them even if there are no placeholders
@@ -55,8 +56,8 @@ X - need to handle replacing existing errors so that the error records are not p
     X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
     - What if the error description template changes, then it will never match up - how is this handled?
 
-_ - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
-    What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
+X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
+    _ What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
 
 
 Update DVM_PTA_ERRORS references RULE_SET_ID
@@ -83,10 +84,8 @@ _ QC query that only one rule set is active
 
 
 
-Have the PTA_ERR_TYP_ASSOC table reference the rule set record
-
-
-		Each time a record is evaluated have the PL/SQL code check to see if the active error types are the same as the last execution:
+X Have the DVM_ISS_TYP_ASSOC table reference the rule set record
+	_ Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
 
 
 
@@ -171,13 +170,13 @@ X DVM_RULE_SETS_V (DVM_PTA_RULE_SETS, DVM_ISS_TYP_ASSOC, DVM_QC_CRITERIA_V)
 X DVM_PTA_ERRORS_V (DVM_ERRORS, DVM_PTA_ERRORS, DVM_ERR_RES_TYPES, DVM_QC_CRITERIA_V)
 
 _ need to test DVM with multiple data streams
-	_ rule sets must be defined at the data stream level (keep them separate even if they are called together)
-		_ may need to process them separately or there may be some gains from evaluating them together
+	X rule sets must be defined at the data stream level (keep them separate even if they are called together)
+		X (process them together) may need to process them separately or there may be some gains from evaluating them together
 
 _ Will the active rule set work for each data stream (e.g. RPL, UL, FOT) -> how do we keep these from interfering with each other?
 
 
-_ PL/SQL naming conventions
+X PL/SQL naming conventions
 
 
 
@@ -185,7 +184,7 @@ _ qc query rule set data stream does not match one of the associated error types
 
 
 _ design principle:
-	Define the rule sets and reference them instead of associating each issue type with the parent record directly to cut down on the number of records
+	X Define the rule sets and reference them instead of associating each issue type with the parent record directly to cut down on the number of records
 
 
 _ DVM use cases:
@@ -205,7 +204,7 @@ _ DVM use cases:
 		_ that will allow them to be executed independently or together
 
 
-_ udpate the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is evaluated:
+X (yes) update the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is evaluated:
 
 
 
@@ -297,3 +296,9 @@ _ optimization updates (queries and PL/SQL code execution)
 
 
 			_ - QC query to identify any orphan parent error records
+
+
+
+_ reports for validation rules in use over time
+
+_ allow records to be re-evaluated with the old rules or new rules

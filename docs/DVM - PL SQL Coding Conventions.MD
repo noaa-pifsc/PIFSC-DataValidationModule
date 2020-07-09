@@ -1,0 +1,49 @@
+# PL/SQL Coding Conventions Guidance
+## Overview:
+When developing PL/SQL code it is important to use consistent coding conventions so that packages, procedures, and functions are easily understandable.  Consistent prefixes and suffixes can be used to differentiate between different types of objects.  The underscore character should be used to separate the various abbreviations for objects.  For all installed database modules refer to the corresponding modules’ PL/SQL coding conventions documentation.  Each database project should have the major components of their PL/SQL coding conventions documented (example).  This document defines the PL/SQL coding conventions for the Data Validation Module (DVM) Database.
+
+## Coding Conventions:
+- Object Prefixes:
+  - DVM: Data Validation module
+- Object Suffixes:
+  - FN: Function
+  - PKG: Package
+  - SP: Stored Procedure
+- Variable Prefixes:
+  - P: function/procedure parameter
+  - PV: package variable
+  - V: function/procedure variable
+- Abbreviations:
+  - ACT: Active
+  - APP: Application
+  - ASSOC: Associated
+  - BOOL: Boolean
+  - CNT: Count
+  - COL: Column
+  - CUR: Cursor
+  - CURR: Current
+  - DELIM: Delimited
+  - DESC: Description
+  - EVAL: Evaluate
+  - ID: Identifier
+  - IND: Indicator
+  - ISS: Issue
+  - MSG: Message
+  - NUM: Number
+  - OBJ: Object
+  - PAR: Parent
+  - PARAM: Parameter
+  - PK: Primary Key
+  - POS: Position
+  - PTA: Point in Time Architecture
+  - REGEXP: Regular Expression
+  - RET: Return
+  - QC: Quality Control
+  - REC: Record
+  - RET: Return
+  - SQL: Structured Query Language
+  - SRC: Source
+  - STR: Stream
+  - TAB: Table
+  - TEMP: Temporary
+  - VAR: Variable
