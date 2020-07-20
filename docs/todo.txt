@@ -1,18 +1,18 @@
 Documentation:
-	_ compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
-	_ document how the batch process records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
+	_ (added to Google Keep - 7/9/20) compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
+	_ (added to Google Keep - 7/9/20) document how the batch process records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
 
 
 
-_ not null constraint on error severity
-_ error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
+_ (added to Google Keep - 7/9/20) not null constraint on error severity
+_ (added to Google Keep - 7/9/20) error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
 	X initialization checks otherwise it won't run properly
 X implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
 
 _ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
 
 
-**_ qc queries for orphaned DVM records (DVM view)
+**_ (added to Google Keep - 7/9/20) qc queries for orphaned DVM records (DVM view)
 
 
 X link to web pages with the corresponding IDs
@@ -46,7 +46,7 @@ X change the missing placeholder QC query to use a loop instead of bulk collect 
 
 
 
-_ - deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+_ - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
 
 X - implement transactions
 
@@ -54,20 +54,10 @@ X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEM
 
 X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
     X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
-    - What if the error description template changes, then it will never match up - how is this handled?
+    - (added to Google Keep - 7/9/20) What if the error description template changes, then it will never match up - how is this handled?
 
 X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
     _ What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
-
-
-Update DVM_PTA_ERRORS references RULE_SET_ID
-
-DVM_PTA_RULE_SETS
-(
-		RULE_SET_ID
-)
-
-
 
 
 Business Rules:
@@ -122,6 +112,20 @@ X - No DVM_PTA_ERRORS record for the given parent record
 X - A DVM_PTA_ERRORS record exists for the give parent record
 
 X - A DVM_PTA_ERRORS record and error records exist for the give parent record
+
+
+
+Test cases:
+	Error Conditions:
+
+	Functionality Conditions:
+		_ (HI1001) validate a record for the first time with the active criteria
+			_ update the validation rules to disable the issue types for some validation issues that it's associated with (Missing Cruise Primary Survey Category, Missing Leg Gear)
+  			_ revalidate record and confirm the LAST_EVAL_DATE is updated and the same validation issue records exist (they are still associated with the active rule set)
+			_ (RL-17-05) validate a record that has the issues that were disabled and confirm that those are not identified with the new record
+
+
+
 
 
 
@@ -259,9 +263,9 @@ _ Validate Parent Record:
 
 
 
-_ add in the first_eval and last_eval dates for the DVM_PTA_ERRORS or a different view so the information is available
+X add in the first_eval and last_eval dates for the DVM_PTA_RULE_SETS or a different view so the information is available
 
-_ pre check the data stream codes provided are all valid otherwise throw an error:
+X pre check the data stream codes provided are all valid otherwise throw an error:
 
 _ optimization updates (queries and PL/SQL code execution)
 	_ make the flexible procedures multi-purpose so they can be used by multiple code branches (e.g. RETRIEVE_ACTIVE_RULE_SET_SP)
@@ -302,3 +306,29 @@ _ optimization updates (queries and PL/SQL code execution)
 _ reports for validation rules in use over time
 
 _ allow records to be re-evaluated with the old rules or new rules
+
+
+
+/********************************************/
+--Content from old DVM technical document:
+/********************************************/
+
+
+## Legend
+<mark>Completed</mark>
+
+## Future plans for additional/modified functionality:
+- <mark>Develop import process to allow the QC template spreadsheet to be imported directly into the DVM_QC_OBJECTS and DVM_ISS_TYPES tables to remove the requirement to manually enter this data which can be time-consuming and potentially issue-prone (possibly just import into temp table and use merge queries to insert/update records into the corresponding tables as necessary).</mark>
+  - This is currently implemented in Excel formulas that generate the necessary DML to load the records
+- <mark>Update algorithm to associate the issue records directly with the parent record (e.g. SPT_VESSEL_TRIPS vs. SPT_APP_XML_FILES since only the RPL data entered via XML import module will have an associated SPT_APP_XML_FILES record).  When this change is made there would be no distinction between parent issue records and parent records.
+- <mark>Enhance the validation module to maintain existing issue records that are identical to the new issue records and retain any annotations made to these records so as not to lose the manual work completed by data management staff.  This is done by comparing the ISS_DESC and ISS_TYPE_ID values between existing and pending issue records to determine if existing records should be deleted and/or new records should be added
+- <mark>Implement the Data Validation Module as a stand-alone PL/SQL package that can be used directly in the database and executed via APEX, PHP, etc.  The logic in the evaluate_QC_criteria() and re_run_validation() methods would need to be implemented in stored procedures in a package.
+	- <mark>Query update - query for the primary key field name based on the DATA_STREAM_PAR_TABLE field in the DVM_DATA_STREAMS table so that it can be used as an argument in the data validation package.
+	- Include a stored procedure that can batch re-evaluate records
+- <mark>Implement URL generating capabilities into the framework to allow the QC Views to generate their own URLs for application pages that will allow the given issue to be resolved easily (e.g. APEX edit trip event link, PHP DM page link).  We would need to add to the fields in the DVM_ISSUES table and define a designated IND_FIELD to pull this information from (e.g. DATA_URL).  Could implement in foundational views as well and just pull directly into QC query as the link could be valuable in other contexts</mark>
+- There is a slow query that needs to be fixed when time permits (SPT_QC_EVT_DIST_ISSUE_V).  The execution slows down considerably as the database is populated.
+- <mark>Develop simple generalized interface to allow validation issues to be annotated in web interface (prototype completed in PARR App, CRDMA, and CDMA)</mark>
+	- _develop this further
+	- Could be part of a more generalized application that could be used throughout the Center
+- <mark>Look into combining and generalizing the SPT_PTA_ERRORS and SPT_PTA_ERROR_TYPES tables (e.g. SPT_PTA_VALIDATIONS) since they seem to be redundant.  Could use a single key that two different tables reference.   This would simplify the logic and reduce the requirements for implementing framework on other data streams.
+- <mark>Generalize objects and use less-specific names for the different database entities.  (e.g. should not refer to things as errors since some are warnings, maybe use the term "data issue" instead).  All object names should be changed accordingly as well.</mark>

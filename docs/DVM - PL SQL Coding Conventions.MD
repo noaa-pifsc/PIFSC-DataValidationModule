@@ -10,6 +10,7 @@ When developing PL/SQL code it is important to use consistent coding conventions
   - PKG: Package
   - SP: Stored Procedure
 - Variable Prefixes:
+  - EXC: PL/SQL exception
   - P: function/procedure parameter
   - PV: package variable
   - V: function/procedure variable
@@ -20,6 +21,7 @@ When developing PL/SQL code it is important to use consistent coding conventions
   - BOOL: Boolean
   - CNT: Count
   - COL: Column
+  - CONFIG: Configured
   - CUR: Cursor
   - CURR: Current
   - DELIM: Delimited
@@ -28,7 +30,9 @@ When developing PL/SQL code it is important to use consistent coding conventions
   - ID: Identifier
   - IND: Indicator
   - ISS: Issue
+  - MISS: Missing
   - MSG: Message
+	- MULT: Multiple
   - NUM: Number
   - OBJ: Object
   - PAR: Parent
