@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 0.8 (Git tag: DVM_db_v0.8)
+  - Database: 0.9 (Git tag: DVM_db_v0.9)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)

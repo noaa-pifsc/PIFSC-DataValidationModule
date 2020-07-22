@@ -6,7 +6,7 @@
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
 <logging>YES</logging>
 <partitionedRowMovement>DISABLE</partitionedRowMovement>
-<segment>568A9F02-377A-8221-446E-4CBE771EAA47</segment>
+<segment>EACDAC0C-748D-BFA9-21C2-853E793B669B</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <temporaryChanged>false</temporaryChanged>
 <accessDriverType>oracle_loader</accessDriverType>
@@ -45,7 +45,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 <IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_RULE_SETS_PK" id="72A69092-18AC-22E9-6845-FA4CFAE7979A">
@@ -53,7 +53,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 </indexProxies>
@@ -69,10 +69,10 @@
 <createdBy>jesse</createdBy>
 <createdTime>2020-06-11 02:11:03 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
-<segment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</segment>
+<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <existingIndex>72A69092-18AC-22E9-6845-FA4CFAE7979A</existingIndex>
-<indexSegment>1326CC9C-224E-DCB9-9AF8-CC5C950FF16B</indexSegment>
+<indexSegment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</indexSegment>
 <indexSort>SORTED</indexSort>
 <usingIndex>BY INDEX NAME</usingIndex>
 </PrimaryKey>

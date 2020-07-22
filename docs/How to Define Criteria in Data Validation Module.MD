@@ -1,4 +1,4 @@
-ISS_ISS_
+
 # How to Define Criteria in Data Validation Module
 ## Overview:
 This document defines the comprehensive procedure for defining QC validation criteria in the Data Validation Module (DVM).    
@@ -59,11 +59,15 @@ This document defines the comprehensive procedure for defining QC validation cri
 			- Use the values in the spreadsheet to populate the values of the records in the SPT_ISS_TYPES records in the fields indicated in the column headers in parentheses.
 			- ISS_TYPE_ACTIVE_YN should be 'Y' if the given Issue Type is enabled and 'N' if the Issue Type should be excluded from being evaluated on new records.
 			- ISS_TYPE_DESC can be populated with a description of the Issue Type but this is optional
-	- Step 4: Verify that all of the validation issue type records' issue type comment template's and application link template's defined field references have corresponding field values in the given QC View object.  
-		- This can be done using the DVM_QC_MSG_MISS_FIELDS_V View object, all rows returned will contain a comma-delimited list of missing QC View field references in the MISSING_VIEW_FIELDS field
-- Configure parent table in Data Validation Module
-	- Create the required Parent Issue table column in the parent table (defined in DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE for the given data stream) by modifying the provided scripts by defining the :table_name, :uk_name, :fk_name bind variables based on the data model on the target database instance.  
-	- **Note: code and detailed information can be found here: [configure_parent_table.sql](../SQL/scripts/configure_parent_table.sql) 
+	- Step 4: Verify that all of the validation issue type records' issue type comment template's and application link template's defined field references have corresponding field values in the given QC View object.
+	  - This can be done using the DVM_QC_MSG_MISS_FIELDS_V View object, all rows returned will contain a comma-delimited list of missing QC View field references in the MISSING_VIEW_FIELDS field
+  - Step 5 (once per parent table): Configure parent table in Data Validation Module
+	  - Create the required Parent Issue table column in the parent table (defined in DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE for the given data stream) by modifying the provided scripts by defining the :table_name, :uk_name, :fk_name bind variables based on the data model on the target database instance.  
+	    - **Note: code and detailed information can be found here: [configure_parent_table.sql](../SQL/scripts/configure_parent_table.sql) 
+    - The DVM requires each parent table to have a single numeric primary key (no compound primary keys) column to function properly
+  - Step 6: Develop and verify repeatable, automated DVM test cases
+    - This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.18 (Git tag: cen_cruise_db_v0.18).  Please review the docs/test_cases/DVM_PKG directory (Centralized Cruise Database DVM Testing Documentation.docx) for more information.
+
 ## <a name="examples"></a>Examples Section:
 - <a name="example_mult_QC_criteria"></a>Example Multiple Criteria QC Query:
 ```

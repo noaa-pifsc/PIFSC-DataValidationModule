@@ -60,6 +60,14 @@
 </ColumnProxy>
 </columnProxies>
 <indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_DATA_STREAMS_I1" id="43768920-A2A0-05A9-7CD8-2738EBCC119E">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-07-22 16:48:30 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+</IndexProxy>
 <IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_DATA_STREAMS_U2" id="7D7922A0-01B2-DFCE-E6AF-BA95760E6F92">
 <createdBy>jesse</createdBy>
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>

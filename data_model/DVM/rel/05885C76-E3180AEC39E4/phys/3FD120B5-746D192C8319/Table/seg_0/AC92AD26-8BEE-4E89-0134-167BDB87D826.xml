@@ -158,6 +158,19 @@
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <lobStorageType>SECUREFILE</lobStorageType>
 </LobStorage>
+<LobStorage class="oracle.dbtools.crest.model.design.storage.oracle.v11g.LobStorageOraclev11g" name="SYS_LOB0000139052C00013$$" id="575AFC1D-303B-F6BC-B941-E311C94C69B8">
+<createdBy>Jesse.Abdul</createdBy>
+<createdTime>2020-07-22 16:48:30 UTC</createdTime>
+<ownerDesignName>DVM</ownerDesignName>
+<cache>NOCACHE</cache>
+<chunk>8192</chunk>
+<column>ISS_TYPE_COMMENT_TEMPLATE</column>
+<compression>NO</compression>
+<duplication>KEEP_DUPLICATES</duplication>
+<logging>YES</logging>
+<tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
+<lobStorageType>SECUREFILE</lobStorageType>
+</LobStorage>
 </lobStorages>
 <primaryKeys>
 <PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="DVM_ISS_TYPES_PK" id="F12A8D88-D0B8-6265-393E-8BFCA4D5DEEA">

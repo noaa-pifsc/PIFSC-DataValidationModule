@@ -19,3 +19,4 @@
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.6.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.7.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.8.sql"
+@@"./upgrades/DVM_DDL_DML_upgrade_v0.9.sql"
