@@ -1,218 +1,197 @@
 Documentation:
 	_ (added to Google Keep - 7/9/20) compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
 	_ (added to Google Keep - 7/9/20) document how the batch process records fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
+	X - instructions and scripts for how to configure the given parent table for DVM
 
+	X PL/SQL naming conventions
+	X DB Naming conventions
+	X How to define validation rules/enable DVM
+	X database documentation
 
+	_ **business rules
 
-_ (added to Google Keep - 7/9/20) not null constraint on error severity
-_ (added to Google Keep - 7/9/20) error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
-	X initialization checks otherwise it won't run properly
-X implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
 
-_ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
 
+functionality:
+(1)	_ history trigger on DVM_PTA_RULE_SETS
+(2)		_ work on reports (DVM rules, Cruise DVM Rules, Cruise DVM executions - requires history trigger)
 
-**_ (added to Google Keep - 7/9/20) qc queries for orphaned DVM records (DVM view)
+(3)	_ QC views to identify problems with the DVM data (use one large union query?)
+		_ data stream, parent record, missing QC view template fields, one rule set is active per data stream, at least one active validation rule for each data stream
+			X - application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query (DVM_QC_MSG_MISS_FIELDS_V)
+		_ (added to Google Keep - 7/9/20) error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
+			X initialization checks otherwise it won't run properly
+	**_ (added to Google Keep - 7/9/20) qc queries for orphaned DVM parent issue records (DVM view)
+		_ qc query rule set data stream does not match one of the associated error types' data stream
 
 
-X link to web pages with the corresponding IDs
-	for each QC view it can refer to a given page number, and page parameters so it has the information APEX needs to generate the URL
-	maybe this should be defined in the DVM_QC_OBJECTS records? -> yes (define APEX page ID, APEX page parameters, and table name which can be used in a case statement to determine which field should be used)
-		X how to figure out which field values to use when generating the URLs (e.g. CRUISE_ID vs. CRUISE_LEG_ID but also which CRUISE_LEG_ID should be used when the errors are associated with the parent, not the corresponding child record?)
-	DVM error type is used to generate DVM Errors (error records linked to CCD_CRUISES record)
-		X **Use the placeholder approach for constructing the necessary pieces of the URL and the rest of it can be determined at runtime like APP_ID and session id
+	X Have the DVM_ISS_TYP_ASSOC table reference the rule set record
+		X Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
 
 
+	_ - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+	_ (added to Google Keep - 7/9/20) not null constraint on error severity
 
+	_ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
 
 
-X update the code to ensure that only the placeholders are replaced not every single field (optimization) - right now if there are 100 fields it will attempt to replace all of them even if there are no placeholders
-	X do this is a SP that takes the result set and the specified field and replaces all found placeholders instead of all of them
+	X implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
 
-	X change the QC query in the DVM_PKG to ignore the two reserved placeholder values ([APP_SESSION], [APP_ID])
+	_ allow records to be re-evaluated with the old rules or new rules
 
-X convert all documentation to MD files and link them together (_ spreadsheets must be maintained as .xlsx or other open format to allow them to be used by the public)
+	X optimization updates (queries and PL/SQL code execution)
+		_ make the flexible procedures multi-purpose so they can be used by multiple code branches (e.g. RETRIEVE_ACTIVE_RULE_SET_SP)
 
-X document the [APP_SESSION] and [APP_ID] APEX placeholder business rules:
+	X - implement transactions
 
+	X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
 
+	X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+	    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
+	    _ **What if the error description template changes, then it will never match up - how is this handled?
 
-X change the missing placeholder QC query to use a loop instead of bulk collect (still not sure why this doesn't work in 12c - this was resolved by rewriting the query)
+	X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
+		X Use a procedure to save the issue records when they're updated (each time they are updated update the currently active PTA issue type assoc record to set the end date to the active date)
 
---compile and test the Core DVM DDL.sql
+	_ Generalize the DVM issues functionality in an APEX application that could be copied and used throughout the Center (potentially a variation of the template application)
 
---update the DVM triggers for all tables with auditing fields (DDL Helper)
+	X link to web pages with the corresponding IDs
+		for each QC view it can refer to a given page number, and page parameters so it has the information APEX needs to generate the URL
+		maybe this should be defined in the DVM_QC_OBJECTS records? -> yes (define APEX page ID, APEX page parameters, and table name which can be used in a case statement to determine which field should be used)
+			X how to figure out which field values to use when generating the URLs (e.g. CRUISE_ID vs. CRUISE_LEG_ID but also which CRUISE_LEG_ID should be used when the errors are associated with the parent, not the corresponding child record?)
+		DVM error type is used to generate DVM Errors (error records linked to CCD_CRUISES record)
+			X **Use the placeholder approach for constructing the necessary pieces of the URL and the rest of it can be determined at runtime like APP_ID and session id
 
+	X (yes) update the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is evaluated:
 
 
+	X foundational views:
+		(X NO NEED) DVM_ISSUE_TYPES_V (DVM_ERROR_TYPES, DVM_ERR_SEVERITY)
 
-_ - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
 
-X - implement transactions
+		(X renamed from DVM_QC_CRITERIA_V) X DVM_CRITERIA_V (DVM_QC_OBJECTS, DVM_ERROR_TYPES_V, DVM_DATA_STREAMS_V)
 
-X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
+		X DVM_RULE_SETS_V (DVM_PTA_RULE_SETS, DVM_ISS_TYP_ASSOC, DVM_QC_CRITERIA_V)
 
-X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
-    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
-    - (added to Google Keep - 7/9/20) What if the error description template changes, then it will never match up - how is this handled?
+		X DVM_PTA_ERRORS_V (DVM_ERRORS, DVM_PTA_ERRORS, DVM_ERR_RES_TYPES, DVM_QC_CRITERIA_V)
 
-X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
-    _ What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
+	X query for the validation criteria using DBMS_SQL so that we can use multiple data stream codes?
 
+	X semantic change - use issue instead of error since there are also warnings that are not considered errors
 
-Business Rules:
-_ QC query that only one rule set is active
-(enable when it is created)
-(disable when it doesn't match the active rules and update the disable date)
+	X change the missing placeholder QC query to use a loop instead of bulk collect (still not sure why this doesn't work in 12c - this was resolved by rewriting the query)
 
+	X update the DVM triggers for all tables with auditing fields (DDL Helper)
 
---check if there is more than one active rule set:
+	X convert all documentation to MD files and link them together (_ spreadsheets must be maintained as .xlsx or other open format to allow them to be used by the public)
 
 
---procedure checks the current active rules and the active result set (if any)
---procedure RETRIEVE_ACTIVE_RULE_SET_SP ()
+	X update the code to ensure that only the placeholders are replaced not every single field (optimization) - right now if there are 100 fields it will attempt to replace all of them even if there are no placeholders
+		X do this is a SP that takes the result set and the specified field and replaces all found placeholders instead of all of them
 
+		X change the QC query in the DVM_PKG to ignore the two reserved placeholder values ([APP_SESSION], [APP_ID])
 
+	X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
+    X process to release an update - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA issue type assoc record to set the end date to the active date)
 
-X Have the DVM_ISS_TYP_ASSOC table reference the rule set record
-	_ Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
 
+	X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
+	    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
 
+	X - implement transactions
 
-_ qc query for more than one active rule set
+	X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
 
+	X ** RETRIEVE_ACTIVE_RULE_SET_SP needs to be modified for the DEFINE_RULE_SET_SP (this needs to take an array of data stream codes as an argument) as well
 
+	X DVM PKG: pre check the data stream codes provided are all valid otherwise throw an error
 
-X - instructions and scripts for how to configure the given parent table for DVM
+Use cases:
+  - (added to Google Keep - 7/9/20) What if the error description template changes, then it will never match up - how is this handled?
 
+	X if the record has been validated before
+		X query for the associated issue types based on the associated rule set: (RETRIEVE_QC_CRITERIA)
+	X if the record has not been validated before
+		X query for the rules for the active rule set (only one should exist)
+		X query for the rules that are currently active and compare the lists (two delimited lists with an equals operator)
 
-** _How do we migrate during the upgrade?
-	_ need to think this through (maybe based on the DVM_PTA_ERRORS record values)
-		_ maybe query for the delimited values (order by error_type_id) and then look for unique values with max and min values for the CREATE_DATE
+	X need to test DVM with multiple data streams
+		X rule sets must be defined at the data stream level (keep them separate even if they are called together)
+			X (process them together) may need to process them separately or there may be some gains from evaluating them together
 
-		--query to find the different error groups
-		select MIN(CREATE_DATE), MAX(CREATE_DATE), error_type_list,
-		LISTAGG(pta_error_id, ', ') WITHIN GROUP (order by pta_error_id) as pta_error_list
-		FROM
-		(select pta_error_id,
-		CREATE_DATE,
-		LISTAGG(error_type_id, ', ') WITHIN GROUP (order by error_type_id) as error_type_list
+	X Will the active rule set work for each data stream (e.g. RPL, UL, FOT) -> how do we keep these from interfering with each other?
+		X we just query for the rule sets separately as they are specified by the corresponding data streams in the DVM executions
 
-		FROM
-		DVM_PTA_ERR_TYP_ASSOC group by pta_error_id, create_date)
-		group by error_Type_list
-		order by  MIN(CREATE_DATE);
+	X TEST CASES: split the CCD data stream into two different data streams and split some criteria in the same view objects for testing purposes
+		X this will allow them to be executed independently or together
 
-cases for script:
-
-X - Give parent record does not exist
-
-X - No DVM_PTA_ERRORS record for the given parent record
-
-X - A DVM_PTA_ERRORS record exists for the give parent record
-
-X - A DVM_PTA_ERRORS record and error records exist for the give parent record
-
-
-
-Test cases:
-	Error Conditions:
-
-	Functionality Conditions:
-		_ (HI1001) validate a record for the first time with the active criteria
-			_ update the validation rules to disable the issue types for some validation issues that it's associated with (Missing Cruise Primary Survey Category, Missing Leg Gear)
-  			_ revalidate record and confirm the LAST_EVAL_DATE is updated and the same validation issue records exist (they are still associated with the active rule set)
-			_ (RL-17-05) validate a record that has the issues that were disabled and confirm that those are not identified with the new record
-
-
-
-
-
-
-X - application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query (DVM_QC_MSG_MISS_FIELDS_V)
-
-X - update the LAST_EVAL_DATE on the PTA_ERRORS record
-
-
-X - how do we query for the validation criteria using DBMS_SQL so that we can use multiple data stream codes?
-
-_ - QC query to identify any orphan parent error records
-
-X semantic change - use issue instead of error since there are also warnings that are not considered errors
-
-business rules:
-	_ policy - should we ignore the inactive rules when evaluating the DVM criteria associated with a given parent error record?
-
-	_ can't remove columns from queries or else the QC queries will break.
-	_ how to handle when existing criteria are modified
-
-
-
-		if the record has been validated before
-			query for the associated issue types based on the associated rule set: (RETRIEVE_QC_CRITERIA)
-		if the record has not been validated before
-			query for the rules for the active rule set (only one should exist)
-			query for the rules that are currently active and compare the lists (two delimited lists with an equals operator)
-
-
-
-		SELECT 1 GROUP_VAL, LISTAGG(error_type_id, ',') WITHIN GROUP (order by error_type_id) as error_type_list from dvm_qc_criteria_v where ERR_TYPE_ACTIVE_YN = 'Y' AND QC_OBJ_ACTIVE_YN = 'Y'
-		AND DATA_STREAM_CODE IN ('CCD')
-
-		group by GROUP_VAL;
-
-
-
-_ foundational views:
-(X NO NEED) DVM_ISSUE_TYPES_V (DVM_ERROR_TYPES, DVM_ERR_SEVERITY)
-
-
-(X renamed from DVM_QC_CRITERIA_V) X DVM_CRITERIA_V (DVM_QC_OBJECTS, DVM_ERROR_TYPES_V, DVM_DATA_STREAMS_V)
-
-X DVM_RULE_SETS_V (DVM_PTA_RULE_SETS, DVM_ISS_TYP_ASSOC, DVM_QC_CRITERIA_V)
-
-X DVM_PTA_ERRORS_V (DVM_ERRORS, DVM_PTA_ERRORS, DVM_ERR_RES_TYPES, DVM_QC_CRITERIA_V)
-
-_ need to test DVM with multiple data streams
-	X rule sets must be defined at the data stream level (keep them separate even if they are called together)
-		X (process them together) may need to process them separately or there may be some gains from evaluating them together
-
-_ Will the active rule set work for each data stream (e.g. RPL, UL, FOT) -> how do we keep these from interfering with each other?
-
-
-X PL/SQL naming conventions
-
-
-
-_ qc query rule set data stream does not match one of the associated error types' data stream
-
-
-_ design principle:
-	X Define the rule sets and reference them instead of associating each issue type with the parent record directly to cut down on the number of records
-
-
-_ DVM use cases:
-	_ Multiple data streams defined for a single parent table
-		_ need to be able to handle the use case where one of the data streams was evaluated and then the other one was (there is already a DVM_PTA_ERRORS record but no associated DVM_PTA_RULE_SETS record for the specified data stream)
+	X Multiple data streams defined for a single parent table
+		X need to be able to handle the use case where one of the data streams was evaluated and then the other one was (there is already a DVM_PTA_ISSUES record but no associated DVM_PTA_RULE_SETS record for the specified data stream)
 	_ multiple data streams defined for different parent tables
 		_ allow the data streams to be evaluated separately
-	_ allow multiple rule sets (based on data stream) to be evaluated separately (do not purge the rule sets
+	X allow multiple rule sets (based on data stream) to be evaluated separately (do not purge the rule sets
+
+	X **evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)
+		X this was resolved by initializing the ALL_CRITERIA member variable in the package definition on each execution (it would retain the values from the last execution unless it was cleared with .delete)
+
+	X - Give parent record does not exist
+
+	X - No DVM_PTA_ERRORS record for the given parent record
+
+	X - A DVM_PTA_ERRORS record exists for the give parent record
+
+	X - A DVM_PTA_ERRORS record and error records exist for the give parent record
+
+	X (HI1001) validate a record for the first time with the active criteria
+		X update the validation rules to disable the issue types for some validation issues that it's associated with (Missing Cruise Primary Survey Category, Missing Leg Gear)
+			X revalidate record and confirm the LAST_EVAL_DATE is updated and the same validation issue records exist (they are still associated with the active rule set)
+		X (RL-17-05) validate a record that has the issues that were disabled and confirm that those are not identified with the new record
+
+	X - Give parent record does not exist
+
+	X - No DVM_PTA_ERRORS record for the given parent record
+
+	X - A DVM_PTA_ERRORS record exists for the give parent record
+
+	X - A DVM_PTA_ERRORS record and error records exist for the give parent record
 
 
-**	X evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)
-	X this was resolved by initializing the ALL_CRITERIA member variable in the package definition on each execution (it would retain the values from the last execution unless it was cleared with .delete)
+	X **How do we migrate during the upgrade
+		X if the same validation criteria were active during two different periods then the migration of the DVM data must be handled on a case by case basis
+
+		X as long as the validation criteria that were evaluated changed to unique lists of issue types each time we can use the method below - implemented in migrate_error_type_assoc_values.sql)
+			X query for the delimited values (order by error_type_id) and then look for unique values with max and min values for the CREATE_DATE
+
+			--query to find the different error groups
+			select MIN(CREATE_DATE), MAX(CREATE_DATE), error_type_list,
+			LISTAGG(pta_error_id, ', ') WITHIN GROUP (order by pta_error_id) as pta_error_list
+			FROM
+			(select pta_error_id,
+			CREATE_DATE,
+			LISTAGG(error_type_id, ', ') WITHIN GROUP (order by error_type_id) as error_type_list
+
+			FROM
+			DVM_PTA_ERR_TYP_ASSOC group by pta_error_id, create_date)
+			group by error_Type_list
+			order by  MIN(CREATE_DATE);
+
+business rules:
+	_ policy - should we ignore the inactive rules when evaluating the DVM criteria associated with a given parent error record? No, but we could build in the functionality of refreshing the rules (associate with the currently active rule set instead of the one it was originally validated with)
+	_ can't remove columns from queries or else the QC queries will break.
+	_ how to handle when existing criteria are modified
+	X QC query that only one rule set is active (procedure RETRIEVE_ACTIVE_RULE_SET_SP)
+		X (enable when it is created)
+		X (disable when it doesn't match the active rules and update the disable date)
+	X check if there is more than one active rule set:
+	X document the [APP_SESSION] and [APP_ID] APEX placeholder business rules:
+
+design principle:
+	X Define the rule sets and reference them instead of associating each issue type with the parent record directly to cut down on the number of records
+	X add in the first_eval and last_eval dates for the DVM_PTA_RULE_SETS or a different view so the information is available
 
 
 
-	_ TEST CASES: split the CCD data stream into two different data streams and split some criteria in the same view objects for testing purposes
-		_ that will allow them to be executed independently or together
 
-
-X (yes) update the LAST_EVAL_DATE for the DVM_PTA_RULE_SETS record each time it is evaluated:
-
-
-
-** _RETRIEVE_ACTIVE_RULE_SET_SP needs to be modified for the DEFINE_RULE_SET_SP (this needs to take a data stream code as an argument) as well
 
 
 
@@ -262,53 +241,6 @@ _ Validate Parent Record:
 
 
 
-
-X add in the first_eval and last_eval dates for the DVM_PTA_RULE_SETS or a different view so the information is available
-
-X pre check the data stream codes provided are all valid otherwise throw an error:
-
-_ optimization updates (queries and PL/SQL code execution)
-	_ make the flexible procedures multi-purpose so they can be used by multiple code branches (e.g. RETRIEVE_ACTIVE_RULE_SET_SP)
-
-
-
-
-	_ - deprecated flag in the error_types table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
-
-	X - implement transactions
-
-	X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
-
-	X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
-	    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
-	    - What if the error description template changes, then it will never match up - how is this handled?
-
-	X - how do we reduce the amount of error type assoc intersection records?  - Use a PTA strategy to define the error types for a given date range:
-	    What is the process to release an update? - use a procedure to save the error records when they're updated (each time they are updated update the currently active PTA error type assoc record to set the end date to the active date)
-
-
-
-			cases for script:
-
-			X - Give parent record does not exist
-
-			X - No DVM_PTA_ERRORS record for the given parent record
-
-			X - A DVM_PTA_ERRORS record exists for the give parent record
-
-			X - A DVM_PTA_ERRORS record and error records exist for the give parent record
-
-
-			_ - QC query to identify any orphan parent error records
-
-
-
-_ reports for validation rules in use over time
-
-_ allow records to be re-evaluated with the old rules or new rules
-
-
-
 /********************************************/
 --Content from old DVM technical document:
 /********************************************/
@@ -328,7 +260,7 @@ _ allow records to be re-evaluated with the old rules or new rules
 - <mark>Implement URL generating capabilities into the framework to allow the QC Views to generate their own URLs for application pages that will allow the given issue to be resolved easily (e.g. APEX edit trip event link, PHP DM page link).  We would need to add to the fields in the DVM_ISSUES table and define a designated IND_FIELD to pull this information from (e.g. DATA_URL).  Could implement in foundational views as well and just pull directly into QC query as the link could be valuable in other contexts</mark>
 - There is a slow query that needs to be fixed when time permits (SPT_QC_EVT_DIST_ISSUE_V).  The execution slows down considerably as the database is populated.
 - <mark>Develop simple generalized interface to allow validation issues to be annotated in web interface (prototype completed in PARR App, CRDMA, and CDMA)</mark>
-	- _develop this further
+	- X develop this further
 	- Could be part of a more generalized application that could be used throughout the Center
 - <mark>Look into combining and generalizing the SPT_PTA_ERRORS and SPT_PTA_ERROR_TYPES tables (e.g. SPT_PTA_VALIDATIONS) since they seem to be redundant.  Could use a single key that two different tables reference.   This would simplify the logic and reduce the requirements for implementing framework on other data streams.
 - <mark>Generalize objects and use less-specific names for the different database entities.  (e.g. should not refer to things as errors since some are warnings, maybe use the term "data issue" instead).  All object names should be changed accordingly as well.</mark>

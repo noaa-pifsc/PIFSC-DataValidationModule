@@ -32,6 +32,7 @@ When developing a database it is important to use consistent naming conventions 
 	- PTA: Point in Time Architecture
 	- QC: Quality Control
 	- RES: Resolution
+	- RPT: Report
 	- TEMPL: Template
 	- TYP: Type
 	- URL: Uniform Resource Locator

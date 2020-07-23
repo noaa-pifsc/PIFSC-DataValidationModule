@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 0.9 (Git tag: DVM_db_v0.9)
+  - Database: 0.10 (Git tag: DVM_db_v0.10)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -34,6 +34,10 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Features:
 - Point in time architecture (PTA): The module will associate the given parent record with the active Validation Rule Set(s) that were active at the time that the given parent record was first validated by the module for the specified data stream(s).  This will allow the data to be re-validated with the same criteria over time so new criteria will not be evaluated on older data which can potentially cause problems.
 - Data Validation Issues can be accepted based on manual annotations and an Issue Resolution Type.  This allows data issues that cannot be resolved or false positives to be marked as valid with the annotation as an explanation.
+- Standard Validation Criteria Reports
+  - The DVM_RULE_SETS_RPT_V view is a standard report query that generates a standard validation rule report that can be included with the data set metadata to provide the specific data quality control criteria that was used to validate each data stream over time
+  - The DVM_PTA_RULE_SETS_RPT_V view is a standard report query that can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report to provide the specific data quality control criteria that was used to validate each parent record if that level of detail is desired
+
 
 ## Implementation
 - Current Implementation
