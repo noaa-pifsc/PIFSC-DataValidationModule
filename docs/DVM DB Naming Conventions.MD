@@ -24,6 +24,9 @@ When developing a database it is important to use consistent naming conventions 
 - Abbreviations:
 	- APP: Application
 	- ASSOC: Associated
+  - DS: Data Stream
+  - EVAL: Evaluation
+  - HIST: History
 	- IND: Indicator
 	- ISS: Issue
 	- MISS: Missing
