@@ -36,6 +36,7 @@ When developing a database it is important to use consistent naming conventions 
 	- QC: Quality Control
 	- RES: Resolution
 	- RPT: Report
+	- STD: Standard
 	- TEMPL: Template
 	- TYP: Type
 	- URL: Uniform Resource Locator

@@ -13,13 +13,13 @@ Documentation:
 
 
 functionality:
-(1)	_ history trigger on DVM_PTA_RULE_SETS
-(2)		_ work on reports (DVM rules, Cruise DVM Rules, Cruise DVM executions - requires history trigger)
+(1)	X history trigger on DVM_PTA_RULE_SETS
+(2)		X work on reports (DVM rules, Cruise DVM Rules, Cruise DVM executions - requires history trigger)
 
-(3)	_ QC views to identify problems with the DVM data (use one large union query?)
-		_ data stream, parent record, missing QC view template fields, one rule set is active per data stream, at least one active validation rule for each data stream
+(3)	X QC views to identify problems with the DVM data (use one large union query - YES)
+		X data stream, parent record, missing QC view template fields, one rule set is active per data stream, at least one active validation rule for each data stream
 			X - application tables: QC query to determine if there are error templates with placeholders that are not included in the result set of the corresponding QC query (DVM_QC_MSG_MISS_FIELDS_V)
-		_ (added to Google Keep - 7/9/20) error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
+		X (added to Google Keep - 7/9/20) error messages or some type of initialization process that indicates (_) which views/objects don't exist (e.g. QC queries) and when (X) references don't exist in the corresponding QC object, etc. so it is clear what the problem is and it can be fixed across the board
 			X initialization checks otherwise it won't run properly
 	**_ (added to Google Keep - 7/9/20) qc queries for orphaned DVM parent issue records (DVM view)
 		_ qc query rule set data stream does not match one of the associated error types' data stream
@@ -29,7 +29,7 @@ functionality:
 		X Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
 
 
-	_ - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+	_ ** - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
 	_ (added to Google Keep - 7/9/20) not null constraint on error severity
 
 	_ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)

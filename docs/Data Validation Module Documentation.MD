@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 0.11 (Git tag: DVM_db_v0.11)
+  - Database: 0.12 (Git tag: DVM_db_v0.12)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -39,6 +39,9 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   - The DVM_PTA_RULE_SETS_RPT_V view is a standard report query that can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report to provide the specific data quality control criteria that was used to validate each parent record if that level of detail is desired
   - The DVM_DS_PTA_RULE_SETS_HIST_V view is a standard query that can be combined with data set-specific information to generate a standard DVM evaluation report that can be included with the data set metadata or as an internal report to provide the DVM rule set evaluation history for each parent record if that level of detail is desired
   - The DVM_PTA_RULE_SETS_HIST_RPT_V view is a standard detailed report query can be combined with data set-specific information to generate a standard detailed DVM evaluation report that can be included with the data set metadata or as an internal report to provide information about each time the DVM was evaluated for which specific validation rules on a given parent record for each data stream if that level of detail is desired
+- DVM Configuration QC Queries
+  - These QC queries (objects that begin with "DVM_STD_QC") are used to identify invalid DVM configuration errors that will prevent the DVM from being executed successfully (e.g. data QC view is invalid).  These configuration QC queries are intended to be executed after the DVM configuration has been changed or if there are problems encountered during DVM execution.  The DVM_STD_QC_ALL_RPT_V combines the results of all of the standard DVM configuration QC queries for convenience.  
+
 ## Implementation
 - Current Implementation
 	- Standalone PL/SQL Package (DVM_PKG) that can be executed to validate any parent record that has been configured and enabled in the DVM.  The behavior of the module depends on the state of the given parent record.  The first time a Parent Record is evaluated for a given data stream it will save the active Validation Criteria for future validation module processing and all Validation Issue records will be associated with the Parent Issue Record.  All subsequent times a Parent Record is evaluated for a given data stream it will re-use the saved validation criteria and remove all obsolete Validation Issues (indicates that the underlying cause of the validation has been resolved) for the given data stream and add all newly identified Validation Issues (indicates that there are new Validation Issues).
