@@ -127,8 +127,8 @@ Use cases:
 
 	X Multiple data streams defined for a single parent table
 		X need to be able to handle the use case where one of the data streams was evaluated and then the other one was (there is already a DVM_PTA_ISSUES record but no associated DVM_PTA_RULE_SETS record for the specified data stream)
-	_ multiple data streams defined for different parent tables
-		_ allow the data streams to be evaluated separately
+	X multiple data streams defined for different parent tables
+		X allow the data streams to be evaluated separately
 	X allow multiple rule sets (based on data stream) to be evaluated separately (do not purge the rule sets
 
 	X **evaluate one data stream, evaluate the other data stream, evaluate the first data stream again (this causes the second data stream to be re-evaluated and the duplicate error records are added from the second data stream)

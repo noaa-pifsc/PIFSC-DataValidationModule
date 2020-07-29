@@ -1,4 +1,5 @@
 
+
 # How to Define Criteria in Data Validation Module
 ## Overview:
 This document defines the comprehensive procedure for defining QC validation criteria in the Data Validation Module (DVM).    
@@ -65,7 +66,9 @@ This document defines the comprehensive procedure for defining QC validation cri
 	  - Create the required Parent Issue table column in the parent table (defined in DVM_DATA_STREAMS.DATA_STREAM_PAR_TABLE for the given data stream) by modifying the provided scripts by defining the :table_name, :uk_name, :fk_name bind variables based on the data model on the target database instance.  
 	    - **Note: code and detailed information can be found here: [configure_parent_table.sql](../SQL/scripts/configure_parent_table.sql) 
     - The DVM requires each parent table to have a single numeric primary key (no compound primary keys) column to function properly
-  - Step 6: Develop and verify repeatable, automated DVM test cases
+  - Step 6: Verify the DVM Configuration is Valid
+	  - Query the DVM Configuration DVM_STD_QC_ALL_RPT_V QC view, any rows returned indicate DVM configuration errors that will prevent the DVM from being processed on a given parent record.  Each row will contain information about what is causing the configuration error and how to resolve it.
+  - Step 7: Develop and verify repeatable, automated DVM test cases
     - This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.18 (Git tag: cen_cruise_db_v0.18).  Please review the docs/test_cases/DVM_PKG directory (Centralized Cruise Database DVM Testing Documentation.docx) for more information.
 
 ## <a name="examples"></a>Examples Section:
