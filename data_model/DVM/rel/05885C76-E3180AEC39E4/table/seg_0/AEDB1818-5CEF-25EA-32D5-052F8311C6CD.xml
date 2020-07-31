@@ -7,7 +7,7 @@
 <createdTime>2020-06-11 02:10:52 UTC</createdTime>
 <commentInRDBMS><![CDATA[DVM PTA Rule Sets
 
-This table defines the relationship between validation rule sets (DVM_RULE_SETS) and the individual PTA parent issue record (DVM_PTA_ISSUES) that is associated with a given parent record.  This table is used to track which rule sets were used to evaluate which parent records.]]></commentInRDBMS>
+This table defines the relationship between validation rule sets (DVM_RULE_SETS) and the individual PTA parent error record (DVM_PTA_ERRORS) that is associated with a given parent record.  This table is used to track which rule sets were used to evaluate which parent records.]]></commentInRDBMS>
 <ownerDesignName>DVM</ownerDesignName>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>

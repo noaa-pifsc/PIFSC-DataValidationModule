@@ -6,7 +6,7 @@
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
 <logging>YES</logging>
 <partitionedRowMovement>DISABLE</partitionedRowMovement>
-<segment>EACDAC0C-748D-BFA9-21C2-853E793B669B</segment>
+<segment>16AF5D4E-5B3F-13AB-19BE-AC84CFE1CB35</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <temporaryChanged>false</temporaryChanged>
 <accessDriverType>oracle_loader</accessDriverType>
@@ -45,7 +45,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 <IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_PTA_RULE_SETS_I2" id="5B9C3A3A-A118-C7A1-4E28-25DA9E2A54E6">
@@ -53,7 +53,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 <IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_PTA_RULE_SETS_U1" id="DD273018-ACE1-7A02-F918-FEF4AFC99E77">
@@ -61,7 +61,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 <IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="DVM_PTA_RULE_SETS_I1" id="E5C0D85D-D9C0-3973-95FA-888450243C57">
@@ -69,7 +69,7 @@
 <createdTime>2020-06-11 02:11:01 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
 <schemaObject>C4E34F95-86D1-7556-B8C6-ABB54EAC7DF1</schemaObject>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 </IndexProxy>
 </indexProxies>
@@ -90,10 +90,10 @@
 <createdBy>jesse</createdBy>
 <createdTime>2020-06-11 02:11:03 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <existingIndex>3A566BF6-E568-FEF2-D1B8-BEB0B051258E</existingIndex>
-<indexSegment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</indexSegment>
+<indexSegment>4437BC67-B909-58BF-CB58-13F7B47AD25E</indexSegment>
 <indexSort>SORTED</indexSort>
 <usingIndex>BY INDEX NAME</usingIndex>
 </PrimaryKey>
@@ -103,10 +103,10 @@
 <createdBy>jesse</createdBy>
 <createdTime>2020-06-11 02:11:03 UTC</createdTime>
 <ownerDesignName>DVM</ownerDesignName>
-<segment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</segment>
+<segment>4437BC67-B909-58BF-CB58-13F7B47AD25E</segment>
 <tableSpace>F59A2386-5B63-E885-4C48-996571834C33</tableSpace>
 <existingIndex>DD273018-ACE1-7A02-F918-FEF4AFC99E77</existingIndex>
-<indexSegment>5D5900AE-2E0A-1888-03E7-4309C09CFD61</indexSegment>
+<indexSegment>4437BC67-B909-58BF-CB58-13F7B47AD25E</indexSegment>
 <indexSort>SORTED</indexSort>
 <usingIndex>BY INDEX NAME</usingIndex>
 </UniqueKey>

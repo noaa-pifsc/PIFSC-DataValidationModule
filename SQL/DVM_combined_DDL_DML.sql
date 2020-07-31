@@ -24,3 +24,4 @@
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.11.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.12.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v0.13.sql"
+@@"./upgrades/DVM_DDL_DML_upgrade_v1.0.sql"

@@ -25,15 +25,32 @@ functionality:
 		_ qc query rule set data stream does not match one of the associated error types' data stream
 
 
-	X Have the DVM_ISS_TYP_ASSOC table reference the rule set record
-		X Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
+	_ optimization:
+		_ when there is a batch execution order by the validation rule sets so that once a data stream/validation rule set is initialize (validated that the rules are valid at the RULE_SET_ID level then we can skip validating the validation criteria on any subsequent records that have the same rule set - save the values and compare them early on so that a lot of the validation can be skipped - e.g. missing placeholder fields, data stream codes, etc. as long as the validation criteria was valid on the last run)
 
+	_ Change views to use consistent date formats (updated the history trigger for trg_DVM_PTA_RULE_SETS_hist so far
+
+	_ Allow a given cruise to be evaluated with all of the active validation criteria (old record that we want to execute new checks on)
+
+	_ **issue types and validation rule sets both define the data stream, is this necessary?
 
 	_ ** - (added to Google Keep - 7/9/20) deprecated flag in the DVM_ISS_TYPES table to indicate that even if an error was active at a certain time it will no longer be evaluated (for invalid/deprecated validation criteria)
+		_ Should the view also filter out any occurrences of the deprecated errors - YES (this makes sense, if it's actually deprecated it should be hidden from all reports except for DVM_CRITERIA_V and some others where it would make sense but not DVM_PTA_ISSUES_V and other dependent views)
+			RULE SETS should have it as visible
+			validation criteria (DVM_ISS_TYPES) should not have it visible
+			DVM_ISSUES should be filtered
+			PTA Rule Sets ??? (not sure yet - do not include them since they are not active)
+			The deprecated issue types should not be included in the history reports? (not sure yet)
+			The deprecated issue types should be filtered out of all of the DVM configuration QC queries including the DVM_QC_MSG_MISS_FIELDS_V view
+		_ **maybe need to be able to pull the deactivation time from the history table
+		_ ** need to include the new field in the history trigger
+
+
 	_ (added to Google Keep - 7/9/20) not null constraint on error severity
 
 	_ maybe use batch processing to ensure that error records are not deleted and replaced, so anything already there will remain or be disabled.  (This is due to the issues reported by SPTT)
 
+	_ Check that the DB Logging Module is installed before using DVM?
 
 	X implement better error handling for the DVM, so it can fail gracefully and the info can be used to resolve issues
 
@@ -45,6 +62,9 @@ functionality:
 	X - implement transactions
 
 	X - change DVM_ERRORS.ERROR_DESCRIPTION and DVM_ERROR_TYPES.ERR_TYPE_COMMENT_TEMPLATE to a CLOB data type:
+
+	X Have the DVM_ISS_TYP_ASSOC table reference the rule set record
+		X Each time a record is evaluated have the PL/SQL code check to see if the active issue types are the same as the last execution:
 
 	X - need to handle replacing existing errors so that the error records are not purged each time the module is executed:
 	    X - The pending and existing error records are compared to determine if the ERROR_DESCRIPTION and ERROR_TYPE_ID are the same.  All existing error records that do not match a pending record are deleted from the database, all matching records are left untouched, and all unmatched pending records are inserted into the database.
