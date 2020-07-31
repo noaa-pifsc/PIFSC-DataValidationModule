@@ -46,6 +46,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   - The DVM_DS_PTA_RULE_SETS_HIST_V view provides the DVM Validation Rule Set evaluation history for each Parent Record if that level of detail is desired.  This standard report can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report.
   - The DVM_PTA_RULE_SETS_HIST_RPT_V view provides information about each time the DVM was evaluated for which specific Validation Rules on a given Parent Record for each Data Stream if that level of detail is desired.  This standard report can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report.
  - [DVM Configuration QC Views](#DVM_config_QC)
+- DVM Testing
+ - Refer to the DVM Testing Documentation (docs/test cases/DVM_PKG/Centralized Cruise Database DVM Testing Documentation.docx) in the Centralized Cruise Database (CCD) Git repository (git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git).  The git tag for the current DVM version (e.g. DVM_db_v1.0) is also defined on the version of the CCD repository that contains the corresponding DVM test cases.  
 
 
 ## Implementation

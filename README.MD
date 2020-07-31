@@ -9,6 +9,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 - Installation instructions can be found in the [DVM Documentation](./docs/Data%20Validation%20Module%20Documentation.MD#database_setup)
 
 ## <mark>Running the tests
+- Refer to the DVM Testing Documentation (docs/test cases/DVM_PKG/Centralized Cruise Database DVM Testing Documentation.docx) in the Centralized Cruise Database Git repository (git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git).  The git tag for the current DVM version (e.g. DVM_db_v1.0) is also defined on the version of the CCD repository that contains the corresponding DVM test cases.
+
 ## Resources
 - [DVM Documentation](./docs/Data%20Validation%20Module%20Documentation.MD)
 
