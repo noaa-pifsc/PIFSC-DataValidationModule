@@ -40,7 +40,7 @@ CREATE SEQUENCE DVM_PTA_RULE_SETS_HIST_SEQ INCREMENT BY 1 START WITH 1;
 
 create or replace TRIGGER trg_DVM_PTA_RULE_SETS_hist
 AFTER DELETE OR INSERT OR UPDATE
-ON CEN_CRUISE.DVM_PTA_RULE_SETS
+ON DVM_PTA_RULE_SETS
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
@@ -52,7 +52,7 @@ DECLARE
     p_old_data       IN VARCHAR2 DEFAULT NULL,
     p_new_data       IN VARCHAR2 DEFAULT NULL ) IS
   BEGIN
-    INSERT INTO CEN_CRUISE.DVM_PTA_RULE_SETS_hist (
+    INSERT INTO DVM_PTA_RULE_SETS_hist (
       h_seqnum, PTA_RULE_SET_ID, h_type_of_change, h_user_making_change, h_os_user,
       h_date_of_change, h_changed_column, h_old_data, h_new_data)
     VALUES(
@@ -72,7 +72,7 @@ DECLARE
   END;
 BEGIN
   IF INSERTING THEN
-    INSERT INTO CEN_CRUISE.DVM_PTA_RULE_SETS_hist (
+    INSERT INTO DVM_PTA_RULE_SETS_hist (
       h_seqnum, PTA_RULE_SET_ID, h_type_of_change, h_user_making_change, h_os_user, h_date_of_change)
     VALUES (
       DVM_PTA_RULE_SETS_hist_seq.NEXTVAL, :new.PTA_RULE_SET_ID,
