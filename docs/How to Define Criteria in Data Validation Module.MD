@@ -1,7 +1,3 @@
-
-
-
-
 # How to Define Criteria in Data Validation Module
 ## Overview:
 This document defines the comprehensive procedure for defining QC Validation Rules in the Data Validation Module (DVM).    
@@ -59,14 +55,14 @@ This document defines the comprehensive procedure for defining QC Validation Rul
 	- Step 4: Verify that all of the Validation Rule records' Issue Description and Application Link templates' defined field placeholders have corresponding fields in the given Data QC View.
 	  - Invalid template placeholders can be identified using the DVM_QC_MSG_MISS_FIELDS_V View object or by using the [DVM configuration QC Views](#DVM_config_QC)
   - Step 5 (once per parent table): Configure parent table in Data Validation Module
-	  - Create the required Parent Issue foreign key column in the Parent Table by modifying the [provided script](../SQL/scripts/configure_parent_table.sql)  
-	    - **Note: code and detailed information can be found here: [configure_parent_table.sql](../SQL/scripts/configure_parent_table.sql) 
+	  - Create the required Parent Issue foreign key column in the Parent Table by executing the [provided script](../SQL/scripts/configure_parent_table.sql) and defining the bind variables according to the included code comments and then executing/saving the resultant DDL
     - Business Rules:
 	    - Parent Tables must have a single numeric primary key column (More detail is available in DVM-DB-007 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
   - <a name="DVM_config_QC"></a>Step 6: Verify the DVM Configuration is Valid
 	  - Query the Combined DVM Configuration QC view (DVM_STD_QC_ALL_RPT_V), any rows returned indicate DVM configuration errors that will prevent the DVM from being processed on a given Parent Record.  Each row will contain information about what is causing the configuration error and how to resolve it.
   - Step 7: Develop and verify repeatable, automated DVM test cases
-    - This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  Please review the docs/test_cases/DVM_PKG directory (Centralized Cruise Database DVM Testing Documentation.docx) for more information.
+    - This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+	    - For more information review the Centralized Cruise Database DVM Testing Documentation.docx in the docs/test_cases/DVM_PKG directory
 
 ## <a name="examples"></a>Examples Section:
 - <a name="example_mult_QC_criteria"></a>Example Multiple Criteria Data QC View:
@@ -94,7 +90,7 @@ CASE WHEN CRUISE_DAS > 240 THEN 'Y' ELSE 'N' END ERR_CRUISE_DAS_YN,
 CASE WHEN CRUISE_LEN_DAYS <= 280 AND CRUISE_LEN_DAYS > 160 THEN 'Y' ELSE 'N' END WARN_CRUISE_DATE_RNG_YN,
 CASE WHEN CRUISE_LEN_DAYS > 280 THEN 'Y' ELSE 'N' END ERR_CRUISE_DATE_RNG_YN,
 CASE WHEN NUM_PRIM_SVY_CATS IS NULL THEN 'Y' ELSE 'N' END MISS_PRIM_SVY_CAT_YN,
-<mark>CASE WHEN NOT REGEXP_LIKE(CRUISE_NAME, '^[A-Z]{2}\-[0-9]{2}\-[0-9]{2}$', 'i') THEN 'Y' ELSE 'N' END INV_CRUISE_NAME_YN</mark>,
+CASE WHEN NOT REGEXP_LIKE(CRUISE_NAME, '^[A-Z]{2}\-[0-9]{2}\-[0-9]{2}$', 'i') THEN 'Y' ELSE 'N' END INV_CRUISE_NAME_YN,
 --if the CRUISE_FISC_YEAR is not null, and the CRUISE_NAME is valid, then check if the last two digits of the fiscal year don't match the extracted fiscal year
 CASE WHEN (CRUISE_FISC_YEAR IS NOT NULL AND REGEXP_LIKE(CRUISE_NAME, '^[A-Z]{2}\-[0-9]{2}\-[0-9]{2}$', 'i') AND REGEXP_SUBSTR(CRUISE_NAME, '^[A-Z]{2}\-([0-9]{2})\-[0-9]{2}$', 1, 1, 'i', 1) <> SUBSTR(TO_CHAR(CRUISE_FISC_YEAR), 3)) THEN 'Y' ELSE 'N' END INV_CRUISE_NAME_FY_YN
 

@@ -1,8 +1,3 @@
-
-
-
-
-
 # Data Validation Module Documentation
 ## Overview:
 The Data Validation Module (DVM) was developed to provide a framework to validate data entered in a given Oracle database based on flexible data validation criteria that can be developed and implemented in Oracle Views by a data manager/developer without requiring application development skills.  A series of data QC Views can be developed to identify problematic values in the database and implemented in the framework to allow each validation rule to be evaluated on the given Data Stream.  A given Parent Record (e.g. CCD_CRUISES) defined for a given Data Stream (e.g. CCD for the Centralized Cruise Database) and all associated child records (e.g. CCD_CRUISE_LEGS, CCD_CRUISE_SPP_ESA, etc.) will be validated as a group based on the data QC Views defined.  Each data issue that is identified will be saved as a separate Validation Issue record (DVM_ISSUES) that includes detailed information about the type of issue and an associated issue description that provides contextual information that will allow a given Validation Issue to be quickly identified, these issue records are associated with the Parent Issue record (DVM_PTA_ISSUES).  The Validation Issue records can be easily queried and provided to data management staff for inspection and resolution.  Standard DVM Reports are available to provide information about the Validation Rules that were utilized over time.
@@ -10,7 +5,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 1.0 (Git tag: DVM_db_v1.0)
+  - Database: 1.1 (Git tag: DVM_db_v1.1)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -32,11 +27,14 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 - Validation Rules (DVM_ISS_TYPES) - These records represent the individual data QC criteria that are defined for a given Data Stream.  Each is associated with a data QC view that is executed to identify the corresponding Validation Issues.  Validation Rules can be deactivated so they are no longer evaluated on new Parent Records but they will continue being evaluated on existing Parent Records that have previously been evaluated with the corresponding Validation Rules.  
 
 ## <a name="database_setup"></a>Database Setup:
-- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)
-  - This module utilizes v0.13 of the VCM (git tag: db_vers_ctrl_v0.13)
-- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_log folder)
-- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
-- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.MD).  If the DVM has not been previously used to validate data then disregard this note.
+- Manual Installation
+	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)
+	  - This module utilizes v0.13 of the VCM (git tag: db_vers_ctrl_v0.13)
+	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_log folder)
+	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
+	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.MD).  If the DVM has not been previously used to validate data then disregard this note.
+- Automated Installation
+	- For new installations a DB Module Packager (DMP) project (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
 
 ## Features:
 - Point in time architecture (PTA): The module will associate the given parent record with the active Validation Rule Set(s) that were active at the time that the given parent record was first validated by the module for the specified Data Stream(s).  This will allow the given Parent Record to be re-validated with the same Validation Rules over time so new Validation Rules will not be evaluated on older data which can potentially cause problems.
@@ -48,7 +46,18 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
  - [DVM Configuration QC Views](#DVM_config_QC)
 - DVM Testing
  - Refer to the DVM Testing Documentation (docs/test cases/DVM_PKG/Centralized Cruise Database DVM Testing Documentation.docx) in the Centralized Cruise Database (CCD) Git repository (git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git).  The git tag for the current DVM version (e.g. DVM_db_v1.0) is also defined on the version of the CCD repository that contains the corresponding DVM test cases.  
-
+- Data Stream Specific Processing
+	- The main DVM package procedure can be implemented directly in a PL/SQL block for a given data stream (based on the defined data stream code argument(s)) or it can also be wrapped in data set-specific packages/procedures to simplify the PL/SQL code required to implement the DVM on a given data stream's parent record.  
+	 - A data set-specific procedure can be defined for each data stream (e.g. benthic, fish, oceanography, etc.) to specify the data streams argument(s) and allow the user to specify the parent table's primary key.  These data set-specific "wrapped" procedures can be used directly in PL/SQL blocks, applications, or in other PL/SQL packages/procedures to provide additional functionality.  
+	 - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that executes the DVM on a given cruise record.  The procedure accepts a P_CRUISE_ID parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
+	 - Data set-specific DVM procedures can be overloaded to allow primary key  (example from cruise DB overlapping cruise dates)
+		 - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that accepts a P_CRUISE_NAME parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
+   - Special business rule logic can be implemented using the DVM_PKG.  An example from the CCD checks has a data QC view that identifies overlapping dates between parent records.  Custom logic can be implemented to identify the overlapping record(s) and automatically validate those as well to ensure the associated validation issues are up to date.  
+	   - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_ID parameter.  
+		   - An example of an overloaded procedure is the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_NAME parameter.
+		   - This type of special case processing can be implemented in data management applications to automatically validate a parent record and all potentially overlapping parent records after inserting, updating, or deleting a given parent record.  An example is implemented in the CCD's Cruise Data Management Application's (CRDMA) View/Edit Cruise page.   
+   - Procedures can be defined to execute the DVM on multiple parent records by implementing PL/SQL logic, this can be used to validate all of the desired records before the data is available for analysis, reporting, archival, etc.  Batch Processing procedures can be developed to validate all parent records or a subset of the parent records
+	  - An example of a batch processing procedure can be found in the CCD in the CCD_DVM_PKG.BATCH_EXEC_DVM_CRUISE_SP package procedure, custom filters can be implemented for batch processing subsets of parent records.
 
 ## Implementation
 - Current Implementation
