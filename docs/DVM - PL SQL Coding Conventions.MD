@@ -1,6 +1,6 @@
 # PL/SQL Coding Conventions Guidance
 ## Overview:
-When developing PL/SQL code it is important to use consistent coding conventions so that packages, procedures, and functions are easily understandable.  Consistent prefixes and suffixes can be used to differentiate between different types of objects.  The underscore character should be used to separate the various abbreviations for objects.  For all installed database modules refer to the corresponding modules’ PL/SQL coding conventions documentation.  Each database project should have the major components of their PL/SQL coding conventions documented (example).  This document defines the PL/SQL coding conventions for the Data Validation Module (DVM) Database.
+When developing PL/SQL code it is important to use consistent coding conventions so that packages, procedures, and functions are easily understandable.  Consistent prefixes and suffixes can be used to differentiate between different types of objects.  The underscore character should be used to separate the various abbreviations for objects.  For all installed database modules refer to the corresponding modules’ PL/SQL coding conventions documentation.  Each database project should have the major components of their PL/SQL coding conventions documented.  This document defines the PL/SQL coding conventions for the Data Validation Module (DVM) Database.
 
 ## Coding Conventions:
 - Object Prefixes:

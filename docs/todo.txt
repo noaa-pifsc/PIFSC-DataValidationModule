@@ -10,6 +10,8 @@ Documentation:
 
 	X **business rules
 
+	X Lessons Learned documentation (https://docs.google.com/document/d/1CQEVxOvbmONjPRTirU-8hgellUqv5dwMjLF12N8mGC0/edit?usp=sharing) from 7/2020 development effort to fulfill a PIFSC milestone.  _ We should revisit this when we can and integrate it into the DVM repository
+
 
 functionality:
 (1)	X history trigger on DVM_PTA_RULE_SETS
@@ -28,7 +30,7 @@ X Implement configuration QC/DVM_PKG check for parent table primary key column d
 X Implement configuration QC/DVM_PKG check to see if the indicator fields are not character string fields (need to be in order to be implemented correctly)
 
 
-
+_ include a report that shows the DVM_STD_QC_ALL_RPT_V results so admins can view the DVM configuration problems and resolve them for tier-1 troubleshooting (tier-2 would require reviewing DB error logs, etc.)
 
 
 	_ optimization:
@@ -216,6 +218,22 @@ design principle:
 	X add in the first_eval and last_eval dates for the DVM_PTA_RULE_SETS or a different view so the information is available
 
 
+
+--DVM Version 1.0 and greater description:--
+
+Stable validation module
+	Logging in the DB for debugging/troubleshooting purposes
+	User Defined Exceptions - codes for each type of processing error to facilitate troubleshooting, should be able to pinpoint the location of the issues in the code based on the error codes
+	DVM QC configuration queries - to identify problems with the DVM configuration that need to be resolved before it can be executed successfully.  This has been integrated into the SOP after changes are made to the validation rules to ensure the stability of the DVM instance
+SOP for implementing the DVM
+Automated testing for 7 different categories
+	SOP for defining and verifying data set specific test cases
+Standard reports for DVM rules, processing history for documentation/auditing purposes
+QC configuration queries for developers to understand DVM configuration errors and resolve them before executing the DVM
+Examples of data set specific code and application that integrates the DVM.
+***Addresses the NOAA data strategy objective of data transparency.
+***Formally address the assurance phase of the data life cycle
+	Repeatable, documented method of evaluating data QC criteria
 
 
 
