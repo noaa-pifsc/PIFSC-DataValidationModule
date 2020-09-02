@@ -31,8 +31,19 @@ Version [MAJOR].[MINOR] of the [DATABASE NAME] Database
 **[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
 **[DATABASE NAME] is the name of the given external database module**
 **[GIT URL] is the git URL for the external database module**
-**Example: Installed Version 0.2 of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)**
-Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT URL])
+**[GIT TAG] is the Git tag for the revision that defines the external database module version**
+**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+Installed Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
+
+
+**Standard commit message content for requiring an external database module.  There are cases where standalone modules require a certain version of another database module but the standalone module does not install the required module directly (example: Data Validation Module requires the Database Version Control Module but they are both standalone modules):**
+**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+**[DATABASE NAME] is the name of the given external database module**
+**[GIT URL] is the git URL for the external database module**
+**[GIT TAG] is the Git tag for the revision that defines the external database module version**
+**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
+
 
 
 	**************************
@@ -63,9 +74,18 @@ Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT
 	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
 	**[DATABASE NAME] is the name of the given external database module**
 	**[GIT URL] is the git URL for the external database module**
-	**Example: Installed Version 0.2 of the DB Version Control Module Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)**
-	Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT URL])
+  **[GIT TAG] is the Git tag for the revision that defines the external database module version**
+	**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+  Installed Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
+
+	**git tag message for requiring an external database module.  There are cases where standalone modules require a certain version of another database module but the standalone module does not install the required module directly (example: Data Validation Module requires the Database Version Control Module but they are both standalone modules):**
+	**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database**
+	**[DATABASE NAME] is the name of the given external database module**
+	**[GIT URL] is the git URL for the external database module**
+	**[GIT TAG] is the Git tag for the revision that defines the external database module version**
+	**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+	Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 *******************************
 **DATABASE UPGRADE TEMPLATES:**
@@ -89,6 +109,7 @@ Installed Version [MAJOR].[MINOR] of the [DATABASE NAME] Database (Git URL: [GIT
 
 
 **Heading for a given database version's upgrade SQL statements**
+**[DATABASE NAME] is the name of the database that is being upgraded, the name can contain spaces and capitalizations**
 **[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.  The exception to the rule is that the first version of a database should be 0.1.  Otherwise when each major version is incremented the minor version should be reset to 0 for that major version (e.g. version 3.0).**
 --------------------------------------------------------
 --[DATABASE NAME] - version [MAJOR].[MINOR] updates:
@@ -108,9 +129,19 @@ COMMIT;
 
 
 **When installing a new external database module**
+**[DATABASE NAME] is the name of the database that is being upgraded, the name can contain spaces and capitalizations**
+**[MAJOR].[MINOR] is the major/minor version of the database where [MAJOR] is the major version of the database and [MINOR] is the minor version of the database, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.  The exception to the rule is that the first version of a database should be 0.1.  Otherwise when each major version is incremented the minor version should be reset to 0 for that major version (e.g. version 3.0).**
+**[GIT URL] is the git URL for the external database module**
+**[GIT TAG] is the Git tag for the revision that defines the external database module version**
 **Indent the database module code so it is clear that it is part of the database module installation**
---Installing version [MAJOR].[MINOR] of [DATABASE NAME] (Version Control URL: [GIT_URL])--
+--Installing version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of [DATABASE NAME] (Version Control URL: [GIT_URL])--
 
 **When upgrading an existing external database module**
+**[DATABASE NAME] is the name of the database that is being upgraded, the name can contain spaces and capitalizations**
+**[MAJOR FROM].[MINOR FROM] is the major/minor version of the database where [MAJOR FROM] is the major version of the database and [MINOR FROM] is the minor version of the database version being upgraded from, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.  The exception to the rule is that the first version of a database should be 0.1.  Otherwise when each major version is incremented the minor version should be reset to 0 for that major version (e.g. version 3.0).**
+**[GIT TAG FROM] is the Git tag for the revision that defines the external database module version that was upgraded from
+**[MAJOR TO].[MINOR TO] is the major/minor version of the database where [MAJOR TO] is the major version of the database and [MINOR TO] is the minor version of the database version being upgraded to, both the major and minor version values are integers starting from zero that are incremented by one without a leading zero.  The exception to the rule is that the first version of a database should be 0.1.  Otherwise when each major version is incremented the minor version should be reset to 0 for that major version (e.g. version 3.0).**
+**[GIT TAG TO] is the Git tag for the revision that defines the external database module version that was upgraded to
+**[GIT URL] is the git URL for the external database module**
 **Indent the database module code so it is clear that it is part of the database module installation**
---Upgrading from version [MAJOR].[MINOR] to [MAJOR].[MINOR] of [DATABASE NAME] (Version Control URL: [GIT_URL])--
+--Upgrading from version [MAJOR FROM].[MINOR FROM] (Git tag: [GIT TAG FROM]) to [MAJOR TO].[MINOR TO] (Git tag: [GIT TAG TO]) of [DATABASE NAME] (Version Control URL: [GIT_URL])--
