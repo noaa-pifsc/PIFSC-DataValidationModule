@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 1.1 (Git tag: DVM_db_v1.1)
+  - Database: 1.2 (Git tag: DVM_db_v1.2)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -84,8 +84,9 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 
 ## Algorithm Used:
-- The actual data QC validation process is performed by the DVM_PKG.VALIDATE_PARENT_RECORD procedure.  
-	- **Note: This process is executed by running a PL/SQL block of code (see [Ex 1](#ex1))
+- The data QC validation process is performed by executing the DVM_PKG.VALIDATE_PARENT_RECORD_SP (see [Ex 1](#ex1)) or DVM_PKG.VALIDATE_PARENT_RECORD_RC_SP (see [Ex 2](#ex2)) depending on the use case.  
+  - The DVM_PKG.VALIDATE_PARENT_RECORD_SP will raise user defined exceptions (see [DVM Business Rules](./DVM%20-%20Business%20Rules.xlsx) for "Scope" values of "DVM Processing Errors")
+  - The DVM_PKG.VALIDATE_PARENT_RECORD_RC_SP utilizes return code and exception message parameters to indicate if the DVM was processed successfully and if there was an error the exception message parameter contains the exception message.  This additional procedure was provided to account for additional use cases (e.g. batch processing).
 - The specified Data Stream code(s) are validated
 - The specified Parent Record is retrieved
 - The Parent Issue Record is retrieved (if this is the first time the DVM is executed, if not a new Parent Issue record is inserted)
@@ -99,37 +100,91 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 
 
-## <a name="ex1"><a/>Ex 1:
+## <a name="ex1"><a/>Ex 1 (User-Defined Exception Version):
 ```
---Main package procedure that validates a parent record based on the given data stream code(s) defined by P_DATA_STREAM_CODES, and uniquely identified by P_PK_ID.  This is the main procedure that is called by external programs to validate a given parent record.
---Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
+		--Main package procedure that validates a parent record based on the given data stream code(s) defined by P_DATA_STREAM_CODES, and uniquely identified by the specified primary key (P_PK_ID).  This is the main procedure that is called by external programs to validate the specified parent record.  If the procedure is successful it will not commit the changes to the DVM data to allow for flexibility as part of a larger transaction or to allow the user to explicitly commit the changes made by the DVM.  If the procedure is unsuccessful it will rollback the transaction to the state of the beginning of the procedure.
+		--Any exceptions encountered during the execution of the procedure will cause the procedure to fail and log/print the error.
 
-set serveroutput on;
---sample usage for DVM:
-DECLARE
-	P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
-	P_PK_ID NUMBER;
-	V_SP_RET_CODE PLS_INTEGER;
-BEGIN
-	-- Modify the code to initialize the variable
-	P_DATA_STREAM_CODE(1) := 'RPL';
-	P_DATA_STREAM_CODE(2) := 'XML';
-	P_PK_ID := :pkid;
+		set serveroutput on;
 
-	DVM_PKG.VALIDATE_PARENT_RECORD_SP(
-	P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
-	P_PK_ID => P_PK_ID,
-	P_SP_RET_CODE => V_SP_RET_CODE
-	);
-	IF (V_SP_RET_CODE = 1) then
-		DBMS_output.put_line('The parent record was evaluated successfully');
+		--Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
+		DECLARE
+			P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
+			P_PK_ID NUMBER;
+		BEGIN
+			-- Modify the code to initialize the variable
+			P_DATA_STREAM_CODE(1) := 'RPL';
+			P_DATA_STREAM_CODE(2) := 'XML';
+			P_PK_ID := :pkid;
 
-		--commit the transaction
-		COMMIT;
-	ELSE
-		DBMS_output.put_line('The parent record was NOT evaluated successfully');
+			DVM_PKG.VALIDATE_PARENT_RECORD_SP(
+			P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
+			P_PK_ID => P_PK_ID
+			);
 
-	END IF;
-END;
+
+			DBMS_output.put_line('The parent record was evaluated successfully');
+
+			--commit the transaction
+			COMMIT;
+
+
+			EXCEPTION
+				WHEN OTHERS THEN
+					DBMS_output.put_line(SQLERRM);
+
+					DBMS_output.put_line('The parent record was NOT evaluated successfully');
+		END;
+
+```
+
+## <a name="ex2"><a/>Ex 2 (Return Code Version):
+
+```
+--DVM execution procedure for a given parent record (based on P_DATA_STREAM_CODES and P_PK_ID) that provides a return code (P_SP_RET_CODE) with a value that indicates if the DVM executed successfully or not instead of raising an exception.  A P_SP_RET_CODE value of 1 indicates a successful execution and a value of 0 indicates it was not successful.  The P_EXC_MSG parameter will contain the exception message if the P_SP_RET_CODE indicates there was a processing error.  This procedure allows a PL/SQL block to continue even if the DVM has an exception
+/*
+	set serveroutput on;
+
+	--Example usage (for return code version) using the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
+	DECLARE
+		P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
+		P_PK_ID NUMBER;
+		V_SP_RET_CODE PLS_INTEGER;
+		V_EXC_MSG VARCHAR2 (4000);
+
+	BEGIN
+		-- Modify the code to initialize the variable
+		P_DATA_STREAM_CODE(1) := 'RPL';
+		P_DATA_STREAM_CODE(2) := 'XML';
+		P_PK_ID := :pkid;
+
+		DVM_PKG.VALIDATE_PARENT_RECORD_RC_SP(
+		P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
+		P_PK_ID => P_PK_ID,
+		P_SP_RET_CODE => V_SP_RET_CODE,
+		P_EXC_MSG => V_EXC_MSG
+		);
+
+		--check the return code:
+		IF (V_SP_RET_CODE = 1) THEN
+
+			DBMS_output.put_line('The parent record was evaluated successfully');
+
+			--commit the transaction
+			COMMIT;
+		ELSE
+			--output the error message:
+			DBMS_output.put_line(V_EXC_MSG);
+
+			DBMS_output.put_line('The parent record was NOT evaluated successfully');
+
+		END IF;
+
+		EXCEPTION
+			WHEN OTHERS THEN
+				DBMS_output.put_line(SQLERRM);
+
+				DBMS_output.put_line('The parent record was NOT evaluated successfully');
+	END;
 
 ```

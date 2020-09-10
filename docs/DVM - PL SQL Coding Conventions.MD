@@ -27,6 +27,7 @@ When developing PL/SQL code it is important to use consistent coding conventions
   - DELIM: Delimited
   - DESC: Description
   - EVAL: Evaluate
+  - EXC: PL/SQL exception
   - ID: Identifier
   - IND: Indicator
   - ISS: Issue
@@ -40,6 +41,7 @@ When developing PL/SQL code it is important to use consistent coding conventions
   - PK: Primary Key
   - POS: Position
   - PTA: Point in Time Architecture
+  - RC: Return Code
   - REGEXP: Regular Expression
   - RET: Return
   - QC: Quality Control

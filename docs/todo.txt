@@ -12,6 +12,7 @@ Documentation:
 
 	X Lessons Learned documentation (https://docs.google.com/document/d/1CQEVxOvbmONjPRTirU-8hgellUqv5dwMjLF12N8mGC0/edit?usp=sharing) from 7/2020 development effort to fulfill a PIFSC milestone.  _ We should revisit this when we can and integrate it into the DVM repository
 
+	_ replace DVM_PKG.COMMA_DELIM_LIST_FN with CEN_UTILS function or just replace with the APEX_UTIL.table_to_string()
 
 functionality:
 (1)	X history trigger on DVM_PTA_RULE_SETS
@@ -24,6 +25,12 @@ functionality:
 			X initialization checks otherwise it won't run properly
 	**_ (added to Google Keep - 7/9/20) qc queries for orphaned DVM parent issue records (DVM view)
 		_ qc query rule set data stream does not match one of the associated error types' data stream
+
+
+X implement exceptions instead of return codes for the DVM (this way we can bubble up the errors)  Right now the return code for the VALIDATE_PARENT_RECORD_SP is the only way to tell if it successfully executes.
+	X implemented VALIDATE_PARENT_RECORD_RC_SP to provide the status codes for additional use cases
+	X document this new functionality
+
 
 
 X Implement configuration QC/DVM_PKG check for parent table primary key column does not exist in the data QC view
