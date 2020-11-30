@@ -2,8 +2,8 @@
 ## Overview:
 This document defines the comprehensive procedure for defining QC Validation Rules in the Data Validation Module (DVM).    
 ## Resources:
-- [DVM Documentation](./Data%20Validation%20Module%20Documentation.MD)
-- [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD)
+- [DVM Documentation](./Data%20Validation%20Module%20Documentation.md)
+- [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md)
 ## Procedure:
 - Define Data QC View (See [Example Multiple Criteria Data QC View](#examples) below)
 	- Step 1: Define the Data Validation Criteria using spreadsheet template (ex: [QC Validation Criteria](./QC%20Validation%20Criteria%20Template.xlsx))
@@ -36,15 +36,15 @@ This document defines the comprehensive procedure for defining QC Validation Rul
 		- Multiple Validation Rules can be implemented in a single Data QC View for efficiency purposes based on the type of Validation Rule that is being evaluated.  (e.g. a general Cruise QC query could check for both invalid cruise names and missing primary survey categories).
 		- Best practice: develop foundational Oracle Views for each main database table entity in the given Data Stream.  These foundational Views should join all reference tables to allow the given main entity to be queried easily including all reference record values (e.g. CCD_CRUISE_V).  The Data QC Views should be developed directly from the foundational Oracle Views (e.g. CCD_QC_CRUISE_V).
 		- Business Rules:
-			- Data QC Views must contain the Parent Table primary key field (more detail is available in DVM-DB-001 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
+			- Data QC Views must contain the Parent Table primary key field (more detail is available in DVM-DB-001 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
 				- For example the foundational views are as follows: Cruise (CCD_CRUISE_V) and Cruise Leg (CCD_CRUISE_LEGS_V).  When developing a Data QC View for the Cruise Legs both foundational views should be used and the fields that help to identify the given cruise leg including its parent record (Cruise) values should be included in the result set.  
-			- The Parent Table's Primary Key Must be Included in the Result Set of the Given Data QC View (More information is available in DVM-DB-002 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
-			- Each Data QC View indicator field defined in the QC validation rule spreadsheet must be included in the Data QC View with the corresponding column alias name (More detail is available in DVM-DB-003 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
+			- The Parent Table's Primary Key Must be Included in the Result Set of the Given Data QC View (More information is available in DVM-DB-002 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
+			- Each Data QC View indicator field defined in the QC validation rule spreadsheet must be included in the Data QC View with the corresponding column alias name (More detail is available in DVM-DB-003 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
 				- **Note: If a given indicator field defined in the spreadsheet does not have a corresponding column alias in the corresponding Data QC View the DVM will fail.  
-			- Each Data QC View calculated indicator field returned in the result set that indicates a validation issue are required to be implemented on the WHERE clause (based on [indicator field expression example in yellow](#example_mult_QC_criteria)) (More detail is available in DVM-DB-004 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
+			- Each Data QC View calculated indicator field returned in the result set that indicates a validation issue are required to be implemented on the WHERE clause (based on [indicator field expression example in yellow](#example_mult_QC_criteria)) (More detail is available in DVM-DB-004 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
 				- If there is only one data Validation Rule that is implemented in a given Data QC View then the ON/WHERE clause will identify all records that satisfy the given data validation criteria and have a static formula for the given indicator field since it will be true for all returned rows (see [Example Single Criteria QC Query](#example_single_QC_criteria) below)
-			- Each non-indicator field that is included in the Data QC View should have a purpose in describing/providing context for the given Validation Issue (More detail is available in DVM-DB-005 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
-			- QC objects and associated Issue Types can be enabled/disabled, but this will not affect Parent Records that have already been Validated (More detail is available in DVM-DB-006 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
+			- Each non-indicator field that is included in the Data QC View should have a purpose in describing/providing context for the given Validation Issue (More detail is available in DVM-DB-005 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
+			- QC objects and associated Issue Types can be enabled/disabled, but this will not affect Parent Records that have already been Validated (More detail is available in DVM-DB-006 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
 	- Step 3: Register the Data QC View into the Data Validation Module by entering records into the database
 		- Execute the DDL to define the Data QC Views
 		- Define View/Field comments for the Data QC Views
@@ -57,7 +57,7 @@ This document defines the comprehensive procedure for defining QC Validation Rul
   - Step 5 (once per parent table): Configure parent table in Data Validation Module
 	  - Create the required Parent Issue foreign key column in the Parent Table by executing the [provided script](../SQL/scripts/configure_parent_table.sql) and defining the bind variables according to the included code comments and then executing/saving the resultant DDL
     - Business Rules:
-	    - Parent Tables must have a single numeric primary key column (More detail is available in DVM-DB-007 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD))
+	    - Parent Tables must have a single numeric primary key column (More detail is available in DVM-DB-007 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
   - <a name="DVM_config_QC"></a>Step 6: Verify the DVM Configuration is Valid
 	  - Query the Combined DVM Configuration QC view (DVM_STD_QC_ALL_RPT_V), any rows returned indicate DVM configuration errors that will prevent the DVM from being processed on a given Parent Record.  Each row will contain information about what is causing the configuration error and how to resolve it.
   - Step 7: Develop and verify repeatable, automated DVM test cases

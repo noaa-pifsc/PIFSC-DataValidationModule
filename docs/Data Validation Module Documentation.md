@@ -1,19 +1,19 @@
-
 # Data Validation Module Documentation
+
 ## Overview:
 The Data Validation Module (DVM) was developed to provide a framework to validate data entered in a given Oracle database based on flexible data validation criteria.  The module provides a documented, repeatable method for evaluating data quality control (QC) criteria on a given data set.  This module formally addresses the assurance phase of the data life cycle and addresses the transparency objective defined in the NOAA Data Strategy.  Flexible data QC validation criteria can be implemented in Oracle Views by a data manager/database developer and configured in the DVM for a given Data Stream without requiring application development skills.  A given Parent Record and all associated child records will be validated as a group based on the data QC Views defined for a given Data Stream.  Each data issue that is identified will be saved as a separate Validation Issue record that includes detailed information about the type of issue and an associated issue description that provides contextual information that will allow a given Validation Issue to be quickly identified, these issue records are associated with the Parent Record so they can be easily queried and provided to data staff for inspection and resolution.  Standard DVM Reports are available to provide information about the Validation Rules that were utilized over time as well as the DVM processing history for a given Parent record.
 
 ## Resources:
 - DVM Version Control Information:
   - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
-  - Database: 1.2 (Git tag: DVM_db_v1.2)
+  - Database: 1.3 (Git tag: DVM_db_v1.3)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
-- [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
+- [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
-- [Database Naming Conventions](./DVM%20DB%20Naming%20Conventions.MD)
-- [How to Define Criteria](./How%20to%20Define%20Criteria%20in%20Data%20Validation%20Module.MD)
-- [PL/SQL Naming Conventions](./DVM%20-%20PL%20SQL%20Coding%20Conventions.MD)
-- [Business Rules](./DVM%20-%20Business%20Rule%20Documentation.MD)
+- [Database Naming Conventions](./DVM%20DB%20Naming%20Conventions.md)
+- [How to Define Criteria](./How%20to%20Define%20Criteria%20in%20Data%20Validation%20Module.md)
+- [PL/SQL Naming Conventions](./DVM%20-%20PL%20SQL%20Coding%20Conventions.md)
+- [Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md)
 
 ## Terms Used:
 - Data QC Views - These QC views are defined to identify problematic data issues in the data being managed in a given database.
@@ -32,12 +32,25 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)
 	  - This module utilizes v0.13 of the VCM (git tag: db_vers_ctrl_v0.13)
 	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_log folder)
-	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.MD)
-	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.MD).  If the DVM has not been previously used to validate data then disregard this note.
+	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
+	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
 	- For new installations a DB Module Packager (DMP) project (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
 
-## Features:
+## Database Features:
+-   Data history tracking package
+    -   Version Control Information:
+        -   URL: svn://badfish.pifsc.gov/Oracle/DSC/trunk/apps/db/dsc/dsc_pkgs
+            -   Files: dsc_cre_hist_objs_pkg.pks (package specs) and dsc_cre_hist_objs_pkg.pkb (package body)
+        -   Database: N/A (last update on 4/21/2009)
+    -   Description: This was developed by the PIFSC Systems Design Team (SDT) to track data changes to a given table over time to facilitate accountability, troubleshooting, etc.  Certain data tables have had this functionality enabled.  The DSC_CRE_HIST_OBJS_PKG package is defined in the DSC schema, the CRE_HIST_TRG() and CRE_HIST_SEQ() procedures were executed using the data schema.  
+
+## Git Features:
+-   [Git Hooks](https://gitlab.pifsc.gov/centralized-data-tools/git-hooks) Version Control Information:
+    -   URL: git@gitlab.pifsc.gov:centralized-data-tools/git-hooks.git
+    -   Version: 0.1 (git tag: git_hooks_v0.1)
+
+## DVM Features:
 - Point in time architecture (PTA): The module will associate the given parent record with the active Validation Rule Set(s) that were active at the time that the given parent record was first validated by the module for the specified Data Stream(s).  This will allow the given Parent Record to be re-validated with the same Validation Rules over time so new Validation Rules will not be evaluated on older data which can potentially cause problems.
 - Standard Validation Criteria Reports
   - The DVM_RULE_SETS_RPT_V view provides the specific data quality control criteria that was used to validate each Data Stream over time.  This standard report can be included with the data set metadata.
@@ -66,7 +79,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- Standalone PL/SQL Package (DVM_PKG) that can be executed to validate any parent record that has been configured and enabled in the DVM.  The behavior of the module depends on the state of the given Parent Record.  The first time a Parent Record is evaluated for a given Data Stream it will save the active Validation Rules for future DVM processing and all Validation Issue records will be associated with the Parent Issue Record.  All subsequent times a Parent Record is evaluated for a given Data Stream it will re-use the saved Validation Rules and remove all obsolete Validation Issues (indicates that the underlying cause of the validation has been resolved) for the given Data Stream and add all newly identified Validation Issues (indicates that there are new Validation Issues identified).
 	- Data QC Queries are implemented for groups of tables that comprise a Data Stream and the resultant Validation Issue records are associated with the given Parent Issue record for a given Data Stream.  
   - User Defined Exceptions were implemented for error handling in the DVM: [DVM Business Rules](./DVM%20-%20Business%20Rules.xlsx) (where the "Scope" column is "DVM Processing Errors")
-- [How to define data validation criteria](./How%20to%20Define%20Criteria%20in%20Data%20Validation%20Module.MD)
+- [How to define data validation criteria](./How%20to%20Define%20Criteria%20in%20Data%20Validation%20Module.md)
 - Validation Issue Records
 	- Each individual data Validation Issue identified by the DVM is represented by a separate Validation Issue record that includes a description of the issue that contains all relevant database values associated with the given relevant data record(s) at the time of evaluation.  An optional custom application link can be associated with the individual validation issues to allow users to load a specific web application page to inspect/resolve the validation issue.  The Issue Type information is included as well as the severity of the issue (e.g. warning vs. error).    
 - Issue Resolution

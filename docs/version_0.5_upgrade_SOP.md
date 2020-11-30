@@ -4,7 +4,7 @@
 The version 0.5 database upgrade made significant changes to the data model and this requires a special data migration process to ensure data integrity if the given database instance has utilized the Data Validation Module to evaluate QC criteria.  If the data rules are consistent over time then a PL/SQL script can be used to migrate the data into the new data model, otherwise a manual migration process must be conducted.
 
 ## Resources:
-- [DVM Documentation](./Data%20Validation%20Module%20Documentation.MD)
+- [DVM Documentation](./Data%20Validation%20Module%20Documentation.md)
 
 ## Procedure:
 - <mark>Determine if the validation rules from the old data model can be migrated using the automated script</mark>

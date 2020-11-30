@@ -14,6 +14,8 @@ Documentation:
 
 	_ replace DVM_PKG.COMMA_DELIM_LIST_FN with CEN_UTILS function or just replace with the APEX_UTIL.table_to_string()
 
+	X document the history tracking package
+
 functionality:
 (1)	X history trigger on DVM_PTA_RULE_SETS
 (2)		X work on reports (DVM rules, Cruise DVM Rules, Cruise DVM executions - requires history trigger)
