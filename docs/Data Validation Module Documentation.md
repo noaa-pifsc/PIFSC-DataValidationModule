@@ -5,7 +5,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## Resources:
 - DVM Version Control Information:
-  - URL: git@gitlab.pifsc.gov:centralized-data-tools/data-validation-module.git
+  - URL: git@github.com:PIFSC-NMFS-NOAA/Data-Validation-Module.git
   - Database: 1.3 (Git tag: DVM_db_v1.3)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
@@ -29,9 +29,9 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="database_setup"></a>Database Setup:
 - Manual Installation
-	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_version_control folder)
-	  - This module utilizes v0.13 of the VCM (git tag: db_vers_ctrl_v0.13)
-	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-tools.git in the DB_log folder)
+	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/Database-Version-Control-Module.git)
+	  - This module utilizes v0.15 of the VCM (git tag: db_vers_ctrl_v0.15)
+	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/Database-Logging-Module.git)
 	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
@@ -59,7 +59,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   - The DVM_PTA_RULE_SETS_HIST_RPT_V view provides information about each time the DVM was evaluated for which specific Validation Rules on a given Parent Record for each Data Stream if that level of detail is desired.  This standard report can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report.
  - [DVM Configuration QC Views](#DVM_config_QC)
 - DVM Automated Test Cases
-	- This process has been developed using the Centralized Cruise Database (Git URL: [git@gitlab.pifsc.gov](mailto:git@gitlab.pifsc.gov):centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+	- This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
 		- For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory  
 - Data Stream Specific Processing
 	- The main DVM package procedure can be implemented directly in a PL/SQL block for a given data stream (based on the defined data stream code argument(s)) or it can also be wrapped in data set-specific packages/procedures to simplify the PL/SQL code required to implement the DVM on a given data stream's parent record.  

@@ -19,9 +19,6 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Version Control Platform
 - Git
 
-## Authors
-- Jesse Abdul - Initial work
-
 ## License
 This project is licensed under the Apache-2.0 - see the [LICENSE.md](./LICENSE.md) for details
 
