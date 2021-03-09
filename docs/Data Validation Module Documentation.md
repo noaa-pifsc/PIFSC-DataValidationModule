@@ -5,7 +5,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## Resources:
 - DVM Version Control Information:
-  - URL: git@github.com:PIFSC-NMFS-NOAA/Data-Validation-Module.git
+  - URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DataValidationModule.git
   - Database: 1.3 (Git tag: DVM_db_v1.3)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
@@ -29,9 +29,9 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="database_setup"></a>Database Setup:
 - Manual Installation
-	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/Database-Version-Control-Module.git)
-	  - This module utilizes v0.15 of the VCM (git tag: db_vers_ctrl_v0.15)
-	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/Database-Logging-Module.git)
+	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)
+	  - This module utilizes v0.16 of the VCM (git tag: db_vers_ctrl_v0.16)
+	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git)
 	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation

@@ -32,7 +32,7 @@ Version [MAJOR].[MINOR] of the [DATABASE NAME] Database
 **[DATABASE NAME] is the name of the given external database module**
 **[GIT URL] is the git URL for the external database module**
 **[GIT TAG] is the Git tag for the revision that defines the external database module version**
-**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)**
 Installed Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 
@@ -41,7 +41,7 @@ Installed Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Da
 **[DATABASE NAME] is the name of the given external database module**
 **[GIT URL] is the git URL for the external database module**
 **[GIT TAG] is the Git tag for the revision that defines the external database module version**
-**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)**
 Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 
@@ -75,7 +75,7 @@ Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Dat
 	**[DATABASE NAME] is the name of the given external database module**
 	**[GIT URL] is the git URL for the external database module**
   **[GIT TAG] is the Git tag for the revision that defines the external database module version**
-	**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+	**Example: Installed Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)**
   Installed Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 
@@ -84,7 +84,7 @@ Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Dat
 	**[DATABASE NAME] is the name of the given external database module**
 	**[GIT URL] is the git URL for the external database module**
 	**[GIT TAG] is the Git tag for the revision that defines the external database module version**
-	**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/database-version-control-module.git)**
+	**Example: Requires Version 0.2 (Git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)**
 	Requires Version [MAJOR].[MINOR] (Git tag: [GIT TAG]) of the [DATABASE NAME] Database (Git URL: [GIT URL])
 
 *******************************
