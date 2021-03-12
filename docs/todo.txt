@@ -1,3 +1,7 @@
+X implement a unique key constraint for DVM QC object records on OBJECT_NAME (had a use case where I accidentally inserted a duplicate DVM_QC_OBJECTS record and it caused a problem with the generated load DVM issues DML
+
+
+
 Documentation:
 	X (this is maintained in the CCD repository) compile a quick SOP on how to verify that the data checks are working and how to develop repeatable test cases. (e.g. develop query, create conditions with file names/SQL updates, export the errors and reconcile with test cases to confirm)
 	X (added to Google Keep - 7/9/20) document how the batch validation procedure fits into validating production data so it can be used for reporting, data analysis, dissemination, etc.
