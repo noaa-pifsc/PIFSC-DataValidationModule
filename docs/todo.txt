@@ -1,5 +1,17 @@
+_ comment out DVM logging except for errors
+_ update DB logging module to remove V_SP_RET_CODE/V_RETURN_CODE
+_ update TRG_ history tracking triggers to specify the app username instead of using the dsc_utilities_pkg.os_user function
+	use: nvl(v('APP_USER'),user);
+
 X implement a unique key constraint for DVM QC object records on OBJECT_NAME (had a use case where I accidentally inserted a duplicate DVM_QC_OBJECTS record and it caused a problem with the generated load DVM issues DML
 
+_ implement a delete DVM procedure that removes the DVM data for a given PTA_ISS_ID value (used in CCD and LIB)
+
+
+_ (SPTT - DVM upgrade) compile a mapping document to document the object/column name changes so SPTT can update their code accordingly
+
+known issues:
+	_ DVM will replace the DVM issues records if there is any difference in the description field (e.g. when samp_ID changes it will wipe out any annotated issues)
 
 
 Documentation:
