@@ -35,7 +35,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
-	- For new installations a DB Module Packager (DMP) project (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
+	- For new installations a DB Module Packager (DMP) project (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
 
 ## Database Features:
 -   Data history tracking package
@@ -46,8 +46,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
     -   Description: This was developed by the PIFSC Systems Design Team (SDT) to track data changes to a given table over time to facilitate accountability, troubleshooting, etc.  Certain data tables have had this functionality enabled.  The DSC_CRE_HIST_OBJS_PKG package is defined in the DSC schema, the CRE_HIST_TRG() and CRE_HIST_SEQ() procedures were executed using the data schema.  
 
 ## Git Features:
--   [Git Hooks](https://gitlab.pifsc.gov/centralized-data-tools/git-hooks) Version Control Information:
-    -   URL: git@gitlab.pifsc.gov:centralized-data-tools/git-hooks.git
+-   [Git Hooks](https://picgitlab.nmfs.local/centralized-data-tools/git-hooks) Version Control Information:
+    -   URL: git@picgitlab.nmfs.local:centralized-data-tools/git-hooks.git
     -   Version: 0.1 (git tag: git_hooks_v0.1)
 
 ## DVM Features:
@@ -59,7 +59,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   - The DVM_PTA_RULE_SETS_HIST_RPT_V view provides information about each time the DVM was evaluated for which specific Validation Rules on a given Parent Record for each Data Stream if that level of detail is desired.  This standard report can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report.
  - [DVM Configuration QC Views](#DVM_config_QC)
 - DVM Automated Test Cases
-	- This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+	- This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
 		- For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory  
 - Data Stream Specific Processing
 	- The main DVM package procedure can be implemented directly in a PL/SQL block for a given data stream (based on the defined data stream code argument(s)) or it can also be wrapped in data set-specific packages/procedures to simplify the PL/SQL code required to implement the DVM on a given data stream's parent record.  
@@ -84,7 +84,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 	- Each individual data Validation Issue identified by the DVM is represented by a separate Validation Issue record that includes a description of the issue that contains all relevant database values associated with the given relevant data record(s) at the time of evaluation.  An optional custom application link can be associated with the individual validation issues to allow users to load a specific web application page to inspect/resolve the validation issue.  The Issue Type information is included as well as the severity of the issue (e.g. warning vs. error).    
 - Issue Resolution
 	- When a Validation Issue record represents a legitimate value or legitimate set of values a data manager has the ability to annotate the Validation Issue by defining an Issue Resolution Type (e.g. No Data Available, Manually Reviewed and Accepted, No Resolution Can be Reached Yet, etc.).  The data manager can also define a note for the Validation Issue to describe the reason for marking the Validation Issue as a false positive (e.g. fishing in IATTC area) or as otherwise exempted (e.g. there is no way to determine the field value)
-	- **Note: A general interface can be developed to review and resolve/annotate data validation issues, an example implementation can be reviewed in the Centralized Cruise Database (CCD) (git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git)
+	- **Note: A general interface can be developed to review and resolve/annotate data validation issues, an example implementation can be reviewed in the Centralized Cruise Database (CCD) (git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git)
 - Issue Report Queries (all Views have comments on all columns and the object itself):
 	- DVM_PTA_ISSUES_V – (PTA Issues (View)) This View returns all validation issues associated with a given PTA Issue record that were identified during the last evaluation of the associated PTA Issue Types.  A PTA Issue record can be referenced by any data table that represents the parent record for a given data stream (e.g. CCD_CRUISES for CCD data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Issue's Issue Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.
 	- DVM_PTA_ISS_TYPES_V – PTA Issue Types (View) This View retrieves all Validation Rule Sets and corresponding Validation Rules for a given Parent Issue Record and corresponding data stream(s).  The associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.  This relationship is used to determine the Issue Types that were associated with the data stream when the given parent record is first evaluated using the DVM.  

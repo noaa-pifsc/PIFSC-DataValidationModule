@@ -61,7 +61,7 @@ This document defines the comprehensive procedure for defining QC Validation Rul
   - <a name="DVM_config_QC"></a>Step 6: Verify the DVM Configuration is Valid
 	  - Query the Combined DVM Configuration QC view (DVM_STD_QC_ALL_RPT_V), any rows returned indicate DVM configuration errors that will prevent the DVM from being processed on a given Parent Record.  Each row will contain information about what is causing the configuration error and how to resolve it.
   - Step 7: Develop and verify repeatable, automated DVM test cases
-    - This process has been developed using the Centralized Cruise Database (Git URL: git@gitlab.pifsc.gov:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+    - This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
 	    - For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory
 
 ## <a name="examples"></a>Examples Section:

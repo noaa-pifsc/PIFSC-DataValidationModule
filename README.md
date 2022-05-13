@@ -10,8 +10,8 @@ The [Data Validation Module (DVM)](https://github.com/PIFSC-NMFS-NOAA/PIFSC-Data
 - Installation instructions can be found in the [DVM Documentation](./docs/Data%20Validation%20Module%20Documentation.md#database_setup)
 
 ## Running the tests
-- This process has been developed using the [Centralized Cruise Database](https://gitlab.pifsc.gov/centralized-data-tools/centralized-cruise-database) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
-	- For more information review the [DVM Testing Documentation](https://gitlab.pifsc.gov/centralized-data-tools/centralized-cruise-database/-/blob/master/docs/packages/CDVM/test%20cases/CDVM%20Testing%20Documentation.md)
+- This process has been developed using the [Centralized Cruise Database](https://picgitlab.nmfs.local/centralized-data-tools/centralized-cruise-database) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+	- For more information review the [DVM Testing Documentation](https://picgitlab.nmfs.local/centralized-data-tools/centralized-cruise-database/-/blob/master/docs/packages/CDVM/test%20cases/CDVM%20Testing%20Documentation.md)
 
 ## Resources
 - [DVM Documentation](./docs/Data%20Validation%20Module%20Documentation.md)
