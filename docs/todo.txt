@@ -1,5 +1,6 @@
-_ comment out DVM logging except for errors
-_ update DB logging module to remove V_SP_RET_CODE/V_RETURN_CODE
+X comment out DVM logging except for errors
+
+X update DB logging module to remove V_SP_RET_CODE/V_RETURN_CODE
 _ update TRG_ history tracking triggers to specify the app username instead of using the dsc_utilities_pkg.os_user function
 	use: nvl(v('APP_USER'),user);
 _ look into implementing validation criteria into a QA module as well (could have flags to include in QA only or QC only or both)
@@ -7,11 +8,22 @@ _ look into implementing validation criteria into a QA module as well (could hav
 
 X implement a unique key constraint for DVM QC object records on OBJECT_NAME (had a use case where I accidentally inserted a duplicate DVM_QC_OBJECTS record and it caused a problem with the generated load DVM issues DML
 
+
+_ compile .md documentation to document the process and scripts used to upgrade the SPTT version of the DVM to the DVM standalone
+	_ (SPTT - DVM upgrade) compile a mapping document to document the object/column name changes so SPTT can update their code accordingly
+
+_ Commit changes to DB v 1.4
+	Send them the upgrade scripts and have them try it out themselves
+		SPTT needs to implement a repeatable process to deploy the current production version of the DB
+
+_ should we include the external modules in the upgrades folder even if it's not called directly?  That way they don't need to create multiple working copies in order to run all of the necessary scripts
+
+
+
 _ implement a delete DVM procedure that removes the DVM data for a given PTA_ISS_ID value (used in CCD and LIB)
 
 Evaluate DVM for security vulnerabilities (SCR to CMB)
 
-_ (SPTT - DVM upgrade) compile a mapping document to document the object/column name changes so SPTT can update their code accordingly
 
 
 

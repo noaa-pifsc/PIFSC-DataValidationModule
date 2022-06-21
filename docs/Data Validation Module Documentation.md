@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DataValidationModule.git
-  - Database: 1.3 (Git tag: DVM_db_v1.3)
+  - Database: 1.4 (Git tag: DVM_db_v1.4)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -29,15 +29,21 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="database_setup"></a>Database Setup:
 - Manual Installation
-	- Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)
-	  - This module utilizes v0.16 of the VCM (git tag: db_vers_ctrl_v0.16)
-	- Install version 0.2 (git tag: db_log_db_v0.2) of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git)
-	- [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
-	- ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
+  - Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) or higher of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)
+  - Install version 0.3 (git tag: db_log_db_v0.3) or higher of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git)
+  - [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
+  - ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
-	- For new installations a DB Module Packager (DMP) project (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
+  - For new installations a DB Module Packager (DMP) project (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/db-module-packager.git) is available with two separate use cases that include the VCM, DB Logging Module, and DVM to streamline the installation process starting in version 0.3 (Git tag: db_module_packager_v0.3).  Refer to the documentation for more information.
 
 ## Database Features:
+-   DB Version Control Module (VCM)
+    -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git
+    -   Database Version: 0.2 (git tag: db_vers_ctrl_db_v0.2)
+    -   SOP Version: 1.0 (git tag: db_vers_ctrl_v1.0)
+-   DB Logging Module (DLM)
+    -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git
+    -   Version: 0.3 (git tag: db_log_db_v0.3)
 -   Data history tracking package
     -   Version Control Information:
         -   URL: svn://badfish.pifsc.gov/Oracle/DSC/trunk/apps/db/dsc/dsc_pkgs
@@ -59,37 +65,37 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   - The DVM_PTA_RULE_SETS_HIST_RPT_V view provides information about each time the DVM was evaluated for which specific Validation Rules on a given Parent Record for each Data Stream if that level of detail is desired.  This standard report can be combined with data set-specific information to generate a standard validation rule report that can be included with the data set metadata or as an internal report.
  - [DVM Configuration QC Views](#DVM_config_QC)
 - DVM Automated Test Cases
-	- This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
-		- For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory  
+  - This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23). Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
+    - For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory  
 - Data Stream Specific Processing
-	- The main DVM package procedure can be implemented directly in a PL/SQL block for a given data stream (based on the defined data stream code argument(s)) or it can also be wrapped in data set-specific packages/procedures to simplify the PL/SQL code required to implement the DVM on a given data stream's parent record.  
-	 - A data set-specific procedure can be defined for each data stream (e.g. benthic, fish, oceanography, etc.) to specify the data streams argument(s) and allow the user to specify the parent table's primary key.  These data set-specific "wrapped" procedures can be used directly in PL/SQL blocks, applications, or in other PL/SQL packages/procedures to provide additional functionality.  
-	 - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that executes the DVM on a given cruise record.  The procedure accepts a P_CRUISE_ID parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
-	 - Data set-specific DVM procedures can be overloaded to allow primary key  (example from cruise DB overlapping cruise dates)
-		 - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that accepts a P_CRUISE_NAME parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
+  - The main DVM package procedure can be implemented directly in a PL/SQL block for a given data stream (based on the defined data stream code argument(s)) or it can also be wrapped in data set-specific packages/procedures to simplify the PL/SQL code required to implement the DVM on a given data stream's parent record.  
+   - A data set-specific procedure can be defined for each data stream (e.g. benthic, fish, oceanography, etc.) to specify the data streams argument(s) and allow the user to specify the parent table's primary key.  These data set-specific "wrapped" procedures can be used directly in PL/SQL blocks, applications, or in other PL/SQL packages/procedures to provide additional functionality.  
+   - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that executes the DVM on a given cruise record.  The procedure accepts a P_CRUISE_ID parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
+   - Data set-specific DVM procedures can be overloaded to allow primary key  (example from cruise DB overlapping cruise dates)
+     - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_SP package procedure that accepts a P_CRUISE_NAME parameter and specifies the data stream code parameter within the  CCD_DVM_PKG package so the user only specifies a single argument
    - Special business rule logic can be implemented using the DVM_PKG.  An example from the CCD checks has a data QC view that identifies overlapping dates between parent records.  Custom logic can be implemented to identify the overlapping record(s) and automatically validate those as well to ensure the associated validation issues are up to date.  
-	   - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_ID parameter.  
-		   - An example of an overloaded procedure is the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_NAME parameter.
-		   - This type of special case processing can be implemented in data management applications to automatically validate a parent record and all potentially overlapping parent records after inserting, updating, or deleting a given parent record.  An example is implemented in the CCD's Cruise Data Management Application's (CRDMA) View/Edit Cruise page.   
+     - An example is available in the CCD in the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_ID parameter.  
+       - An example of an overloaded procedure is the CCD_DVM_PKG.EXEC_DVM_CRUISE_OVERLAP_SP package procedure that accepts a P_CRUISE_NAME parameter.
+       - This type of special case processing can be implemented in data management applications to automatically validate a parent record and all potentially overlapping parent records after inserting, updating, or deleting a given parent record.  An example is implemented in the CCD's Cruise Data Management Application's (CRDMA) View/Edit Cruise page.   
    - Procedures can be defined to execute the DVM on multiple parent records by implementing PL/SQL logic, this can be used to validate all of the desired records before the data is available for analysis, reporting, archival, etc.  Batch Processing procedures can be developed to validate all parent records or a subset of the parent records
-	  - An example of a batch processing procedure can be found in the CCD in the CCD_DVM_PKG.BATCH_EXEC_DVM_CRUISE_SP package procedure, custom filters can be implemented for batch processing subsets of parent records.
+    - An example of a batch processing procedure can be found in the CCD in the CCD_DVM_PKG.BATCH_EXEC_DVM_CRUISE_SP package procedure, custom filters can be implemented for batch processing subsets of parent records.
 
 ## Implementation
 - Current Implementation
-	- Standalone PL/SQL Package (DVM_PKG) that can be executed to validate any parent record that has been configured and enabled in the DVM.  The behavior of the module depends on the state of the given Parent Record.  The first time a Parent Record is evaluated for a given Data Stream it will save the active Validation Rules for future DVM processing and all Validation Issue records will be associated with the Parent Issue Record.  All subsequent times a Parent Record is evaluated for a given Data Stream it will re-use the saved Validation Rules and remove all obsolete Validation Issues (indicates that the underlying cause of the validation has been resolved) for the given Data Stream and add all newly identified Validation Issues (indicates that there are new Validation Issues identified).
-	- Data QC Queries are implemented for groups of tables that comprise a Data Stream and the resultant Validation Issue records are associated with the given Parent Issue record for a given Data Stream.  
+  - Standalone PL/SQL Package (DVM_PKG) that can be executed to validate any parent record that has been configured and enabled in the DVM.  The behavior of the module depends on the state of the given Parent Record.  The first time a Parent Record is evaluated for a given Data Stream it will save the active Validation Rules for future DVM processing and all Validation Issue records will be associated with the Parent Issue Record.  All subsequent times a Parent Record is evaluated for a given Data Stream it will re-use the saved Validation Rules and remove all obsolete Validation Issues (indicates that the underlying cause of the validation has been resolved) for the given Data Stream and add all newly identified Validation Issues (indicates that there are new Validation Issues identified).
+  - Data QC Queries are implemented for groups of tables that comprise a Data Stream and the resultant Validation Issue records are associated with the given Parent Issue record for a given Data Stream.  
   - User Defined Exceptions were implemented for error handling in the DVM: [DVM Business Rules](./DVM%20-%20Business%20Rules.xlsx) (where the "Scope" column is "DVM Processing Errors")
 - [How to define data validation criteria](./How%20to%20Define%20Criteria%20in%20Data%20Validation%20Module.md)
 - Validation Issue Records
-	- Each individual data Validation Issue identified by the DVM is represented by a separate Validation Issue record that includes a description of the issue that contains all relevant database values associated with the given relevant data record(s) at the time of evaluation.  An optional custom application link can be associated with the individual validation issues to allow users to load a specific web application page to inspect/resolve the validation issue.  The Issue Type information is included as well as the severity of the issue (e.g. warning vs. error).    
+  - Each individual data Validation Issue identified by the DVM is represented by a separate Validation Issue record that includes a description of the issue that contains all relevant database values associated with the given relevant data record(s) at the time of evaluation.  An optional custom application link can be associated with the individual validation issues to allow users to load a specific web application page to inspect/resolve the validation issue.  The Issue Type information is included as well as the severity of the issue (e.g. warning vs. error).    
 - Issue Resolution
-	- When a Validation Issue record represents a legitimate value or legitimate set of values a data manager has the ability to annotate the Validation Issue by defining an Issue Resolution Type (e.g. No Data Available, Manually Reviewed and Accepted, No Resolution Can be Reached Yet, etc.).  The data manager can also define a note for the Validation Issue to describe the reason for marking the Validation Issue as a false positive (e.g. fishing in IATTC area) or as otherwise exempted (e.g. there is no way to determine the field value)
-	- **Note: A general interface can be developed to review and resolve/annotate data validation issues, an example implementation can be reviewed in the Centralized Cruise Database (CCD) (git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git)
+  - When a Validation Issue record represents a legitimate value or legitimate set of values a data manager has the ability to annotate the Validation Issue by defining an Issue Resolution Type (e.g. No Data Available, Manually Reviewed and Accepted, No Resolution Can be Reached Yet, etc.).  The data manager can also define a note for the Validation Issue to describe the reason for marking the Validation Issue as a false positive (e.g. fishing in IATTC area) or as otherwise exempted (e.g. there is no way to determine the field value)
+  - **Note: A general interface can be developed to review and resolve/annotate data validation issues, an example implementation can be reviewed in the Centralized Cruise Database (CCD) (git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git)
 - Issue Report Queries (all Views have comments on all columns and the object itself):
-	- DVM_PTA_ISSUES_V – (PTA Issues (View)) This View returns all validation issues associated with a given PTA Issue record that were identified during the last evaluation of the associated PTA Issue Types.  A PTA Issue record can be referenced by any data table that represents the parent record for a given data stream (e.g. CCD_CRUISES for CCD data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Issue's Issue Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.
-	- DVM_PTA_ISS_TYPES_V – PTA Issue Types (View) This View retrieves all Validation Rule Sets and corresponding Validation Rules for a given Parent Issue Record and corresponding data stream(s).  The associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.  This relationship is used to determine the Issue Types that were associated with the data stream when the given parent record is first evaluated using the DVM.  
+  - DVM_PTA_ISSUES_V – (PTA Issues (View)) This View returns all validation issues associated with a given PTA Issue record that were identified during the last evaluation of the associated PTA Issue Types.  A PTA Issue record can be referenced by any data table that represents the parent record for a given data stream (e.g. CCD_CRUISES for CCD data).  The query returns detailed information about the specifics of each issue identified as well as general information about the given Issue's Issue Type.  Each associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.
+  - DVM_PTA_ISS_TYPES_V – PTA Issue Types (View) This View retrieves all Validation Rule Sets and corresponding Validation Rules for a given Parent Issue Record and corresponding data stream(s).  The associated date/time is provided as a standard formatted date in MM/DD/YYYY HH24:MI format.  This relationship is used to determine the Issue Types that were associated with the data stream when the given parent record is first evaluated using the DVM.  
 - Validation Rule Query (all Views have comments on all columns and the object itself)
-	- DVM_CRITERIA_V – (Data QC Criteria (View)) This View returns all data QC Criteria (Issue Types) defined in the database and their associated data QC Object, Issue Severity, and Issue Category.  This query is used to define all PTA Issue Types when a data stream is first validated in the database
+  - DVM_CRITERIA_V – (Data QC Criteria (View)) This View returns all data QC Criteria (Issue Types) defined in the database and their associated data QC Object, Issue Severity, and Issue Category.  This query is used to define all PTA Issue Types when a data stream is first validated in the database
 - <a name="DVM_config_QC"><a/>DVM Configuration QC Views (all Views have comments on all columns and the object itself):
   - These Configuration QC Views (objects that begin with "DVM_STD_QC") are used to identify DVM configuration errors that will prevent the DVM from being executed successfully (e.g. data QC view is invalid).  These configuration QC queries are intended to be executed after the DVM configuration has been changed or if there are problems encountered during DVM execution.  
   - The DVM_STD_QC_ALL_RPT_V combines the results of all of the standard DVM Configuration QC views for convenience.  
@@ -115,39 +121,39 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="ex1"><a/>Ex 1 (User-Defined Exception Version):
 ```
-		--Main package procedure that validates a parent record based on the given data stream code(s) defined by P_DATA_STREAM_CODES, and uniquely identified by the specified primary key (P_PK_ID).  This is the main procedure that is called by external programs to validate the specified parent record.  If the procedure is successful it will not commit the changes to the DVM data to allow for flexibility as part of a larger transaction or to allow the user to explicitly commit the changes made by the DVM.  If the procedure is unsuccessful it will rollback the transaction to the state of the beginning of the procedure.
-		--Any exceptions encountered during the execution of the procedure will cause the procedure to fail and log/print the error.
+    --Main package procedure that validates a parent record based on the given data stream code(s) defined by P_DATA_STREAM_CODES, and uniquely identified by the specified primary key (P_PK_ID).  This is the main procedure that is called by external programs to validate the specified parent record.  If the procedure is successful it will not commit the changes to the DVM data to allow for flexibility as part of a larger transaction or to allow the user to explicitly commit the changes made by the DVM.  If the procedure is unsuccessful it will rollback the transaction to the state of the beginning of the procedure.
+    --Any exceptions encountered during the execution of the procedure will cause the procedure to fail and log/print the error.
 
-		set serveroutput on;
+    set serveroutput on;
 
-		--Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
-		DECLARE
-			P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
-			P_PK_ID NUMBER;
-		BEGIN
-			-- Modify the code to initialize the variable
-			P_DATA_STREAM_CODE(1) := 'RPL';
-			P_DATA_STREAM_CODE(2) := 'XML';
-			P_PK_ID := :pkid;
+    --Example usage for the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
+    DECLARE
+      P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
+      P_PK_ID NUMBER;
+    BEGIN
+      -- Modify the code to initialize the variable
+      P_DATA_STREAM_CODE(1) := 'RPL';
+      P_DATA_STREAM_CODE(2) := 'XML';
+      P_PK_ID := :pkid;
 
-			DVM_PKG.VALIDATE_PARENT_RECORD_SP(
-			P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
-			P_PK_ID => P_PK_ID
-			);
-
-
-			DBMS_output.put_line('The parent record was evaluated successfully');
-
-			--commit the transaction
-			COMMIT;
+      DVM_PKG.VALIDATE_PARENT_RECORD_SP(
+      P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
+      P_PK_ID => P_PK_ID
+      );
 
 
-			EXCEPTION
-				WHEN OTHERS THEN
-					DBMS_output.put_line(SQLERRM);
+      DBMS_output.put_line('The parent record was evaluated successfully');
 
-					DBMS_output.put_line('The parent record was NOT evaluated successfully');
-		END;
+      --commit the transaction
+      COMMIT;
+
+
+      EXCEPTION
+        WHEN OTHERS THEN
+          DBMS_output.put_line(SQLERRM);
+
+          DBMS_output.put_line('The parent record was NOT evaluated successfully');
+    END;
 
 ```
 
@@ -156,48 +162,48 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ```
 --DVM execution procedure for a given parent record (based on P_DATA_STREAM_CODES and P_PK_ID) that provides a return code (P_SP_RET_CODE) with a value that indicates if the DVM executed successfully or not instead of raising an exception.  A P_SP_RET_CODE value of 1 indicates a successful execution and a value of 0 indicates it was not successful.  The P_EXC_MSG parameter will contain the exception message if the P_SP_RET_CODE indicates there was a processing error.  This procedure allows a PL/SQL block to continue even if the DVM has an exception
 /*
-	set serveroutput on;
+  set serveroutput on;
 
-	--Example usage (for return code version) using the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
-	DECLARE
-		P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
-		P_PK_ID NUMBER;
-		V_SP_RET_CODE PLS_INTEGER;
-		V_EXC_MSG VARCHAR2 (4000);
+  --Example usage (for return code version) using the RPL and XML data streams (defined in the DVM_DATA_STREAMS.DATA_STREAM_CODE table field):
+  DECLARE
+    P_DATA_STREAM_CODE DVM_PKG.VARCHAR_ARRAY_NUM;
+    P_PK_ID NUMBER;
+    V_SP_RET_CODE PLS_INTEGER;
+    V_EXC_MSG VARCHAR2 (4000);
 
-	BEGIN
-		-- Modify the code to initialize the variable
-		P_DATA_STREAM_CODE(1) := 'RPL';
-		P_DATA_STREAM_CODE(2) := 'XML';
-		P_PK_ID := :pkid;
+  BEGIN
+    -- Modify the code to initialize the variable
+    P_DATA_STREAM_CODE(1) := 'RPL';
+    P_DATA_STREAM_CODE(2) := 'XML';
+    P_PK_ID := :pkid;
 
-		DVM_PKG.VALIDATE_PARENT_RECORD_RC_SP(
-		P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
-		P_PK_ID => P_PK_ID,
-		P_SP_RET_CODE => V_SP_RET_CODE,
-		P_EXC_MSG => V_EXC_MSG
-		);
+    DVM_PKG.VALIDATE_PARENT_RECORD_RC_SP(
+    P_DATA_STREAM_CODES => P_DATA_STREAM_CODE,
+    P_PK_ID => P_PK_ID,
+    P_SP_RET_CODE => V_SP_RET_CODE,
+    P_EXC_MSG => V_EXC_MSG
+    );
 
-		--check the return code:
-		IF (V_SP_RET_CODE = 1) THEN
+    --check the return code:
+    IF (V_SP_RET_CODE = 1) THEN
 
-			DBMS_output.put_line('The parent record was evaluated successfully');
+      DBMS_output.put_line('The parent record was evaluated successfully');
 
-			--commit the transaction
-			COMMIT;
-		ELSE
-			--output the error message:
-			DBMS_output.put_line(V_EXC_MSG);
+      --commit the transaction
+      COMMIT;
+    ELSE
+      --output the error message:
+      DBMS_output.put_line(V_EXC_MSG);
 
-			DBMS_output.put_line('The parent record was NOT evaluated successfully');
+      DBMS_output.put_line('The parent record was NOT evaluated successfully');
 
-		END IF;
+    END IF;
 
-		EXCEPTION
-			WHEN OTHERS THEN
-				DBMS_output.put_line(SQLERRM);
+    EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_output.put_line(SQLERRM);
 
-				DBMS_output.put_line('The parent record was NOT evaluated successfully');
-	END;
+        DBMS_output.put_line('The parent record was NOT evaluated successfully');
+  END;
 
 ```
