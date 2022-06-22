@@ -1,0 +1,74 @@
+# SPTT DVM Upgrade Process
+
+## Overview
+This document defines the process for deploying the SPTT Data Validation Module (DVM), upgrading it to the standalone version of the DVM, and upgrading the standalone version of the DVM to the current version (1.4).  The validation data that exists in the SPTT DVM will be retained during the upgrade-in-place process.
+
+## Procedure
+-   ### Setup
+    -   Clone the following repositories into the same root directory as this working copy of the Data Validation Module (e.g. C:\Users\Jesse.Abdul\Documents\Version Control\Git\)
+        -   [DB Version Control Module](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule) (version 0.2 - git tag: [db_vers_ctrl_db_v0.2](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule/releases/tag/db_vers_ctrl_db_v0.2))
+        -   [DB Logging Module](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule) (version 0.3 - git tag: [db_log_db_v0.3](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule/releases/tag/db_log_db_v0.3))
+-   ### Development
+    -   **To Do**:
+        -   **Need to determine if DVM_PTA_ERR_TYP_ASSOC.ERR_ASSOC_NOTES has any data in it in the SPTT schema and if that information needs to be maintained
+    -   SPTT DVM DB Deployment
+        -   Sandbox schema: JDA_SPTT
+        -   To streamline the process of running the script below the [SPTT_execute_all_scripts.sql](../scripts/SPTT_execute_all_scripts.sql) is provided so the scripts can be easily executed with SQL Plus
+        -   Deploy SPTT DVM to sandbox schema
+            -   All scripts have been included in [deploy_SPTT_v1.0_to_DVM_0.1.sql](../scripts/deploy_SPTT_v1.0_to_DVM_0.1.sql) to streamline the deployment/upgrade process.  All individual scripts are referenced below:
+            -   External DB Modules:
+                -   DB Version Control Module (version 0.2)
+                -   DB Logging Module (version 0.3)
+            -   SPTT DVM Core Data Model:
+                -   [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql)
+        -   Upgrade SPTT DVM to Standalone DVM (version 0.1)
+            -   Upgrade SPTT DVM Core Data Model to Standalone DVM Module (version 0.1)
+                -   [SPTT_v1.0_to_DVM_v0.1.sql](../scripts/SPTT_v1.0_to_DVM_v0.1.sql)
+        -   Upgrade Standalone DVM (version 0.1 to 1.4) and retain all existing DVM data
+            -   All scripts have been included in [upgrade_SPTT_dev_retain_data_0.1_to_1.4.sql](../scripts/upgrade_SPTT_dev_retain_data_0.1_to_1.4.sql) to streamline the upgrade process.  All individual scripts are referenced below:
+            -   Standalone DVM Upgrade Files:
+                -   [DVM_DDL_DML_upgrade_v0.2.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v0.2.sql) to [DVM_DDL_DML_upgrade_v1.4.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v1.4.sql) (in order to upgrade from standalone DVM version 0.1 to 1.4)
+                -   [migrate_error_type_assoc_values.sql](../../../SQL/scripts/migrate_error_type_assoc_values.sql) to migrate the existing error type association values to issue type association table to retain all DVM data.
+            -   Error Exclusion Table:
+                -   [DVM_ERRORS_EXCLUDE_upgrade.sql](../scripts/DVM_ERRORS_EXCLUDE_upgrade.sql) converts the DVM_ERRORS_EXCLUDE to DVM_ISSUES_EXCLUDE to be consistent with upgraded data model.
+    -   Standalone DVM DB Deployment
+        -   Sandbox schema: JDA_DVM
+        -   To streamline the process of running the script below the [DVM_execute_all_scripts.sql](../scripts/DVM_execute_all_scripts.sql) is provided so the scripts can be easily executed with SQL Plus
+        -   Deploy standalone DVM (version 0.1) and all required external database modules to sandbox schema
+            -   All scripts have been included in [deploy_DVM_v0.1.sql](../scripts/deploy_DVM_v0.1.sql) to streamline the deployment/upgrade process.  All individual scripts are referenced below:
+            -   External DB Modules:
+                -   DB Version Control Module (version 0.2)
+                -   DB Logging Module (version 0.3)
+            -   DVM Core Data Model:
+                -   [DVM_DDL_DML_upgrade_v0.1.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v0.1.sql)
+        -   Upgrade Standalone DVM (version 0.1 to 1.4)
+            -   All scripts have been included in [upgrade_DVM_dev_0.1_to_1.4.sql](../scripts/upgrade_DVM_dev_0.1_to_1.4.sql) to streamline the upgrade process.  All individual scripts are referenced below:
+            -   Standalone DVM Upgrade Files:
+                -   [DVM_DDL_DML_upgrade_v0.2.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v0.2.sql) to [DVM_DDL_DML_upgrade_v1.4.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v1.4.sql) (in order to upgrade from standalone DVM version 0.1 to 1.4)
+    -   Data Model Comparisons
+        -   The version 0.1 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only)
+        -   The version 1.4 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only)
+    -   SPTT Responsibilities:
+        -   Attempt to perform the upgrade-in-place process using a copy of the production data to ensure there are no runtime errors due to the data
+        -   Update SPTT data model (views/tables) to reference the updated DVM data model
+        -   Update SPTT PL/SQL (packages, functions, procedures) to reference the updated DVM data model
+        -   Update SPTT apps to use the updated DVM/SPTT data model
+        -   Implement the DB version control module on their current version of the DB to make dev/test/prod easier moving forward
+            -   Utilize the DB Version Control Module and Data Cloning Procedure to create an exact copy of the production data on a development database instance
+                -  Confirm that the same information is available via the existing views in the production DB as the sandbox DB
+-   ### Test
+    -   SPTT Responsibilities:
+        -   Utilize the DB Version Control Module and Data Cloning Procedure to create an exact copy of the production data on a development database instance
+            -   Utilize scripts to confirm that the upgrade-in-place works properly and there are no runtime errors due to the data
+                -   Execute and confirm the SPTT data model update scripts
+                -   Execute and confirm the SPTT PL/SQL updates
+                -   Execute and confirm the SPTT apps work with the updated data model
+            -   Confirm that the same information is available via the existing views in the production DB as the test DB
+-   ### Production
+    -   SPTT Responsibilities:
+        -   Compile and submit System Change Request to upgrade production, work with ITS to approve the proposed changes.
+        -   Utilize scripts to confirm that the upgrade-in-place works properly and there are no runtime errors due to the data
+            -   Execute and confirm the SPTT data model update scripts
+            -   Execute and confirm the SPTT PL/SQL updates
+            -   Execute and confirm the SPTT apps work with the updated data model
+        -   Confirm that the same information is available via the existing views
