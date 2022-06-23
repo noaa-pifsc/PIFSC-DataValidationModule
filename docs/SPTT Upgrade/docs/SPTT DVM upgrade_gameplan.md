@@ -10,7 +10,10 @@ This document defines the process for deploying the SPTT Data Validation Module 
         -   [DB Logging Module](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule) (version 0.3 - git tag: [db_log_db_v0.3](https://github.com/PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule/releases/tag/db_log_db_v0.3))
 -   ### Development
     -   **To Do**:
-        -   **Need to determine if DVM_PTA_ERR_TYP_ASSOC.ERR_ASSOC_NOTES has any data in it in the SPTT schema and if that information needs to be maintained
+        -   **Need to determine if the following SPTT DVM table fields have any data in it before the upgrade so it can determined if the data needs to be retained:
+            -   DVM_PTA_ERR_TYP_ASSOC.ERR_ASSOC_NOTES
+            -   DVM_ERRORS_HIST.PTA_ERROR_ID
+            -   DVM_ERRORS_HIST.ERROR_TYPE_ID
     -   SPTT DVM DB Deployment
         -   Sandbox schema: JDA_SPTT
         -   To streamline the process of running the script below the [SPTT_execute_all_scripts.sql](../scripts/SPTT_execute_all_scripts.sql) is provided so the scripts can be easily executed with SQL Plus
