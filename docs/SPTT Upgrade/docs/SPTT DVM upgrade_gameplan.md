@@ -21,6 +21,7 @@ This document defines the process for deploying the SPTT Data Validation Module 
                 -   DB Logging Module (version 0.3)
             -   SPTT DVM Core Data Model:
                 -   [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql)
+                -   \*\*Note: The [SPTT Validation Tables DDL original.sql](../scripts/SPTT%20Validation%20Tables%20DDL%20original.sql) was the original DDL file provided by SPTT and it was modified manually to [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql) to enable it to run on any given Oracle database schema.
         -   Upgrade SPTT DVM to Standalone DVM (version 0.1)
             -   Upgrade SPTT DVM Core Data Model to Standalone DVM Module (version 0.1)
                 -   [SPTT_v1.0_to_DVM_v0.1.sql](../scripts/SPTT_v1.0_to_DVM_v0.1.sql)
