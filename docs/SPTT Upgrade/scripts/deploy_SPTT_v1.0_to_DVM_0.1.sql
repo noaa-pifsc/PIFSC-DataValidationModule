@@ -42,6 +42,9 @@ PROMPT install required dependencies
 
 PROMPT running DDL scripts
 @@"../docs/SPTT Upgrade/scripts/SPTT Validation Tables DDL.sql"
+@@"../docs/SPTT Upgrade/scripts/SPTT Validation Views Packages DDL.sql"
+
+PROMPT upgrade the SPTT DVM to the standalone DVM version 0.1
 @@"../docs/SPTT Upgrade/scripts/SPTT_v1.0_to_DVM_v0.1.sql"
 
 PROMPT load DB Upgrade record for the initial version of the standalone DVM (version 0.1)

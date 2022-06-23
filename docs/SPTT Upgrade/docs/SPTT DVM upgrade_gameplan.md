@@ -21,7 +21,9 @@ This document defines the process for deploying the SPTT Data Validation Module 
                 -   DB Logging Module (version 0.3)
             -   SPTT DVM Core Data Model:
                 -   [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql)
-                -   \*\*Note: The [SPTT Validation Tables DDL original.sql](../scripts/SPTT%20Validation%20Tables%20DDL%20original.sql) was the original DDL file provided by SPTT and it was modified manually to [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql) to enable it to run on any given Oracle database schema.
+                    -   \*\*Note: The [SPTT Validation Tables DDL original.sql](../scripts/SPTT%20Validation%20Tables%20DDL%20original.sql) was the original DDL file provided by SPTT and it was modified manually to [SPTT Validation Tables DDL.sql](../scripts/SPTT%20Validation%20Tables%20DDL.sql) to enable it to run on any given Oracle database schema.
+                -   [SPTT Validation Views Packages DDL.sql](../scripts/SPTT%20Validation%20Views%20Packages%20DDL.sql)
+                    -   \*\*Note: The [SPTT Validation Views DDL.sql](../scripts/SPTT%20Validation%20Views%20DDL.sql), [DVM_PKG_Spec.sql](../scripts/DVM_PKG_Spec.sql), and [DVM_PKG_Body.sql](../scripts/DVM_PKG_Body.sql) were the original DDL files provided by SPTT and it was combined manually to the [SPTT Validation Views Packages DDL.sql](../scripts/SPTT%20Validation%20Views%20Packages%20DDL.sql) to enable it to run on any given Oracle database schema.
         -   Upgrade SPTT DVM to Standalone DVM (version 0.1)
             -   Upgrade SPTT DVM Core Data Model to Standalone DVM Module (version 0.1)
                 -   [SPTT_v1.0_to_DVM_v0.1.sql](../scripts/SPTT_v1.0_to_DVM_v0.1.sql)
@@ -47,8 +49,8 @@ This document defines the process for deploying the SPTT Data Validation Module 
             -   Standalone DVM Upgrade Files:
                 -   [DVM_DDL_DML_upgrade_v0.2.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v0.2.sql) to [DVM_DDL_DML_upgrade_v1.4.sql](../../../SQL/upgrades/DVM_DDL_DML_upgrade_v1.4.sql) (in order to upgrade from standalone DVM version 0.1 to 1.4)
     -   Data Model Comparisons
-        -   The version 0.1 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only)
-        -   The version 1.4 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only)
+        -   The version 0.1 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only except for the additional objects SPTT defined: DVM_ERRORS_EXCLUDE, DVM_ERRORS_HIST_V, DVM_ERRORS_HIST_V_OLD)
+        -   The version 1.4 DVM data model in both sandbox schemas were compared using the Oracle SQL Developer Diff Tool to confirm the data models were identical (for DVM-specific objects only except for the additional objects SPTT defined: DVM_ISSUES_EXCLUDE, DVM_ERRORS_HIST_V, DVM_ERRORS_HIST_V_OLD)
     -   SPTT Responsibilities:
         -   Attempt to perform the upgrade-in-place process using a copy of the production data to ensure there are no runtime errors due to the data
         -   Update SPTT data model (views/tables) to reference the updated DVM data model
@@ -73,3 +75,21 @@ This document defines the process for deploying the SPTT Data Validation Module 
             -   Execute and confirm the SPTT PL/SQL updates
             -   Execute and confirm the SPTT apps work with the updated data model
         -   Confirm that the same information is available via the existing views
+
+## Old Data Model to New Data Model Mapping
+-   [SPTT_all_objects.xlsx](./SPTT_all_objects.xlsx) contains all of the tables, views, and package procedures that are defined in the current version of the SPTT DVM
+    -   Worksheets:
+        -   Tables:
+            -   Column A and B contains the table name and column name for each object defined in the current version of the SPTT DVM respectively.  Column C and D contains the table name and column name for each object defined in the current version of the standalone DVM (version 1.4).  
+            -   cells highlighted in yellow indicate that there is a change between the SPTT DVM and standalone DVM table.
+            -   cells highlighted in red indicate that the object in the SPTT DVM has been removed from the standalone DVM data model.
+        -   Views:
+            -   Column A and B contains the view name and column name for each object defined in the current version of the SPTT DVM respectively.  Column C and D contains the view name and column name for each object defined in the current version of the standalone DVM (version 1.4).  
+            -   cells highlighted in yellow indicate that there is a change between the SPTT DVM and standalone DVM view.
+            -   cells highlighted in red indicate that the object in the SPTT DVM has been removed from the standalone DVM data model.
+        -   Packages:
+            -   Column A contains the package name.  
+            -   Column B contains the SPTT DVM procedure name.
+            -   Column C contains the standalone DVM procedure name.
+            -   Column D contains any additional parameters that the standalone DVM procedure accepts
+            -   \*\*Note: The VALIDATE_PARENT_RECORD_SP and VALIDATE_PARENT_RECORD_RC_SP package procedures are the only procedures that should be executed directly so they are the only ones listed in the spreadsheet.  The other package procedures are called internally to evaluate the defined QC criteria.  
