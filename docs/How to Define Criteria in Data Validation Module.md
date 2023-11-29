@@ -31,7 +31,6 @@ This document defines the comprehensive procedure for defining QC Validation Rul
 			- Copy the DML generated in the "Data Stream DML" column for each data stream to create the Data Stream records
 			- Copy the DML generated in the "QC View DML" column for each unique "QC View Name" to create the Data QC View records
 			- Copy the DML generated in the "Issue Type DML" column for each validation issue type to create the Validation Rule records
-
 	- Step 2: Develop the Data QC View
 		- Multiple Validation Rules can be implemented in a single Data QC View for efficiency purposes based on the type of Validation Rule that is being evaluated.  (e.g. a general Cruise QC query could check for both invalid cruise names and missing primary survey categories).
 		- Best practice: develop foundational Oracle Views for each main database table entity in the given Data Stream.  These foundational Views should join all reference tables to allow the given main entity to be queried easily including all reference record values (e.g. CCD_CRUISE_V).  The Data QC Views should be developed directly from the foundational Oracle Views (e.g. CCD_QC_CRUISE_V).
@@ -60,9 +59,11 @@ This document defines the comprehensive procedure for defining QC Validation Rul
 	    - Parent Tables must have a single numeric primary key column (More detail is available in DVM-DB-007 in the [DVM Business Rules](./DVM%20-%20Business%20Rule%20Documentation.md))
   - <a name="DVM_config_QC"></a>Step 6: Verify the DVM Configuration is Valid
 	  - Query the Combined DVM Configuration QC view (DVM_STD_QC_ALL_RPT_V), any rows returned indicate DVM configuration errors that will prevent the DVM from being processed on a given Parent Record.  Each row will contain information about what is causing the configuration error and how to resolve it.
-  - Step 7: Develop and verify repeatable, automated DVM test cases
+	- Step 7 (optional): Develop a database-specific PL/SQL package to easily execute the DVM for a specific parent record or all parent records
+    - This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  An example CCD_DVM_PKG is available as an example implementation.
+  - Step 8: Develop and verify repeatable, automated DVM test cases
     - This process has been developed using the Centralized Cruise Database (Git URL: git@picgitlab.nmfs.local:centralized-data-tools/centralized-cruise-database.git) starting in version 0.23 (Git tag: cen_cruise_db_v0.23).  Refer to the tagged versions of the CCD that match the version of the DVM (e.g. DVM_db_v1.0) for the corresponding automated test cases.
-	    - For more information review the Centralized Cruise Database DVM Testing Documentation.docx document in the docs/test_cases/DVM_PKG directory
+	    - For more information review the [CDVM Testing Documentation](https://picgitlab.nmfs.local/centralized-data-tools/centralized-cruise-database/-/blob/master/docs/packages/CDVM/test%20cases/CDVM%20Testing%20Documentation.md) in the CCD repository
 
 ## <a name="examples"></a>Examples Section:
 - <a name="example_mult_QC_criteria"></a>Example Multiple Criteria Data QC View:

@@ -6,37 +6,38 @@ When developing a database it is important to use consistent naming conventions 
 - [DVM Documentation](./Data%20Validation%20Module%20Documentation.md)
 ## Naming Conventions:
 - Object Prefixes:
-	- DVM - Data Validation Module
+  - DVM - Data Validation Module
 - Object Suffixes:
-	- BRI: Before Row Insert (for triggers)
-	- BRU: Before Row Update (for triggers)
-	- FN: Function
-	- HIST: Historical table
-	- PKG: Package
-	- SEQ: Sequence
-	- V: View
+  - BRI: Before Row Insert (for triggers)
+  - BRU: Before Row Update (for triggers)
+  - FN: Function
+  - HIST: Historical table
+  - PKG: Package
+  - SEQ: Sequence
+  - V: View
 - Field Suffixes:
-	- CODE: Code field
-	- DATE: Date field
-	- DESC: Description field
-	- ID: Primary/foreign keys (e.g. LOC_ID, SPECIES_ID)
-	- YN: Yes/No field (Boolean)
+  - CODE: Code field
+  - DATE: Date field
+  - DESC: Description field
+  - ID: Primary/foreign keys (e.g. LOC_ID, SPECIES_ID)
+  - YN: Yes/No field (Boolean)
 - Abbreviations:
-	- APP: Application
-	- ASSOC: Associated
+  - APP: Application
+  - ASSOC: Associated
   - DS: Data Stream
   - EVAL: Evaluation
   - HIST: History
-	- IND: Indicator
-	- ISS: Issue
-	- MISS: Missing
-	- MOD: Modified
-	- MSG: Message
-	- PTA: Point in Time Architecture
-	- QC: Quality Control
-	- RES: Resolution
-	- RPT: Report
-	- STD: Standard
-	- TEMPL: Template
-	- TYP: Type
-	- URL: Uniform Resource Locator
+  - IND: Indicator
+  - ISS: Issue
+  - MISS: Missing
+  - MOD: Modified
+  - MSG: Message
+  - PTA: Point in Time Architecture
+  - QC: Quality Control
+  - RES: Resolution
+  - RPT: Report
+  - STD: Standard
+  - SUMM: Summary
+  - TEMPL: Template
+  - TYP: Type
+  - URL: Uniform Resource Locator

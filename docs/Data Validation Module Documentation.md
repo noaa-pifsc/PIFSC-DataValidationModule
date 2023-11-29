@@ -6,7 +6,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Resources:
 - DVM Version Control Information:
   - URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DataValidationModule.git
-  - Database: 1.4 (Git tag: DVM_db_v1.4)
+  - Database: 1.5 (Git tag: DVM_db_v1.5)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
