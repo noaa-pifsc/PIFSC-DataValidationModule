@@ -3053,4 +3053,4 @@ create or replace PACKAGE DVM_PKG IS
 
 
 --define the upgrade version in the database upgrade log table:
-INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '1.5', TO_DATE('04-OCT-23', 'DD-MON-YY'), 'Defined a new aggregate view to provide standard error/warning information for a given DVM parent record.  Updated the DVM_PKG package to close open cursors when exceptions occur during batch processing to prevent memory issues with many open cursors.');
+INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '1.5', TO_DATE('04-OCT-23', 'DD-MON-YY'), 'Defined a new aggregate view to provide standard error/warning information for a given DVM parent record.  Updated the DVM_PKG package to close open cursors when exceptions occur during batch processing to prevent memory issues with many open cursors (ORA-01000).');
