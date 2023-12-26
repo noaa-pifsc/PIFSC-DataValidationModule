@@ -507,7 +507,7 @@ create or replace PACKAGE DVM_PKG IS
 			EVAL_QC_CRITERIA_SP;
 
 			--The QC Criteria was retrieved and evaluated successfully:
-			DB_LOG_PKG.ADD_LOG_ENTRY ('SUCCESS', PV_LOG_MSG_HEADER, 'The QC criteria has been evaluated successfully for the specified parameters (P_DATA_STREAM_CODES:  '||PV_DATA_STREAM_CODE_STRING||'), (PK_ID: '||P_PK_ID||')');
+--			DB_LOG_PKG.ADD_LOG_ENTRY ('SUCCESS', PV_LOG_MSG_HEADER, 'The QC criteria has been evaluated successfully for the specified parameters (P_DATA_STREAM_CODES:  '||PV_DATA_STREAM_CODE_STRING||'), (PK_ID: '||P_PK_ID||')');
 
 			--there were no error conditions encountered during processing
 			--DB_LOG_PKG.ADD_LOG_ENTRY ('DEBUG', PV_LOG_MSG_HEADER, 'there were no error conditions encountered during processing');
