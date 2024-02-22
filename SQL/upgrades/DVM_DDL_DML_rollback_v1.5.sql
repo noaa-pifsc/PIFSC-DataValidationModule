@@ -10,38 +10,7 @@
 --version 1.5 rollback:
 --------------------------------------------------------
 
-
-CREATE OR REPLACE VIEW 
-DVM_PTA_ISSUE_SUMM_V
-AS
-SELECT DVM_PTA_ISSUES_V.PTA_ISS_ID,
-    SUM(CASE WHEN DVM_PTA_ISSUES_V.ISS_SEVERITY_CODE = 'WARN' AND DVM_PTA_ISSUES_V.ISS_RES_TYPE_ID IS NULL THEN 1 ELSE 0 END) NUM_ACTIVE_WARNINGS,
-    SUM(CASE WHEN DVM_PTA_ISSUES_V.ISS_SEVERITY_CODE = 'WARN' AND DVM_PTA_ISSUES_V.ISS_RES_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END) NUM_ANNOT_WARNINGS,
-    SUM(CASE WHEN DVM_PTA_ISSUES_V.ISS_SEVERITY_CODE = 'ERROR' AND DVM_PTA_ISSUES_V.ISS_RES_TYPE_ID IS NULL THEN 1 ELSE 0 END) NUM_ACTIVE_ERRORS,
-    SUM(CASE WHEN DVM_PTA_ISSUES_V.ISS_SEVERITY_CODE = 'ERROR' AND DVM_PTA_ISSUES_V.ISS_RES_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END) NUM_ANNOT_ERRORS,
-    COUNT(*) NUM_ISSUE_RECS
-
-    FROM DVM_PTA_ISSUES_V
-    group by DVM_PTA_ISSUES_V.PTA_ISS_ID
-;
-
-
-
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.PTA_ISS_ID IS 'Foreign key reference to the Issues (PTA) intersection table';
-
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.NUM_ISSUE_RECS IS 'Number of issue records for the given parent record';
-
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.NUM_ACTIVE_WARNINGS IS 'Number of QC Validation Active Warnings for the given parent record';
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.NUM_ANNOT_WARNINGS IS 'Number of QC Validation Annotated Warnings for the given parent record';
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.NUM_ACTIVE_ERRORS IS 'Number of QC Validation Active Errors (Errors that are not annotated) for the given parent record';
-COMMENT ON COLUMN DVM_PTA_ISSUE_SUMM_V.NUM_ANNOT_ERRORS IS 'Number of QC Validation Annotated Errors (Errors that have had an issue resolution specified) for the given parent record';
-
-COMMENT ON TABLE DVM_PTA_ISSUE_SUMM_V IS 'PTA Issues Summary (View)
-
-This view returns a summary of each standard category of issues (errors, warnings, annotated/non-annotated) associated with a given parent record';
-
-
-
+DROP VIEW DVM_PTA_ISSUE_SUMM_V;
 
 
 create or replace PACKAGE DVM_PKG IS
