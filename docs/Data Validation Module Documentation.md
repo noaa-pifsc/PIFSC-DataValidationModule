@@ -40,7 +40,7 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 -   DB Version Control Module (VCM)
     -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git
     -   Database Version: 0.2 (git tag: db_vers_ctrl_db_v0.2)
-    -   SOP Version: 1.0 (git tag: db_vers_ctrl_v1.0)
+    -   SOP Version: 1.1 (git tag: db_vers_ctrl_v1.1)
 -   DB Logging Module (DLM)
     -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git
     -   Version: 0.3 (git tag: db_log_db_v0.3)
@@ -117,7 +117,6 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Core tables
 - **Note: all tables have comments on all columns as well as the object itself
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
-
 
 ## <a name="ex1"><a/>Ex 1 (User-Defined Exception Version):
 ```
