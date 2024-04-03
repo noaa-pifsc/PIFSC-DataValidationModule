@@ -29,8 +29,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="database_setup"></a>Database Setup:
 - Manual Installation
-  - Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) or higher of the DB Version Control Module (VCM) Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBVersionControlModule.git)
-  - Install version 0.3 (git tag: db_log_db_v0.3) or higher of the DB Logging Module Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBLoggingModule.git)
+  - Install version 1.0 (git tag: db_vers_ctrl_db_v1.0) or higher of the DB Version Control Module (VCM) Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBVersionControlModule.git)
+  - Install version 1.0 (git tag: db_log_db_v1.0) or higher of the DB Logging Module Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBLoggingModule.git)
   - [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
   - ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
