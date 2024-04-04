@@ -9,10 +9,10 @@ _ look into implementing validation criteria into a QA module as well (could hav
 X implement a unique key constraint for DVM QC object records on OBJECT_NAME (had a use case where I accidentally inserted a duplicate DVM_QC_OBJECTS record and it caused a problem with the generated load DVM issues DML
 
 
-_ compile .md documentation to document the process and scripts used to upgrade the SPTT version of the DVM to the DVM standalone
-	_ (SPTT - DVM upgrade) compile a mapping document to document the object/column name changes so SPTT can update their code accordingly
+X compile .md documentation to document the process and scripts used to upgrade the SPTT version of the DVM to the DVM standalone
+	X (SPTT - DVM upgrade) compile a mapping document to document the object/column name changes so SPTT can update their code accordingly
 
-_ Commit changes to DB v 1.4
+X Commit changes to DB v 1.4
 	Send them the upgrade scripts and have them try it out themselves
 		SPTT needs to implement a repeatable process to deploy the current production version of the DB
 
@@ -20,11 +20,32 @@ _ should we include the external modules in the upgrades folder even if it's not
 
 
 
+
+
+
+Best Practice:
+	_ (document this) Optimize the QC queries as much as possible since they are executed each time a record is validated
+
+	_ document approach for resolving validation issues that may be associated with external data schemas (wrapper table implementation)
+		Don't create a special table for this but try to leverage an existing table in the data model unless there is no other option (this creates additional work to create and maintain these records)
+		Cite the example (MOUSS on how this was implemented for MOUSS_CR_DATA_LOC for QC validation issues caused by CCD_CRUISES and associated tables)
+
+
+
+** DVM QC view: 
+	Find all DVM_ISS_TYPES with no corresponding data stream code
+	_ add this to the standard set of QC queries to see if the definitions are correct?
+	
+
+
 _ implement a delete DVM procedure that removes the DVM data for a given PTA_ISS_ID value (used in CCD and LIB)
 
 Evaluate DVM for security vulnerabilities (SCR to CMB)
 
 
+_ ** check on triggers with dates in them (bug -> need to use TO_CHAR() to translate date to string) -> TRG_DVM_PTA_RULE_SETS_HIST
+
+_ document workaround for cases where bracket characters are needed in the URL (APEX interactive grid pages that specify filters that require the region's static ID) -> example in Standalone Authorization Application Module (SAM)
 
 
 known issues:
@@ -75,8 +96,15 @@ X Implement configuration QC/DVM_PKG check to see if the indicator fields are no
 _ include a report that shows the DVM_STD_QC_ALL_RPT_V results so admins can view the DVM configuration problems and resolve them for tier-1 troubleshooting (tier-2 would require reviewing DB error logs, etc.)
 
 
-	_ optimization:
-		_ when there is a batch execution order by the validation rule sets so that once a data stream/validation rule set is initialize (validated that the rules are valid at the RULE_SET_ID level then we can skip validating the validation criteria on any subsequent records that have the same rule set - save the values and compare them early on so that a lot of the validation can be skipped - e.g. missing placeholder fields, data stream codes, etc. as long as the validation criteria was valid on the last run)
+		_ optimization:
+			_ when there is a batch execution order by the validation rule sets so that once a data stream/validation rule set is initialize (validated that the rules are valid at the RULE_SET_ID level then we can skip validating the validation criteria on any subsequent records that have the same rule set - save the values and compare them early on so that a lot of the validation can be skipped - e.g. missing placeholder fields, data stream codes, etc. as long as the validation criteria was valid on the last run)
+		
+		
+		OPTIMIZATION UPDATE:
+			_when the batch execution method is used allow the queries to be run for all records at the same time (it will need to take into account which records have which criteria associated with them but this approach should increase efficiency by reducing unnecessary queries)
+				Algorithm: Sort by the DVM rules associated with each parent record so that it will reuse the information for each subsequent record and each time the rule set changes then update the rule set in the package variables
+				** _ Alternatively it could just retain the package variables for the current rule set and if it doesn't change then there is no need to requery it, just use what's already stored in memory
+					The package variables should be reset each time the package is reinitialized
 
 	_ Change views to use consistent date formats (updated the history trigger for trg_DVM_PTA_RULE_SETS_hist so far
 

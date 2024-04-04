@@ -11,22 +11,6 @@
 --------------------------------------------------------
 
 
---drop old synonym (deprecated functionality)
-DROP SYNONYM DAT_STRM;
-DROP SYNONYM ERRS;
-DROP SYNONYM ERR_RES;
-DROP SYNONYM ERR_SEV;
-DROP SYNONYM ERR_TYP;
-DROP SYNONYM PTA_ERR;
-DROP SYNONYM PTA_ER_ASC;
-DROP SYNONYM PTA_ER_TYP;
-DROP SYNONYM QC_OBJ;
-
-
-
-
-
-
 create or replace PACKAGE DVM_PKG IS
 
 		--declare the numeric based array of strings, used in various package procedures

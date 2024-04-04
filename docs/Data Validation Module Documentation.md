@@ -5,8 +5,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## Resources:
 - DVM Version Control Information:
-  - URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DataValidationModule.git
-  - Database: 1.4 (Git tag: DVM_db_v1.4)
+  - URL: git@github.com:noaa-pifsc/PIFSC-DataValidationModule.git
+  - Database: 1.5 (Git tag: DVM_db_v1.5)
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
 - [Installing or Upgrading the Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
 - [Database Diagram](./Data%20Validation%20Module%20DB%20Diagram.pdf)
@@ -29,8 +29,8 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## <a name="database_setup"></a>Database Setup:
 - Manual Installation
-  - Install version 0.2 (git tag: db_vers_ctrl_db_v0.2) or higher of the DB Version Control Module (VCM) Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git)
-  - Install version 0.3 (git tag: db_log_db_v0.3) or higher of the DB Logging Module Database (Git URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git)
+  - Install version 1.0 (git tag: db_vers_ctrl_db_v1.0) or higher of the DB Version Control Module (VCM) Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBVersionControlModule.git)
+  - Install version 1.0 (git tag: db_log_db_v1.0) or higher of the DB Logging Module Database (Git URL: git@github.com:noaa-pifsc/PIFSC-DBLoggingModule.git)
   - [Installing or Upgrading the DVM Database](./DVM%20-%20Installing%20or%20Upgrading%20the%20Database.md)
   - ****Note**: If this is an upgrade between version 0.4 and 0.5 and it has previously been used to validate records the database instance must be migrated using a [specific approach](./version_0.5_upgrade_SOP.md).  If the DVM has not been previously used to validate data then disregard this note.
 - Automated Installation
@@ -38,12 +38,12 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 
 ## Database Features:
 -   DB Version Control Module (VCM)
-    -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBVersionControlModule.git
-    -   Database Version: 0.2 (git tag: db_vers_ctrl_db_v0.2)
-    -   SOP Version: 1.0 (git tag: db_vers_ctrl_v1.0)
+    -   Repository URL: git@github.com:noaa-pifsc/PIFSC-DBVersionControlModule.git
+    -   Database Version: 1.0 (git tag: db_vers_ctrl_db_v1.0)
+    -   SOP Version: 1.1 (git tag: db_vers_ctrl_v1.1)
 -   DB Logging Module (DLM)
-    -   Repository URL: git@github.com:PIFSC-NMFS-NOAA/PIFSC-DBLoggingModule.git
-    -   Version: 0.3 (git tag: db_log_db_v0.3)
+    -   Repository URL: git@github.com:noaa-pifsc/PIFSC-DBLoggingModule.git
+    -   Version: 1.0 (git tag: db_log_db_v1.0)
 -   Data history tracking package
     -   Version Control Information:
         -   URL: svn://badfish.pifsc.gov/Oracle/DSC/trunk/apps/db/dsc/dsc_pkgs
@@ -117,7 +117,6 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
 ## Core tables
 - **Note: all tables have comments on all columns as well as the object itself
 - [Database Table/View Comments](./DVM_table_view_comments.xlsx)
-
 
 ## <a name="ex1"><a/>Ex 1 (User-Defined Exception Version):
 ```
@@ -207,3 +206,26 @@ The Data Validation Module (DVM) was developed to provide a framework to validat
   END;
 
 ```
+
+## DB Upgrade and Rollback Testing
+-   (using G:\security\DB\TEST_JDA\SQL\deploy_rollback_dev_DVM.sql):
+    -   version 1.5:
+        -   TEST_JDA_COMP: run SQL/deploy_dev.sql
+        -   TEST_JDA: run version 1.3, 1.4, 1.5upgrade files
+        -   verified no invalid objects
+        -   verified data models are equivalent
+    -   Version 1.4:
+        -   TEST_JDA_COMP:
+            -   run deploy_dev.sql
+            -   run rollback v1.5.sql
+        -   TEST_JDA: run version 1.3, 1.4 upgrade files
+        -   verified no invalid objects
+        -   verified data models are equivalent
+    -   Version 1.3:
+        -   TEST_JDA_COMP:
+            -   run deploy_dev.sql
+            -   run rollback v1.5.sql
+            -   run rollback v1.4.sql
+        -   TEST_JDA: run version 1.3 upgrade files
+        -   verified no invalid objects
+        -   verified data models are equivalent
