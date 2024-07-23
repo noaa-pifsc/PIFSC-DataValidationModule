@@ -5,6 +5,11 @@ _ update TRG_ history tracking triggers to specify the app username instead of u
 	use: nvl(v('APP_USER'),user);
 _ look into implementing validation criteria into a QA module as well (could have flags to include in QA only or QC only or both)
 	_ this could be another module that could query the validation criteria and evaluate it via Ajax or other means to identify errors/warnings for each field and the pending data as a whole.
+	In an Ajax call we could pass the values in the given form to the server page
+		We could attempt to insert/update the record within a transaction and then run the DVM on the new/updated record to see if it has any error validation criteria and pass back a JSON object with the information
+			Rollback the transaction each time but don't throw an error in PL/SQL
+			Capture the return value and display errors on the page if there are no errors allow the page to submit normally to process the record update and run the DVM
+
 
 X implement a unique key constraint for DVM QC object records on OBJECT_NAME (had a use case where I accidentally inserted a duplicate DVM_QC_OBJECTS record and it caused a problem with the generated load DVM issues DML
 
