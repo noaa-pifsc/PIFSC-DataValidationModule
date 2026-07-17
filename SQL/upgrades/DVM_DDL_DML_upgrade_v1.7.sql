@@ -43,3 +43,5 @@ ALTER TABLE DVM_QC_OBJECTS FLASHBACK ARCHIVE;
 
 --define the upgrade version in the database upgrade log table:
 INSERT INTO DB_UPGRADE_LOGS (UPGRADE_APP_NAME, UPGRADE_VERSION, UPGRADE_DATE, UPGRADE_DESC) VALUES ('Data Validation Module', '1.7', TO_DATE('17-JUL-26', 'DD-MON-YY'), 'Removed the data history triggers and tables and enabled the Oracle flashback data archive feature for them instead');
+
+COMMIT;
