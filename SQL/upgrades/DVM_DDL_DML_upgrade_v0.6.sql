@@ -398,7 +398,7 @@ for each row
 begin
   select DVM_ISSUES_SEQ.nextval into :new.ISS_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 	CREATE OR REPLACE TRIGGER DVM_ISSUES_AUTO_BRU BEFORE
@@ -406,7 +406,7 @@ end;
     ON DVM_ISSUES FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -416,7 +416,7 @@ for each row
 begin
   select DVM_ISS_RES_TYPES_SEQ.nextval into :new.ISS_RES_TYPE_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 	CREATE OR REPLACE TRIGGER DVM_ISS_RES_TYPES_AUTO_BRU BEFORE
@@ -424,7 +424,7 @@ end;
     ON DVM_ISS_RES_TYPES FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -434,7 +434,7 @@ for each row
 begin
   select DVM_ISS_SEVERITY_SEQ.nextval into :new.ISS_SEVERITY_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 	CREATE OR REPLACE TRIGGER DVM_ISS_SEVERITY_AUTO_BRU BEFORE
@@ -442,7 +442,7 @@ end;
     ON DVM_ISS_SEVERITY FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -452,7 +452,7 @@ for each row
 begin
   select DVM_ISS_TYPES_SEQ.nextval into :new.ISS_TYPE_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 	CREATE OR REPLACE TRIGGER DVM_ISS_TYPES_AUTO_BRU BEFORE
@@ -460,7 +460,7 @@ end;
     ON DVM_ISS_TYPES FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 

@@ -503,7 +503,7 @@ CREATE OR REPLACE TRIGGER DVM_ERRORS_AUTO_BRU BEFORE
     ON DVM_ERRORS FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -512,7 +512,7 @@ CREATE OR REPLACE TRIGGER DVM_ERROR_TYPES_AUTO_BRU BEFORE
     ON DVM_ERROR_TYPES FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -521,7 +521,7 @@ CREATE OR REPLACE TRIGGER DVM_QC_OBJECTS_AUTO_BRU BEFORE
     ON DVM_QC_OBJECTS FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -532,7 +532,7 @@ CREATE OR REPLACE TRIGGER DVM_ERR_SEVERITY_AUTO_BRU BEFORE
     ON DVM_ERR_SEVERITY FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -541,7 +541,7 @@ CREATE OR REPLACE TRIGGER DVM_DATA_STREAMS_AUTO_BRU BEFORE
     ON DVM_DATA_STREAMS FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -550,7 +550,7 @@ CREATE OR REPLACE TRIGGER DVM_ERR_RES_TYPES_AUTO_BRU BEFORE
     ON DVM_ERR_RES_TYPES FOR EACH ROW
     BEGIN
       :NEW.LAST_MOD_DATE := SYSDATE;
-      :NEW.LAST_MOD_BY := nvl(v('APP_USER'),user);
+      :NEW.LAST_MOD_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 END;
 /
 
@@ -562,7 +562,7 @@ for each row
 begin
   select DVM_ERRORS_SEQ.nextval into :new.ERROR_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
@@ -572,7 +572,7 @@ for each row
 begin
   select DVM_ERROR_TYPES_SEQ.nextval into :new.ERROR_TYPE_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
@@ -582,7 +582,7 @@ for each row
 begin
   select DVM_QC_OBJECTS_SEQ.nextval into :new.QC_OBJECT_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
@@ -594,7 +594,7 @@ for each row
 begin
   select DVM_ERR_SEVERITY_SEQ.nextval into :new.ERR_SEVERITY_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
@@ -604,7 +604,7 @@ for each row
 begin
   select DVM_DATA_STREAMS_SEQ.nextval into :new.DATA_STREAM_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
@@ -614,7 +614,7 @@ for each row
 begin
   select DVM_ERR_RES_TYPES_SEQ.nextval into :new.ERR_RES_TYPE_ID from dual;
   :NEW.CREATE_DATE := SYSDATE;
-  :NEW.CREATED_BY := nvl(v('APP_USER'),user);
+  :NEW.CREATED_BY := nvl(SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),user);
 end;
 /
 
