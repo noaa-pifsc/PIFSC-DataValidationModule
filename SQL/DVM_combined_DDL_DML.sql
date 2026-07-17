@@ -30,3 +30,4 @@
 @@"./upgrades/DVM_DDL_DML_upgrade_v1.3.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v1.4.sql"
 @@"./upgrades/DVM_DDL_DML_upgrade_v1.5.sql"
+@@"./upgrades/DVM_DDL_DML_upgrade_v1.6.sql"
