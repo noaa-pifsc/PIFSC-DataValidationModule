@@ -2994,7 +2994,11 @@ ON DVM_DATA_STREAMS
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
@@ -3053,7 +3057,11 @@ ON DVM_ERRORS
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
@@ -3112,7 +3120,11 @@ ON DVM_ERROR_TYPES
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
@@ -3177,7 +3189,11 @@ ON DVM_ERR_RES_TYPES
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
@@ -3234,7 +3250,11 @@ ON DVM_ERR_SEVERITY
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
@@ -3291,7 +3311,11 @@ ON DVM_QC_OBJECTS
 REFERENCING OLD AS old NEW AS new
 FOR EACH ROW
 DECLARE
-  os_user VARCHAR2(30) := dsc.dsc_utilities_pkg.os_user;
+  os_user VARCHAR2(30) := COALESCE(
+            SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
+            SYS_CONTEXT('USERENV', 'OS_USER'),
+            SYS_CONTEXT('USERENV', 'SESSION_USER')
+        );
 
   PROCEDURE insert_data(
     p_type_of_change IN VARCHAR2,
